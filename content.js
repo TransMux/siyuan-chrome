@@ -635,7 +635,34 @@ async function siyuanGetCloneNode(tempDoc) {
     return clonedDoc;
 }
 
+// 添加 KaTeX 公式处理，提取 LaTeX 源并替换为文本节点
+function siyuanProcessKaTeX(tempElement) {
+    // 原生 KaTeX: 从 katex-mathml 注释中提取 LaTeX，并根据 display 类区分行内($)或块级($$)包裹
+    tempElement.querySelectorAll('span.katex-mathml').forEach(block => {
+        const annotation = block.querySelector('annotation[encoding="application/x-tex"]');
+        if (!annotation) return;
+        const latex = annotation.textContent.trim();
+        const displayWrapper = block.closest('span.katex-display');
+        const inlineWrapper = block.closest('span.katex');
+        const isDisplay = Boolean(displayWrapper);
+        const delim = isDisplay ? ['$$', '$$'] : ['$', '$'];
+        const wrapper = displayWrapper || inlineWrapper || block;
+        const textNode = document.createTextNode(delim[0] + latex + delim[1]);
+        wrapper.replaceWith(textNode);
+    });
+    // 支持 katex-elements Web Components: <katex-element> (行内) 与 <katex-display> (块级)，同样区分 $ 与 $$
+    tempElement.querySelectorAll('katex-element, katex-display').forEach(el => {
+        const latex = (el.getAttribute('math') || '').trim();
+        if (!latex) return;
+        const isDisplayEl = el.tagName.toLowerCase() === 'katex-display';
+        const delimEl = isDisplayEl ? ['$$', '$$'] : ['$', '$'];
+        el.replaceWith(document.createTextNode(delimEl[0] + latex + delimEl[1]));
+    });
+}
+
 const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href) => {
+    // KaTeX 公式预处理，提取 LaTeX 并转换为文本节点
+    siyuanProcessKaTeX(tempElement);
     chrome.storage.sync.get({
         ip: 'http://127.0.0.1:6806',
         showTip: true,
