@@ -660,9 +660,30 @@ function siyuanProcessKaTeX(tempElement) {
     });
 }
 
+// 转换知乎跳转链接为原链接
+function siyuanConvertZhihuRedirectLinks(tempElement) {
+    const links = tempElement.querySelectorAll('a[href*="link.zhihu.com"]');
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href.indexOf('target=') !== -1) {
+            try {
+                const url = new URL(href);
+                const targetParam = url.searchParams.get('target');
+                if (targetParam) {
+                    const originalUrl = decodeURIComponent(targetParam);
+                    link.setAttribute('href', originalUrl);
+                }
+            } catch (e) {
+                console.warn('Failed to convert Zhihu redirect link:', href, e);
+            }
+        }
+    });
+}
+
 const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href) => {
     // KaTeX 公式预处理，提取 LaTeX 并转换为文本节点
     siyuanProcessKaTeX(tempElement);
+    siyuanConvertZhihuRedirectLinks(tempElement);
     chrome.storage.sync.get({
         ip: 'http://127.0.0.1:6806',
         showTip: true,
