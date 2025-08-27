@@ -231,6 +231,21 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                     markdown = getDefaultMarkdown(requestData, response.data.md);
                 }
 
+                // compute Week path: /Week {ISO week number}
+                function getISOWeek(d) {
+                    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+                    const dayNum = d.getUTCDay() || 7;
+                    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+                    const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+                    const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+                    return weekNo;
+                }
+                const weekNum = getISOWeek(new Date());
+                const weekFolder = `/Week ${weekNum}`;
+                const parentHPath = requestData.parentHPath || '';
+                const baseHPath = parentHPath ? parentHPath : '';
+                const finalHPath = `${baseHPath}${weekFolder}`;
+
                 fetch(requestData.api + '/api/filetree/createDocWithMd', {
                     method: 'POST',
                     headers: {
@@ -240,7 +255,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                         'notebook': requestData.notebook,
                         'parentID': requestData.parentDoc,
                         'tags': requestData.tags,
-                        'path': requestData.parentHPath + "/" + title,
+                        'path': finalHPath + "/" + title,
                         'markdown': markdown,
                         'withMath': response.data.withMath,
                         'clippingHref': requestData.href,
@@ -279,6 +294,10 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                                     'url': requestData.href, // 改进浏览器剪藏扩展转换本地图片成功率 https://github.com/siyuan-note/siyuan/issues/7464
                                 }),
                             })
+                        }
+
+                        if (requestData.closeOnSuccess) {
+                            chrome.tabs.remove(requestData.tabId);
                         }
 
                         chrome.tabs.sendMessage(requestData.tabId, {

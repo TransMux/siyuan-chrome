@@ -699,6 +699,7 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href)
         expItalic: false,
         expRemoveImgLink: false,
         expListDocTree: false,
+        closeOnSuccess: false,
     }, async function (items) {
         if (!items.token) {
             siyuanShowTipByKey("tip_token_miss")
@@ -819,6 +820,7 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href)
             href: url,
             type,
             tabId,
+            closeOnSuccess: items.closeOnSuccess,
         };
         chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
     })
