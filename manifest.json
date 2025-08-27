@@ -40,6 +40,14 @@
       "id": "siyuan-extension@ld246.com"
     }
   },
+  "commands": {
+    "copy-to-siyuan": {
+      "suggested_key": {
+        "default": "Alt+1"
+      },
+      "description": "__MSG_copy_to_siyuan__"
+    }
+  },
   "name": "__MSG_extension_name__",
   "options_page": "options.html",
   "description": "__MSG_extension_description__",

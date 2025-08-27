@@ -12,6 +12,21 @@ chrome.runtime.onInstalled.addListener(() => {
     }, 30000);
 });
 
+// Listen for keyboard shortcut
+chrome.commands.onCommand.addListener((command) => {
+    if (command === 'copy-to-siyuan') {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs.length > 0) {
+                chrome.tabs.sendMessage(tabs[0].id, {
+                    'func': 'copy',
+                    'tabId': tabs[0].id,
+                    'srcUrl': null,
+                })
+            }
+        })
+    }
+})
+
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
     if (info.menuItemId === 'copy-to-siyuan') {
         chrome.tabs.sendMessage(tab.id, {
