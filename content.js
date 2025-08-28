@@ -28,10 +28,45 @@ document.addEventListener('DOMContentLoaded', function () {
             siyuanShowTipByKey("tip_clipping")
 
             const selection = window.getSelection()
-            if (selection && 0 < selection.rangeCount) {
+            debugger
+            if (selection && 0 < selection.rangeCount && selection.toString().length > 0) {
                 const range = selection.getRangeAt(0)
                 const tempElement = document.createElement('div')
                 tempElement.appendChild(range.cloneContents())
+                siyuanSendUpload(tempElement, request.tabId, request.srcUrl, "part", undefined, undefined, request.insertAtFocus)
+            } else {
+                const tempElement = document.createElement('div')
+                const href = window.location.href
+                const hostname = window.location.hostname || ''
+                const isDouyin = hostname.indexOf('douyin.com') !== -1 || hostname.indexOf('iesdouyin.com') !== -1
+
+                let titles = []
+                if (isDouyin) {
+                    const feedActiveVideo = document.querySelector('[data-e2e="feed-active-video"]')
+                    if (feedActiveVideo) {
+                        const elements = Array.from(feedActiveVideo.getElementsByClassName('video-info-detail'))
+                        const visibleElements = elements.filter(el => el && el.offsetParent !== null)
+                        if (0 < visibleElements.length) {
+                            titles = visibleElements.map(el => (el.innerText || '').replace(/[\r\n]+/g, ' ').trim()).filter(t => t)
+                        }
+                    }
+                }
+
+                if (0 === titles.length) {
+                    const defaultTitle = (document.title || '').trim()
+                    titles = [defaultTitle || href]
+                }
+
+                titles.forEach((title, idx) => {
+                    const a = document.createElement('a')
+                    a.setAttribute('href', href)
+                    a.textContent = title
+                    // 每个标题单独成行，便于后续转换为 Markdown
+                    const line = document.createElement('div')
+                    line.appendChild(a)
+                    tempElement.appendChild(line)
+                })
+
                 siyuanSendUpload(tempElement, request.tabId, request.srcUrl, "part", undefined, undefined, request.insertAtFocus)
             }
         })
