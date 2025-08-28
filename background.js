@@ -21,6 +21,7 @@ chrome.commands.onCommand.addListener((command) => {
                     'func': 'copy',
                     'tabId': tabs[0].id,
                     'srcUrl': null,
+                    'insertAtFocus': true,
                 })
             }
         })
@@ -139,6 +140,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     formData.append("href", requestData.href)
     formData.append("tags", requestData.tags)
     formData.append("clipType", requestData.type)
+    formData.append("insertAtFocus", requestData.insertAtFocus)
 
     fetch(requestData.api + '/api/extension/copy', {
         method: 'POST',

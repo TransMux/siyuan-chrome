@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const range = selection.getRangeAt(0)
                 const tempElement = document.createElement('div')
                 tempElement.appendChild(range.cloneContents())
-                siyuanSendUpload(tempElement, request.tabId, request.srcUrl, "part")
+                siyuanSendUpload(tempElement, request.tabId, request.srcUrl, "part", undefined, undefined, request.insertAtFocus)
             }
         })
     const copyToClipboard = async (textToCopy) => {
@@ -680,7 +680,7 @@ function siyuanConvertZhihuRedirectLinks(tempElement) {
     });
 }
 
-const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href) => {
+const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href, insertAtFocus) => {
     // KaTeX 公式预处理，提取 LaTeX 并转换为文本节点
     siyuanProcessKaTeX(tempElement);
     siyuanConvertZhihuRedirectLinks(tempElement);
@@ -800,7 +800,6 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href)
         let siteName = article && article.siteName ? article.siteName : "";
         let excerpt = article && article.excerpt ? article.excerpt : "";
         let url = href || window.location.href;
-
         const msgJSON = {
             fetchFileErr,
             files: files,
@@ -821,6 +820,7 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href)
             type,
             tabId,
             closeOnSuccess: items.closeOnSuccess,
+            insertAtFocus: insertAtFocus,
         };
         chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
     })
