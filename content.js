@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 return
             }
 
+            if ('capture-full-page' === request.func) {
+                siyuanCaptureFullPage(request.tabId)
+                return
+            }
+
             if ('copy' !== request.func) {
                 return
             }
@@ -883,4 +888,38 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
             window.addEventListener('message', messageHandler);
         }
     })
+}
+
+// 完整页面抓取函数
+const siyuanCaptureFullPage = async (tabId) => {
+    try {
+        siyuanShowTipByKey("tip_clipping", 60 * 1000)
+    } catch (e) {
+        siyuanShowTip("First time using extension - please reload page", 5000);
+        return;
+    }
+
+    try {
+        // 浏览器剪藏扩展剪藏某些网页代码块丢失注释 https://github.com/siyuan-note/siyuan/issues/5676
+        document.querySelectorAll(".hljs-comment").forEach(item => {
+            item.classList.remove("hljs-comment")
+            item.classList.add("hljs-cmt")
+        })
+
+        // 重构并合并 Readability 前处理 https://github.com/siyuan-note/siyuan/issues/13306
+        const clonedDoc = await siyuanGetCloneNode(document);
+
+        const article = new Readability(clonedDoc, {
+            keepClasses: true,
+            charThreshold: 16,
+            debug: true
+        }).parse()
+        const tempElement = document.createElement('div')
+        tempElement.innerHTML = article.content
+        // console.log(article)
+        siyuanSendUpload(tempElement, tabId, undefined, "article", article, window.location.href)
+    } catch (e) {
+        console.error(e)
+        siyuanShowTip(e.message, 7 * 1000)
+    }
 }

@@ -8,6 +8,9 @@
   "copy_to_siyuan": {
     "message": "複製到思源(SiYuan)"
   },
+  "capture_full_page": {
+    "message": "抓取完整頁面到思源"
+  },
   "show_tip": {
     "message": "顯示提示"
   },

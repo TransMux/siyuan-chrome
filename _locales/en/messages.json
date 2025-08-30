@@ -8,6 +8,9 @@
   "copy_to_siyuan": {
     "message": "Copy to SiYuan"
   },
+  "capture_full_page": {
+    "message": "Capture full page to SiYuan"
+  },
   "show_tip": {
     "message": "Show Tip"
   },

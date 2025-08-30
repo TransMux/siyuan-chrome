@@ -25,6 +25,15 @@ chrome.commands.onCommand.addListener((command) => {
                 })
             }
         })
+    } else if (command === 'capture-full-page') {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs.length > 0) {
+                chrome.tabs.sendMessage(tabs[0].id, {
+                    'func': 'capture-full-page',
+                    'tabId': tabs[0].id,
+                })
+            }
+        })
     }
 })
 

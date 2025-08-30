@@ -46,6 +46,12 @@
         "default": "Alt+1"
       },
       "description": "__MSG_copy_to_siyuan__"
+    },
+    "capture-full-page": {
+      "suggested_key": {
+        "default": "Alt+2"
+      },
+      "description": "__MSG_capture_full_page__"
     }
   },
   "name": "__MSG_extension_name__",
