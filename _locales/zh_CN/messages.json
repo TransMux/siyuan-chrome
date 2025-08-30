@@ -9,7 +9,7 @@
     "message": "复制到思源(SiYuan)"
   },
   "capture_full_page": {
-    "message": "抓取完整页面到思源"
+    "message": "抓取选中标签页到思源"
   },
   "show_tip": {
     "message": "显示提示"

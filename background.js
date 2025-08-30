@@ -26,13 +26,20 @@ chrome.commands.onCommand.addListener((command) => {
             }
         })
     } else if (command === 'capture-full-page') {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        // 获取所有选中的标签页
+        chrome.tabs.query({ highlighted: true, currentWindow: true }, (tabs) => {
             if (tabs.length > 0) {
-                chrome.tabs.sendMessage(tabs[0].id, {
-                    'func': 'capture-full-page',
-                    'tabId': tabs[0].id,
-                    'closeTabAfter': true,
-                })
+                console.log(`开始批量抓取 ${tabs.length} 个标签页`);
+                // 对每个选中的标签页执行抓取操作，添加延迟避免并发问题
+                tabs.forEach((tab, index) => {
+                    setTimeout(() => {
+                        chrome.tabs.sendMessage(tab.id, {
+                            'func': 'capture-full-page',
+                            'tabId': tab.id,
+                            'closeTabAfter': true,
+                        });
+                    }, index * 100);
+                });
             }
         })
     }
