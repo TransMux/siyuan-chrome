@@ -262,6 +262,17 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                         'withMath': response.data.withMath,
                         'clippingHref': requestData.href,
                         'listDocTree': requestData.listDocTree,
+                        'attributeViews': [{
+                            "avID": "20250102171020-4cqqonx",
+                            "view": {
+                                "viewID": "20250830162522-lzvfn3k",
+                            },
+                            "values": {
+                                "20250830152952-4pj5mwb": {url: {content: "https://www.zhihu.com/question/58279241/answer/180223860"}}, // 链接列
+                                "20250209201845-at8lrm2": { type: "mSelect", mSelect: [{ color: "3", content: "知乎" }] }, // 来源列
+                                "20250830154540-udvlq8y": { type: "relation", relation: {blockIDs: ["20250101005344-fdf3w7d"]}}, // 关联列
+                            }
+                        }]
                     }),
                 }).then((response) => {
                     return response.json()
