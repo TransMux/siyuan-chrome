@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
             siyuanShowTipByKey("tip_clipping")
 
             const selection = window.getSelection()
-            debugger
             if (selection && 0 < selection.rangeCount && selection.toString().length > 0) {
                 const range = selection.getRangeAt(0)
                 const tempElement = document.createElement('div')
@@ -834,52 +833,54 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
         let siteName = article && article.siteName ? article.siteName : "";
         let excerpt = article && article.excerpt ? article.excerpt : "";
         let url = href || window.location.href;
-        
-        // 获取页面中 __siyuanCreateDocExtraParam 函数的返回值
-        let extraParams = {};
-        
-        // 向页面发送消息请求额外参数
-        window.postMessage({
-            type: 'GET_SIYUAN_EXTRA_PARAMS',
-            source: 'siyuan-chrome-extension'
-        }, '*');
-        
-        // 监听页面返回的消息
-        const messageHandler = (event) => {
-            if (event.data && event.data.type === 'SIYUAN_EXTRA_PARAMS_RESPONSE' && 
-                event.data.source === 'siyuan-chrome-extension') {
-                if (event.data.params && typeof event.data.params === 'object' && !Array.isArray(event.data.params)) {
-                    extraParams = event.data.params;
-                }
-                // 移除消息监听器
-                window.removeEventListener('message', messageHandler);
 
-                const msgJSON = {
-                    fetchFileErr,
-                    files: files,
-                    dom: tempElement.innerHTML,
-                    api: items.ip,
-                    token: items.token,
-                    notebook: items.notebook,
-                    parentDoc: items.parentDoc,
-                    parentHPath: items.parentHPath.substring(items.parentHPath.indexOf('/')),
-                    tags: items.tags,
-                    assets: items.assets,
-                    tip: items.showTip,
-                    title: title,
-                    siteName: siteName,
-                    excerpt: excerpt,
-                    listDocTree: items.expListDocTree,
-                    href: url,
-                    type,
-                    tabId,
-                    insertAtFocus: insertAtFocus,
-                    extraParams: extraParams,
-                };
-                chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
-            }
+        const msgJSON = {
+            fetchFileErr,
+            files: files,
+            dom: tempElement.innerHTML,
+            api: items.ip,
+            token: items.token,
+            notebook: items.notebook,
+            parentDoc: items.parentDoc,
+            parentHPath: items.parentHPath.substring(items.parentHPath.indexOf('/')),
+            tags: items.tags,
+            assets: items.assets,
+            tip: items.showTip,
+            title: title,
+            siteName: siteName,
+            excerpt: excerpt,
+            listDocTree: items.expListDocTree,
+            href: url,
+            type,
+            tabId,
+            insertAtFocus: insertAtFocus,
         };
-        
-        window.addEventListener('message', messageHandler);
+
+        if (type === 'part') {
+            chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
+        } else {
+            // 如果是全文剪藏获取页面中 __siyuanCreateDocExtraParam 函数的返回值
+            
+            // 向页面发送消息请求额外参数
+            window.postMessage({
+                type: 'GET_SIYUAN_EXTRA_PARAMS',
+                source: 'siyuan-chrome-extension'
+            }, '*');
+            
+            // 监听页面返回的消息
+            const messageHandler = (event) => {
+                if (event.data && event.data.type === 'SIYUAN_EXTRA_PARAMS_RESPONSE' && 
+                    event.data.source === 'siyuan-chrome-extension') {
+                    if (event.data.params && typeof event.data.params === 'object' && !Array.isArray(event.data.params)) {
+                        msgJSON.extraParams = event.data.params;
+                    }
+                    // 移除消息监听器
+                    window.removeEventListener('message', messageHandler);
+                    chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
+                }
+            };
+            
+            window.addEventListener('message', messageHandler);
+        }
     })
 }
