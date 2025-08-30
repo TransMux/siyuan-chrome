@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if ('capture-full-page' === request.func) {
-                siyuanCaptureFullPage(request.tabId)
+                siyuanCaptureFullPage(request.tabId, request.closeTabAfter)
                 return
             }
 
@@ -719,7 +719,7 @@ function siyuanConvertZhihuRedirectLinks(tempElement) {
     });
 }
 
-const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href, insertAtFocus) => {
+const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href, insertAtFocus, closeTabAfter = false) => {
     // KaTeX 公式预处理，提取 LaTeX 并转换为文本节点
     siyuanProcessKaTeX(tempElement);
     siyuanConvertZhihuRedirectLinks(tempElement);
@@ -839,27 +839,28 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
         let excerpt = article && article.excerpt ? article.excerpt : "";
         let url = href || window.location.href;
 
-        const msgJSON = {
-            fetchFileErr,
-            files: files,
-            dom: tempElement.innerHTML,
-            api: items.ip,
-            token: items.token,
-            notebook: items.notebook,
-            parentDoc: items.parentDoc,
-            parentHPath: items.parentHPath.substring(items.parentHPath.indexOf('/')),
-            tags: items.tags,
-            assets: items.assets,
-            tip: items.showTip,
-            title: title,
-            siteName: siteName,
-            excerpt: excerpt,
-            listDocTree: items.expListDocTree,
-            href: url,
-            type,
-            tabId,
-            insertAtFocus: insertAtFocus,
-        };
+                 const msgJSON = {
+             fetchFileErr,
+             files: files,
+             dom: tempElement.innerHTML,
+             api: items.ip,
+             token: items.token,
+             notebook: items.notebook,
+             parentDoc: items.parentDoc,
+             parentHPath: items.parentHPath.substring(items.parentHPath.indexOf('/')),
+             tags: items.tags,
+             assets: items.assets,
+             tip: items.showTip,
+             title: title,
+             siteName: siteName,
+             excerpt: excerpt,
+             listDocTree: items.expListDocTree,
+             href: url,
+             type,
+             tabId,
+             insertAtFocus: insertAtFocus,
+             closeTabAfter: closeTabAfter,
+         };
 
         if (type === 'part') {
             chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
@@ -891,7 +892,7 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
 }
 
 // 完整页面抓取函数
-const siyuanCaptureFullPage = async (tabId) => {
+const siyuanCaptureFullPage = async (tabId, closeTabAfter = false) => {
     try {
         siyuanShowTipByKey("tip_clipping", 60 * 1000)
     } catch (e) {
@@ -917,7 +918,7 @@ const siyuanCaptureFullPage = async (tabId) => {
         const tempElement = document.createElement('div')
         tempElement.innerHTML = article.content
         // console.log(article)
-        siyuanSendUpload(tempElement, tabId, undefined, "article", article, window.location.href)
+        siyuanSendUpload(tempElement, tabId, undefined, "article", article, window.location.href, undefined, closeTabAfter)
     } catch (e) {
         console.error(e)
         siyuanShowTip(e.message, 7 * 1000)

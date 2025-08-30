@@ -31,6 +31,7 @@ chrome.commands.onCommand.addListener((command) => {
                 chrome.tabs.sendMessage(tabs[0].id, {
                     'func': 'capture-full-page',
                     'tabId': tabs[0].id,
+                    'closeTabAfter': true,
                 })
             }
         })
@@ -315,9 +316,14 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                             })
                         }
 
-                        chrome.tabs.sendMessage(requestData.tabId, {
-                            'func': 'reload',
-                        })
+                        if (requestData.closeTabAfter) {
+                            // 如果是通过快捷键触发的，关闭标签页
+                            chrome.tabs.remove(requestData.tabId);
+                        } else {
+                            chrome.tabs.sendMessage(requestData.tabId, {
+                                'func': 'reload',
+                            })
+                        }
                     } else {
                         chrome.tabs.sendMessage(requestData.tabId, {
                             'func': 'tip',
