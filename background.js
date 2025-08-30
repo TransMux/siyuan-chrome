@@ -248,32 +248,29 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                 const baseHPath = parentHPath ? parentHPath : '';
                 const finalHPath = `${baseHPath}${weekFolder}`;
 
+                // 合并 extraParams 到请求参数中
+                const requestBody = {
+                    'notebook': requestData.notebook,
+                    'parentID': requestData.parentDoc,
+                    'tags': requestData.tags,
+                    'path': finalHPath + "/" + title,
+                    'markdown': markdown,
+                    'withMath': response.data.withMath,
+                    'clippingHref': requestData.href,
+                    'listDocTree': requestData.listDocTree,
+                };
+                
+                // 如果存在 extraParams，则合并到请求参数中
+                if (requestData.extraParams && typeof requestData.extraParams === 'object') {
+                    Object.assign(requestBody, requestData.extraParams);
+                }
+                
                 fetch(requestData.api + '/api/filetree/createDocWithMd', {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Token ' + requestData.token,
                     },
-                    body: JSON.stringify({
-                        'notebook': requestData.notebook,
-                        'parentID': requestData.parentDoc,
-                        'tags': requestData.tags,
-                        'path': finalHPath + "/" + title,
-                        'markdown': markdown,
-                        'withMath': response.data.withMath,
-                        'clippingHref': requestData.href,
-                        'listDocTree': requestData.listDocTree,
-                        'attributeViews': [{
-                            "avID": "20250102171020-4cqqonx",
-                            "view": {
-                                "viewID": "20250830162522-lzvfn3k",
-                            },
-                            "values": {
-                                "20250830152952-4pj5mwb": {url: {content: "https://www.zhihu.com/question/58279241/answer/180223860"}}, // 链接列
-                                "20250209201845-at8lrm2": { type: "mSelect", mSelect: [{ color: "3", content: "知乎" }] }, // 来源列
-                                "20250830154540-udvlq8y": { type: "relation", relation: {blockIDs: ["20250101005344-fdf3w7d"]}}, // 关联列
-                            }
-                        }]
-                    }),
+                    body: JSON.stringify(requestBody),
                 }).then((response) => {
                     return response.json()
                 }).then((response) => {

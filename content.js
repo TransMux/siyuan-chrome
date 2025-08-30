@@ -835,6 +835,21 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
         let siteName = article && article.siteName ? article.siteName : "";
         let excerpt = article && article.excerpt ? article.excerpt : "";
         let url = href || window.location.href;
+        
+        // 获取页面中 __siyuanCreateDocExtraParam 函数的返回值
+        let extraParams = {};
+        try {
+            if (typeof window.__siyuanCreateDocExtraParam === 'function') {
+                const result = window.__siyuanCreateDocExtraParam();
+                // 校验是否为字典，如果不是则忽略
+                if (result && typeof result === 'object' && !Array.isArray(result)) {
+                    extraParams = result;
+                }
+            }
+        } catch (e) {
+            console.warn('Failed to get __siyuanCreateDocExtraParam:', e);
+        }
+        
         const msgJSON = {
             fetchFileErr,
             files: files,
@@ -856,6 +871,7 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
             tabId,
             closeOnSuccess: items.closeOnSuccess,
             insertAtFocus: insertAtFocus,
+            extraParams: extraParams,
         };
         chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
     })
