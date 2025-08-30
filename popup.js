@@ -220,10 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     func: function (tabId) { siyuanGetReadability(tabId); },
                     args: [tabs[0].id],
                 }, function () {
-                    // mark background to close on success
-                    chrome.storage.sync.set({ closeOnSuccess: true }, () => {
-                        window.close();
-                    });
+                    chrome.tabs.remove(tabs[0].id);
+                    window.close();
                 })
             });
         })

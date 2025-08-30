@@ -306,10 +306,6 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                             })
                         }
 
-                        if (requestData.closeOnSuccess) {
-                            chrome.tabs.remove(requestData.tabId);
-                        }
-
                         chrome.tabs.sendMessage(requestData.tabId, {
                             'func': 'reload',
                         })

@@ -734,7 +734,6 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
         expItalic: false,
         expRemoveImgLink: false,
         expListDocTree: false,
-        closeOnSuccess: false,
     }, async function (items) {
         if (!items.token) {
             siyuanShowTipByKey("tip_token_miss")
@@ -838,41 +837,49 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
         
         // 获取页面中 __siyuanCreateDocExtraParam 函数的返回值
         let extraParams = {};
-        try {
-            if (typeof window.__siyuanCreateDocExtraParam === 'function') {
-                const result = window.__siyuanCreateDocExtraParam();
-                // 校验是否为字典，如果不是则忽略
-                if (result && typeof result === 'object' && !Array.isArray(result)) {
-                    extraParams = result;
-                }
-            }
-        } catch (e) {
-            console.warn('Failed to get __siyuanCreateDocExtraParam:', e);
-        }
         
-        const msgJSON = {
-            fetchFileErr,
-            files: files,
-            dom: tempElement.innerHTML,
-            api: items.ip,
-            token: items.token,
-            notebook: items.notebook,
-            parentDoc: items.parentDoc,
-            parentHPath: items.parentHPath.substring(items.parentHPath.indexOf('/')),
-            tags: items.tags,
-            assets: items.assets,
-            tip: items.showTip,
-            title: title,
-            siteName: siteName,
-            excerpt: excerpt,
-            listDocTree: items.expListDocTree,
-            href: url,
-            type,
-            tabId,
-            closeOnSuccess: items.closeOnSuccess,
-            insertAtFocus: insertAtFocus,
-            extraParams: extraParams,
+        // 向页面发送消息请求额外参数
+        window.postMessage({
+            type: 'GET_SIYUAN_EXTRA_PARAMS',
+            source: 'siyuan-chrome-extension'
+        }, '*');
+        
+        // 监听页面返回的消息
+        const messageHandler = (event) => {
+            if (event.data && event.data.type === 'SIYUAN_EXTRA_PARAMS_RESPONSE' && 
+                event.data.source === 'siyuan-chrome-extension') {
+                if (event.data.params && typeof event.data.params === 'object' && !Array.isArray(event.data.params)) {
+                    extraParams = event.data.params;
+                }
+                // 移除消息监听器
+                window.removeEventListener('message', messageHandler);
+
+                const msgJSON = {
+                    fetchFileErr,
+                    files: files,
+                    dom: tempElement.innerHTML,
+                    api: items.ip,
+                    token: items.token,
+                    notebook: items.notebook,
+                    parentDoc: items.parentDoc,
+                    parentHPath: items.parentHPath.substring(items.parentHPath.indexOf('/')),
+                    tags: items.tags,
+                    assets: items.assets,
+                    tip: items.showTip,
+                    title: title,
+                    siteName: siteName,
+                    excerpt: excerpt,
+                    listDocTree: items.expListDocTree,
+                    href: url,
+                    type,
+                    tabId,
+                    insertAtFocus: insertAtFocus,
+                    extraParams: extraParams,
+                };
+                chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
+            }
         };
-        chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
+        
+        window.addEventListener('message', messageHandler);
     })
 }
