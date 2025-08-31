@@ -35,6 +35,15 @@
   "assets": {
     "message": "Download assets"
   },
+  "auto_clip_enabled": {
+    "message": "Enable auto-clipping"
+  },
+  "auto_clip_url_patterns": {
+    "message": "Auto-clipping URL patterns"
+  },
+  "auto_clip_url_patterns_placeholder": {
+    "message": "e.g., *github.com*, *news*, https://example.com/*"
+  },
   "exp": {
     "message": "Show experimental features"
   },

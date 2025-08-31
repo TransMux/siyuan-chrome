@@ -35,6 +35,15 @@
   "assets": {
     "message": "下载资源"
   },
+  "auto_clip_enabled": {
+    "message": "启用自动剪藏"
+  },
+  "auto_clip_url_patterns": {
+    "message": "自动剪藏URL模式"
+  },
+  "auto_clip_url_patterns_placeholder": {
+    "message": "例如：*github.com*, *news*, https://example.com/*"
+  },
   "exp": {
     "message": "显示实验性特性"
   },

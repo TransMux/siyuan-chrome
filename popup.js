@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const expRemoveImgLinkElement = document.getElementById('expRemoveImgLink')
     const expListDocTreeElement = document.getElementById('expListDocTree')
     const expSvgToImgElement = document.getElementById('expSvgToImg')
+    const autoClipEnabledElement = document.getElementById('autoClipEnabled')
+    const autoClipUrlPatternsElement = document.getElementById('autoClipUrlPatterns')
     const languageElement = document.getElementById('language')
 
     ipElement.addEventListener('change', () => {
@@ -168,6 +170,16 @@ document.addEventListener('DOMContentLoaded', () => {
             expSvgToImg: expSvgToImgElement.checked,
         })
     })
+    autoClipEnabledElement.addEventListener('change', () => {
+        chrome.storage.sync.set({
+            autoClipEnabled: autoClipEnabledElement.checked,
+        })
+    })
+    autoClipUrlPatternsElement.addEventListener('change', () => {
+        chrome.storage.sync.set({
+            autoClipUrlPatterns: autoClipUrlPatternsElement.value,
+        })
+    })
     expElement.addEventListener('change', function () {
         if (expElement.checked) {
             expGroupElement.style.display = 'block';
@@ -245,6 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
         expRemoveImgLink: false,
         expListDocTree: false,
         expSvgToImg: false,
+        autoClipEnabled: false,
+        autoClipUrlPatterns: '',
         clipTemplate: '---\n' +
             '\n' +
             '- ${title}${siteName ? " - " + siteName : ""}\n' +
@@ -288,6 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
         expRemoveImgLinkElement.checked = items.expRemoveImgLink
         expListDocTreeElement.checked = items.expListDocTree
         expSvgToImgElement.checked = items.expSvgToImg
+        autoClipEnabledElement.checked = items.autoClipEnabled
+        autoClipUrlPatternsElement.value = items.autoClipUrlPatterns || ''
         updateSearch()
     })
 })

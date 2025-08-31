@@ -12,6 +12,60 @@ chrome.runtime.onInstalled.addListener(() => {
     }, 30000);
 });
 
+// URL模式匹配函数
+function matchesUrlPattern(url, pattern) {
+    if (!pattern || pattern.trim() === '') return false;
+    
+    // 将通配符模式转换为正则表达式
+    const regexPattern = pattern
+        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // 转义正则特殊字符
+        .replace(/\\\*/g, '.*'); // 将 \* 替换为 .*
+    
+    const regex = new RegExp('^' + regexPattern + '$', 'i');
+    return regex.test(url);
+}
+
+// 检查URL是否匹配任何配置的模式
+function shouldAutoClip(url, patterns) {
+    if (!patterns || patterns.trim() === '') return false;
+    
+    const patternList = patterns.split(',').map(p => p.trim()).filter(p => p !== '');
+    return patternList.some(pattern => matchesUrlPattern(url, pattern));
+}
+
+// 监听标签页更新事件
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    // 只在页面加载完成时触发
+    if (changeInfo.status === 'complete' && tab.url) {
+        chrome.storage.sync.get({
+            autoClipEnabled: false,
+            autoClipUrlPatterns: '',
+            token: '',
+            notebook: '',
+        }, (items) => {
+            // 检查是否启用自动剪藏，以及是否配置了必要的参数
+            if (items.autoClipEnabled && 
+                items.token && 
+                items.notebook && 
+                shouldAutoClip(tab.url, items.autoClipUrlPatterns)) {
+                
+                console.log('Auto-clipping triggered for URL:', tab.url);
+                
+                // 延迟1秒执行，确保页面完全加载
+                setTimeout(() => {
+                    chrome.tabs.sendMessage(tabId, {
+                        'func': 'capture-full-page',
+                        'tabId': tabId,
+                        'closeTabAfter': true,
+                    }).catch(error => {
+                        console.log('Auto-clip failed:', error);
+                    });
+                }, 1000);
+            }
+        });
+    }
+});
+
 // Listen for keyboard shortcut
 chrome.commands.onCommand.addListener((command) => {
     if (command === 'copy-to-siyuan') {

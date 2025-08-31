@@ -496,6 +496,14 @@
             <input class="b3-switch" id="assets" checked type="checkbox">
         </label>
         <label style="display: flex;align-items: center;padding: 0 8px 16px 0;">
+            <div style="flex: 1" data-i18n="auto_clip_enabled">Enable auto-clipping</div>
+            <input class="b3-switch" id="autoClipEnabled" type="checkbox">
+        </label>
+        <div class="b3-label" data-i18n="auto_clip_url_patterns">Auto-clipping URL patterns</div>
+        <input class="b3-text-field" id="autoClipUrlPatterns" data-i18n="auto_clip_url_patterns_placeholder"
+            placeholder="e.g., *github.com*, *news*, https://example.com/*" />
+        <div class="fn__hr"></div>
+        <label style="display: flex;align-items: center;padding: 0 8px 16px 0;">
             <div class="b3-label" style="flex: 1" data-i18n="exp">Show experimental features</div>
             <input class="b3-switch" id="exp" type="checkbox">
         </label>

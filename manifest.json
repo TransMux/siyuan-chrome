@@ -30,7 +30,8 @@
     "scripting",
     "contextMenus",
     "clipboardWrite",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "host_permissions": [
     "*://*/*"
