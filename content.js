@@ -559,6 +559,9 @@ function adaptMSN(tempDoc) {
 
 // 重构并合并 Readability 前处理 https://github.com/siyuan-note/siyuan/issues/13306
 async function siyuanGetCloneNode(tempDoc) {
+    // 优先处理数学公式，避免被后续逻辑影响
+    siyuanProcessKaTeX(tempDoc);
+    
     let items;
     try {
         items = await new Promise((resolve, reject) => {
@@ -676,26 +679,217 @@ async function siyuanGetCloneNode(tempDoc) {
 
 // 从 KaTeX 渲染的 HTML 结构中重构 LaTeX 源码
 function extractLatexFromKatexHTML(katexElement) {
-    // 获取渲染后的文本内容
+    // 获取渲染后的文本内容作为备用
     const textContent = katexElement.textContent.trim();
     if (!textContent) return '';
     
-    // 简单的文本到LaTeX映射
-    // 这是一个基础实现，可以根据需要扩展更复杂的映射规则
-    let latex = textContent;
+    try {
+        // 尝试从DOM结构重构LaTeX
+        const latex = reconstructLatexFromDOM(katexElement);
+        if (latex && latex !== textContent) {
+            return latex;
+        }
+    } catch (e) {
+        console.warn('LaTeX reconstruction failed, falling back to text content:', e);
+    }
     
-    // 处理常见的数学符号映射
+    // 备用方案：简单的文本到LaTeX映射
+    return applySymbolMappings(textContent);
+}
+
+// 从KaTeX DOM结构重构LaTeX语法
+function reconstructLatexFromDOM(katexElement) {
+    const katexHtml = katexElement.querySelector('.katex-html');
+    if (!katexHtml) return '';
+    
+    // 处理主要的数学结构
+    const base = katexHtml.querySelector('.base');
+    if (!base) return '';
+    
+    return processKatexNode(base);
+}
+
+// 递归处理KaTeX DOM节点
+function processKatexNode(node) {
+    if (!node) return '';
+    
+    let result = '';
+    
+    for (let child of node.childNodes) {
+        if (child.nodeType === Node.TEXT_NODE) {
+            result += child.textContent;
+        } else if (child.nodeType === Node.ELEMENT_NODE) {
+            const className = child.className || '';
+            
+            // 处理上标 (superscript)
+            if (className.includes('msupsub')) {
+                result += processSuperSubscript(child);
+            }
+            // 处理分数
+            else if (className.includes('mfrac')) {
+                result += processFraction(child);
+            }
+            // 处理根式
+            else if (className.includes('mroot') || className.includes('msqrt')) {
+                result += processRoot(child);
+            }
+            // 处理函数名
+            else if (className.includes('mop')) {
+                const opText = child.textContent.trim();
+                if (opText === 'lim') result += '\\lim';
+                else if (opText === 'sin') result += '\\sin';
+                else if (opText === 'cos') result += '\\cos';
+                else if (opText === 'log') result += '\\log';
+                else result += opText;
+            }
+            // 处理关系符号和运算符
+            else if (className.includes('mrel') || className.includes('mbin')) {
+                result += applySymbolMappings(child.textContent);
+            }
+            // 处理标点符号
+            else if (className.includes('mpunct')) {
+                result += child.textContent;
+            }
+            // 处理括号
+            else if (className.includes('mopen') || className.includes('mclose')) {
+                result += child.textContent;
+            }
+            // 处理普通字符和数字
+            else if (className.includes('mord')) {
+                // 检查是否包含上下标
+                if (child.querySelector('.msupsub')) {
+                    result += processMordWithSubSup(child);
+                } else {
+                    result += applySymbolMappings(child.textContent);
+                }
+            }
+            // 处理间距
+            else if (className.includes('mspace')) {
+                // KaTeX的间距，在LaTeX中通常不需要显式表示
+                result += ' ';
+            }
+            // 递归处理其他节点
+            else {
+                result += processKatexNode(child);
+            }
+        }
+    }
+    
+    return result;
+}
+
+// 处理包含上下标的普通字符
+function processMordWithSubSup(mordElement) {
+    let result = '';
+    
+    for (let child of mordElement.childNodes) {
+        if (child.nodeType === Node.TEXT_NODE) {
+            result += applySymbolMappings(child.textContent);
+        } else if (child.nodeType === Node.ELEMENT_NODE) {
+            const className = child.className || '';
+            
+            if (className.includes('msupsub')) {
+                result += processSuperSubscript(child);
+            } else {
+                result += applySymbolMappings(child.textContent);
+            }
+        }
+    }
+    
+    return result;
+}
+
+// 处理上下标结构
+function processSuperSubscript(supsubElement) {
+    let result = '';
+    
+    // 查找下标和上标
+    const subs = supsubElement.querySelectorAll('.msub');
+    const sups = supsubElement.querySelectorAll('.msup'); 
+    
+    // 处理下标
+    if (subs.length > 0) {
+        for (let sub of subs) {
+            const subText = processKatexNode(sub).trim();
+            if (subText) {
+                // 如果下标内容超过一个字符，用大括号包围
+                if (subText.length > 1) {
+                    result += `_{${subText}}`;
+                } else {
+                    result += `_${subText}`;
+                }
+            }
+        }
+    }
+    
+    // 处理上标
+    if (sups.length > 0) {
+        for (let sup of sups) {
+            const supText = processKatexNode(sup).trim();
+            if (supText) {
+                // 如果上标内容超过一个字符，用大括号包围
+                if (supText.length > 1) {
+                    result += `^{${supText}}`;
+                } else {
+                    result += `^${supText}`;
+                }
+            }
+        }
+    }
+    
+    return result;
+}
+
+// 处理分数结构
+function processFraction(fracElement) {
+    const numerator = fracElement.querySelector('.mfrac > .frac-line ~ *');
+    const denominator = fracElement.querySelector('.mfrac > *:first-child');
+    
+    if (numerator && denominator) {
+        const numText = processKatexNode(numerator).trim();
+        const denText = processKatexNode(denominator).trim();
+        return `\\frac{${numText}}{${denText}}`;
+    }
+    
+    return fracElement.textContent;
+}
+
+// 处理根式结构
+function processRoot(rootElement) {
+    const radicand = rootElement.querySelector('.mroot > .root-content, .msqrt > *');
+    
+    if (radicand) {
+        const content = processKatexNode(radicand).trim();
+        return `\\sqrt{${content}}`;
+    }
+    
+    return rootElement.textContent;
+}
+
+// 应用符号映射
+function applySymbolMappings(text) {
+    if (!text) return '';
+    
     const symbolMappings = {
         '≤': '\\leq',
-        '≥': '\\geq',
+        '≥': '\\geq', 
         '≠': '\\neq',
         '×': '\\times',
         '÷': '\\div',
         '±': '\\pm',
         '∓': '\\mp',
         '∞': '\\infty',
+        '∈': '\\in',
+        '∉': '\\notin',
+        '⊂': '\\subset',
+        '⊃': '\\supset',
+        '⊆': '\\subseteq',
+        '⊇': '\\supseteq',
+        '∪': '\\cup',
+        '∩': '\\cap',
+        '∅': '\\emptyset',
         'α': '\\alpha',
-        'β': '\\beta',
+        'β': '\\beta', 
         'γ': '\\gamma',
         'δ': '\\delta',
         'ε': '\\varepsilon',
@@ -716,15 +910,27 @@ function extractLatexFromKatexHTML(katexElement) {
         'φ': '\\varphi',
         'χ': '\\chi',
         'ψ': '\\psi',
-        'ω': '\\omega'
+        'ω': '\\omega',
+        'Γ': '\\Gamma',
+        'Δ': '\\Delta',
+        'Θ': '\\Theta',
+        'Λ': '\\Lambda',
+        'Ξ': '\\Xi',
+        'Π': '\\Pi',
+        'Σ': '\\Sigma',
+        'Υ': '\\Upsilon',
+        'Φ': '\\Phi',
+        'Χ': '\\Chi',
+        'Ψ': '\\Psi',
+        'Ω': '\\Omega'
     };
     
-    // 应用符号映射
+    let result = text;
     for (const [symbol, latexSymbol] of Object.entries(symbolMappings)) {
-        latex = latex.replace(new RegExp(symbol, 'g'), latexSymbol);
+        result = result.replace(new RegExp(symbol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), latexSymbol);
     }
     
-    return latex;
+    return result;
 }
 
 // 添加 KaTeX 公式处理，提取 LaTeX 源并替换为文本节点
@@ -813,8 +1019,7 @@ function siyuanConvertZhihuRedirectLinks(tempElement) {
 }
 
 const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href, insertAtFocus, closeTabAfter = false) => {
-    // KaTeX 公式预处理，提取 LaTeX 并转换为文本节点
-    siyuanProcessKaTeX(tempElement);
+    // 处理知乎跳转链接
     siyuanConvertZhihuRedirectLinks(tempElement);
     chrome.storage.sync.get({
         ip: 'http://127.0.0.1:6806',
