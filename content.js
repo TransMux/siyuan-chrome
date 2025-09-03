@@ -674,6 +674,59 @@ async function siyuanGetCloneNode(tempDoc) {
     return clonedDoc;
 }
 
+// 从 KaTeX 渲染的 HTML 结构中重构 LaTeX 源码
+function extractLatexFromKatexHTML(katexElement) {
+    // 获取渲染后的文本内容
+    const textContent = katexElement.textContent.trim();
+    if (!textContent) return '';
+    
+    // 简单的文本到LaTeX映射
+    // 这是一个基础实现，可以根据需要扩展更复杂的映射规则
+    let latex = textContent;
+    
+    // 处理常见的数学符号映射
+    const symbolMappings = {
+        '≤': '\\leq',
+        '≥': '\\geq',
+        '≠': '\\neq',
+        '×': '\\times',
+        '÷': '\\div',
+        '±': '\\pm',
+        '∓': '\\mp',
+        '∞': '\\infty',
+        'α': '\\alpha',
+        'β': '\\beta',
+        'γ': '\\gamma',
+        'δ': '\\delta',
+        'ε': '\\varepsilon',
+        'ζ': '\\zeta',
+        'η': '\\eta',
+        'θ': '\\theta',
+        'ι': '\\iota',
+        'κ': '\\kappa',
+        'λ': '\\lambda',
+        'μ': '\\mu',
+        'ν': '\\nu',
+        'ξ': '\\xi',
+        'π': '\\pi',
+        'ρ': '\\rho',
+        'σ': '\\sigma',
+        'τ': '\\tau',
+        'υ': '\\upsilon',
+        'φ': '\\varphi',
+        'χ': '\\chi',
+        'ψ': '\\psi',
+        'ω': '\\omega'
+    };
+    
+    // 应用符号映射
+    for (const [symbol, latexSymbol] of Object.entries(symbolMappings)) {
+        latex = latex.replace(new RegExp(symbol, 'g'), latexSymbol);
+    }
+    
+    return latex;
+}
+
 // 添加 KaTeX 公式处理，提取 LaTeX 源并替换为文本节点
 function siyuanProcessKaTeX(tempElement) {
     // 原生 KaTeX: 从 katex-mathml 注释中提取 LaTeX，并根据 display 类区分行内($)或块级($$)包裹
@@ -696,6 +749,46 @@ function siyuanProcessKaTeX(tempElement) {
         const isDisplayEl = el.tagName.toLowerCase() === 'katex-display';
         const delimEl = isDisplayEl ? ['$$', '$$'] : ['$', '$'];
         el.replaceWith(document.createTextNode(delimEl[0] + latex + delimEl[1]));
+    });
+    
+    // 处理只有渲染HTML没有源码的KaTeX结构 (如用户提供的情况)
+    tempElement.querySelectorAll('span.math.math-inline, span.math.math-display').forEach(mathSpan => {
+        // 检查是否已经被前面的逻辑处理过
+        if (mathSpan.parentNode === null) return;
+        
+        const katexSpan = mathSpan.querySelector('span.katex');
+        if (!katexSpan) return;
+        
+        // 尝试从渲染的HTML中重构LaTeX源码
+        const latex = extractLatexFromKatexHTML(katexSpan);
+        if (!latex) return;
+        
+        // 根据类名判断是行内公式还是块级公式
+        const isDisplay = mathSpan.classList.contains('math-display');
+        const delim = isDisplay ? ['$$', '$$'] : ['$', '$'];
+        
+        // 替换整个math span为LaTeX文本节点
+        const textNode = document.createTextNode(delim[0] + latex + delim[1]);
+        mathSpan.replaceWith(textNode);
+    });
+    
+    // 处理其他可能的KaTeX结构（备用方案）
+    tempElement.querySelectorAll('span.katex').forEach(katexSpan => {
+        // 检查是否已经被处理或者有父级的math容器
+        if (katexSpan.parentNode === null) return;
+        if (katexSpan.closest('span.math')) return; // 已经被上面的逻辑处理
+        
+        // 尝试提取LaTeX源码
+        const latex = extractLatexFromKatexHTML(katexSpan);
+        if (!latex) return;
+        
+        // 检查是否有display类来判断公式类型
+        const isDisplay = katexSpan.classList.contains('katex-display') || 
+                          katexSpan.closest('.katex-display');
+        const delim = isDisplay ? ['$$', '$$'] : ['$', '$'];
+        
+        const textNode = document.createTextNode(delim[0] + latex + delim[1]);
+        katexSpan.replaceWith(textNode);
     });
 }
 
