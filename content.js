@@ -26,6 +26,42 @@ document.addEventListener('DOMContentLoaded', function () {
                 return
             }
 
+            if ('folo-clip-content' === request.func) {
+                console.log('📨 [Folo-Content] Received folo-clip-content message:', request.data);
+                
+                try {
+                    // 重建临时元素
+                    const tempElement = document.createElement('div');
+                    tempElement.innerHTML = request.data.tempElementHTML;
+                    
+                    // 设置extraParams全局变量
+                    window.__siyuanFoloExtraParams = request.data.extraParams;
+                    
+                    console.log('🔄 [Folo-Content] Calling siyuanSendUpload with folo data');
+                    
+                    // 调用剪藏函数，设置noReload为true防止刷新页面
+                    siyuanSendUpload(
+                        tempElement, 
+                        request.data.tabId, 
+                        undefined, 
+                        "article", 
+                        request.data.article, 
+                        request.data.url, 
+                        undefined, 
+                        false, 
+                        true // noReload = true
+                    );
+                    
+                    console.log('✅ [Folo-Content] Successfully initiated folo clip');
+                    sendResponse({ success: true });
+                    
+                } catch (error) {
+                    console.error('❌ [Folo-Content] Error in folo-clip-content:', error);
+                    sendResponse({ success: false, error: error.message });
+                }
+                return
+            }
+
             if ('copy' !== request.func) {
                 return
             }

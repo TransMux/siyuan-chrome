@@ -82,29 +82,63 @@ function handleFoloRequest(details) {
         try {
             let entryId = null;
             
+            console.log('🔍 [Folo] Processing collection request:', {
+                url: details.url,
+                tabId: details.tabId,
+                requestBodyType: details.requestBody.raw ? 'raw' : 'formData'
+            });
+            
             // 从requestBody中提取entryId
             if (details.requestBody.raw) {
                 const decoder = new TextDecoder('utf-8');
                 const bodyText = decoder.decode(details.requestBody.raw[0].bytes);
+                console.log('🔍 [Folo] Raw body text:', bodyText);
                 const bodyData = JSON.parse(bodyText);
                 entryId = bodyData.entryId;
             } else if (details.requestBody.formData) {
                 // 如果是form data格式
                 const formData = details.requestBody.formData;
+                console.log('🔍 [Folo] FormData keys:', Object.keys(formData));
                 if (formData.entryId) {
                     entryId = formData.entryId[0];
                 }
             }
             
             if (entryId) {
-                console.log('Intercepted folo collection request, entryId:', entryId);
-                console.log('Request will be blocked by declarativeNetRequest');
+                console.log('✅ [Folo] Successfully extracted entryId:', entryId);
+                console.log('🚫 [Folo] Request will be blocked by declarativeNetRequest');
                 
                 // 获取文章详情并剪藏
                 processFoloArticle(entryId, details.tabId);
+            } else {
+                console.warn('⚠️ [Folo] Failed to extract entryId from request body');
+                
+                // 发送错误日志
+                sendLogToGlobalOverlay(
+                    'Folo监听失败：无法从请求中提取entryId', 
+                    'WARNING', 
+                    'Folo自动剪藏',
+                    { 
+                        url: details.url, 
+                        tabId: details.tabId,
+                        requestBodyType: details.requestBody.raw ? 'raw' : 'formData'
+                    }
+                );
             }
         } catch (error) {
-            console.error('Failed to parse folo request:', error);
+            console.error('❌ [Folo] Failed to parse folo request:', error);
+            
+            // 发送错误日志
+            sendLogToGlobalOverlay(
+                `Folo请求解析失败：${error.message}`, 
+                'ERROR', 
+                'Folo自动剪藏',
+                { 
+                    url: details.url, 
+                    tabId: details.tabId,
+                    error: error.stack 
+                }
+            );
         }
     }
 }
@@ -112,7 +146,7 @@ function handleFoloRequest(details) {
 // 处理folo文章剪藏
 async function processFoloArticle(entryId, tabId) {
     try {
-        console.log('Processing folo article:', entryId);
+        console.log('🔄 [Folo] Starting article processing:', entryId);
         
         // 获取必要的配置
         const items = await chrome.storage.sync.get({
@@ -121,10 +155,26 @@ async function processFoloArticle(entryId, tabId) {
             ip: 'http://127.0.0.1:6806'
         });
         
+        console.log('🔧 [Folo] Configuration check:', {
+            hasToken: !!items.token,
+            hasNotebook: !!items.notebook,
+            ip: items.ip
+        });
+        
         if (!items.token || !items.notebook) {
-            console.error('Missing SiYuan configuration');
+            console.error('❌ [Folo] Missing SiYuan configuration');
+            
+            // 发送错误日志
+            sendLogToGlobalOverlay(
+                'Folo剪藏失败：缺少SiYuan配置（Token或笔记本）', 
+                'ERROR', 
+                'Folo自动剪藏',
+                { entryId: entryId, tabId: tabId, hasToken: !!items.token, hasNotebook: !!items.notebook }
+            );
             return;
         }
+        
+        console.log('📄 [Folo] Executing script to fetch article details...');
         
         // 在当前标签页执行获取文章详情的脚本
         chrome.scripting.executeScript({
@@ -132,34 +182,76 @@ async function processFoloArticle(entryId, tabId) {
             func: fetchFoloArticleDetails,
             args: [entryId]
         }, (results) => {
+            // 检查Chrome运行时错误
+            if (chrome.runtime.lastError) {
+                console.error('❌ [Folo] Chrome scripting error:', chrome.runtime.lastError);
+                
+                sendLogToGlobalOverlay(
+                    `Folo脚本注入失败：${chrome.runtime.lastError.message}`, 
+                    'ERROR', 
+                    'Folo自动剪藏',
+                    { entryId: entryId, tabId: tabId, error: chrome.runtime.lastError.message }
+                );
+                return;
+            }
+            
+            console.log('📋 [Folo] Script execution results:', results);
+            
             if (results && results[0] && results[0].result) {
                 const articleData = results[0].result;
-                console.log('Got folo article data:', articleData);
+                console.log('✅ [Folo] Successfully got article data:', {
+                    title: articleData.title,
+                    url: articleData.url,
+                    hasContent: !!articleData.content,
+                    contentLength: articleData.content ? articleData.content.length : 0
+                });
                 
                 // 调用剪藏功能
                 clipFoloArticle(articleData, tabId, entryId);
             } else {
-                console.error('Failed to get folo article details');
+                console.error('❌ [Folo] Failed to get article details - no valid result');
+                
+                // 更详细的错误信息
+                let errorDetails = {};
+                if (results && results[0]) {
+                    errorDetails.hasResult = !!results[0].result;
+                    if (results[0].error) {
+                        errorDetails.scriptError = results[0].error;
+                    }
+                }
                 
                 // 发送错误日志
                 sendLogToGlobalOverlay(
                     `Folo文章获取失败：entryId=${entryId}`, 
                     'ERROR', 
                     'Folo自动剪藏',
-                    { entryId: entryId, tabId: tabId }
+                    { entryId: entryId, tabId: tabId, ...errorDetails }
                 );
             }
         });
         
     } catch (error) {
-        console.error('Failed to process folo article:', error);
+        console.error('❌ [Folo] Failed to process folo article:', error);
+        
+        // 发送错误日志
+        sendLogToGlobalOverlay(
+            `Folo文章处理失败：${error.message}`, 
+            'ERROR', 
+            'Folo自动剪藏',
+            { entryId: entryId, tabId: tabId, error: error.stack }
+        );
     }
 }
 
 // 在页面上下文中获取folo文章详情的函数
 async function fetchFoloArticleDetails(entryId) {
     try {
-        const response = await fetch(`https://api.folo.is/entries?id=${entryId}`, {
+        console.log('🌐 [Folo] Fetching article details for entryId:', entryId);
+        
+        const apiUrl = `https://api.folo.is/entries?id=${entryId}`;
+        console.log('🌐 [Folo] API URL:', apiUrl);
+        
+        const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
                 'accept': '*/*',
@@ -173,15 +265,22 @@ async function fetchFoloArticleDetails(entryId) {
             credentials: 'include'
         });
         
+        console.log('🌐 [Folo] Response status:', response.status, response.statusText);
+        
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
         }
         
         const data = await response.json();
+        console.log('🌐 [Folo] API response structure:', {
+            code: data.code,
+            hasData: !!data.data,
+            hasEntries: !!(data.data && data.data.entries)
+        });
         
         if (data.code === 0 && data.data && data.data.entries) {
             const entry = data.data.entries;
-            return {
+            const result = {
                 title: entry.title || 'Untitled',
                 url: entry.url || '',
                 author: entry.author || '',
@@ -189,12 +288,28 @@ async function fetchFoloArticleDetails(entryId) {
                 siteName: data.data.feeds ? data.data.feeds.title : '',
                 publishedAt: entry.publishedAt || ''
             };
+            
+            console.log('✅ [Folo] Successfully parsed article:', {
+                title: result.title,
+                url: result.url,
+                author: result.author,
+                hasContent: !!result.content,
+                contentLength: result.content.length,
+                siteName: result.siteName
+            });
+            
+            return result;
         } else {
-            throw new Error('Invalid response format');
+            console.error('❌ [Folo] Invalid response format:', {
+                code: data.code,
+                dataKeys: data.data ? Object.keys(data.data) : 'no data'
+            });
+            throw new Error(`Invalid response format - code: ${data.code}`);
         }
         
     } catch (error) {
-        console.error('Failed to fetch folo article:', error);
+        console.error('❌ [Folo] Failed to fetch folo article:', error);
+        console.error('❌ [Folo] Error stack:', error.stack);
         return null;
     }
 }
@@ -202,14 +317,25 @@ async function fetchFoloArticleDetails(entryId) {
 // 剪藏folo文章
 function clipFoloArticle(articleData, tabId, entryId) {
     if (!articleData) {
-        console.error('No article data to clip');
+        console.error('❌ [Folo] No article data to clip');
+        
+        sendLogToGlobalOverlay(
+            'Folo剪藏失败：文章数据为空', 
+            'ERROR', 
+            'Folo自动剪藏',
+            { entryId: entryId, tabId: tabId }
+        );
         return;
     }
     
-    // 使用现有的剪藏功能，在页面上下文中执行
+    console.log('📝 [Folo] Starting clip process for article:', articleData.title);
+    
+    // 使用消息传递机制调用剪藏功能
     chrome.scripting.executeScript({
         target: { tabId: tabId },
-        func: function(articleData, tabId) {
+        func: function(articleData, tabId, entryId) {
+            console.log('📝 [Folo-Inject] Creating temp element for article:', articleData.title);
+            
             // 创建临时元素来包装文章内容
             const tempElement = document.createElement('div');
             
@@ -230,8 +356,8 @@ function clipFoloArticle(articleData, tabId, entryId) {
                 excerpt: articleData.content ? articleData.content.substring(0, 200) : ''
             };
             
-            // 通过postMessage传递extraParams
-            window.__siyuanFoloExtraParams = {
+            // 构造extraParams
+            const extraParams = {
                 attributeViews: [
                     {
                         avID: '20250102171020-4cqqonx', // 输入数据库
@@ -259,14 +385,42 @@ function clipFoloArticle(articleData, tabId, entryId) {
                 ],
             };
             
-            // 调用现有的剪藏函数，不刷新页面
-            if (typeof siyuanSendUpload === 'function') {
-                siyuanSendUpload(tempElement, tabId, undefined, "article", article, articleData.url, undefined, false, true);
-            } else {
-                console.error('siyuanSendUpload function not found');
-            }
+            // 通过消息传递调用剪藏功能
+            console.log('📤 [Folo-Inject] Sending folo-clip message to content script');
+            
+            // 发送消息给content script
+            chrome.runtime.sendMessage({
+                func: 'folo-clip',
+                data: {
+                    tempElementHTML: tempElement.innerHTML,
+                    article: article,
+                    url: articleData.url,
+                    extraParams: extraParams,
+                    tabId: tabId,
+                    entryId: entryId
+                }
+            }, (response) => {
+                if (chrome.runtime.lastError) {
+                    console.error('❌ [Folo-Inject] Message sending failed:', chrome.runtime.lastError);
+                } else {
+                    console.log('✅ [Folo-Inject] Message sent successfully:', response);
+                }
+            });
         },
-        args: [articleData, tabId]
+        args: [articleData, tabId, entryId]
+    }, (results) => {
+        if (chrome.runtime.lastError) {
+            console.error('❌ [Folo] Script injection failed:', chrome.runtime.lastError);
+            
+            sendLogToGlobalOverlay(
+                `Folo剪藏脚本注入失败：${chrome.runtime.lastError.message}`, 
+                'ERROR', 
+                'Folo自动剪藏',
+                { entryId: entryId, tabId: tabId, error: chrome.runtime.lastError.message }
+            );
+        } else {
+            console.log('✅ [Folo] Clip script injected successfully');
+        }
     });
 }
 
@@ -482,10 +636,51 @@ function getSimpleDateTime() {
     return { date, time };
 }
 
-chrome.runtime.onMessage.addListener(async (request) => {
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     if (request.type === 'keepAlive') {
         // 处理keepAlive消息，保持service worker活跃
-        return Promise.resolve();
+        sendResponse({ status: 'alive' });
+        return;
+    }
+    
+    if (request.func === 'folo-clip') {
+        console.log('📨 [Folo] Received folo-clip message:', request.data);
+        
+        try {
+            // 获取存储配置
+            const items = await chrome.storage.sync.get({
+                token: '',
+                notebook: '',
+                ip: 'http://127.0.0.1:6806'
+            });
+            
+            if (!items.token || !items.notebook) {
+                console.error('❌ [Folo] Missing SiYuan configuration for folo-clip');
+                sendResponse({ success: false, error: 'Missing SiYuan configuration' });
+                return;
+            }
+            
+            // 向对应的tab发送消息，由content script处理
+            chrome.tabs.sendMessage(request.data.tabId, {
+                func: 'folo-clip-content',
+                data: request.data
+            }, (response) => {
+                if (chrome.runtime.lastError) {
+                    console.error('❌ [Folo] Failed to send message to content script:', chrome.runtime.lastError);
+                    sendResponse({ success: false, error: chrome.runtime.lastError.message });
+                } else {
+                    console.log('✅ [Folo] Successfully sent folo-clip to content script');
+                    sendResponse({ success: true });
+                }
+            });
+            
+            return true; // 保持消息通道开放
+            
+        } catch (error) {
+            console.error('❌ [Folo] Error handling folo-clip message:', error);
+            sendResponse({ success: false, error: error.message });
+        }
+        return;
     }
     
     if (request.func !== 'upload-copy') {
