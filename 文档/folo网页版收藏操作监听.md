@@ -28,7 +28,9 @@
   - 作者列(20250904212513-5wb92lu)：文章作者
   - 关联列(20250830154540-udvlq8y)：空数组
 - **用户体验**: 添加noReload控制，剪藏完成后不刷新页面
-- **请求拦截**: 使用blocking模式完全拦截folo收藏请求，阻止发送到folo服务器
+- **请求拦截**: 使用declarativeNetRequest完全拦截folo收藏请求，阻止发送到folo服务器
+  - webRequest监听请求内容，提取entryId
+  - declarativeNetRequest阻止请求发送到folo服务器
 - **日志集成**: 集成Global Overlay日志系统，实时显示剪藏状态和结果
   - 发送剪藏开始、成功、失败等状态日志
   - 支持openSiYuan操作链接，可直接打开剪藏的文档

@@ -19,27 +19,55 @@ chrome.runtime.onInstalled.addListener(() => {
 async function initFoloListenRules() {
     const items = await chrome.storage.sync.get({ foloListenEnabled: false });
     if (items.foloListenEnabled) {
-        enableFoloListening();
+        await enableFoloListening();
     }
 }
 
 // 启用folo监听
-function enableFoloListening() {
+async function enableFoloListening() {
+    // 使用webRequest监听请求内容
     if (chrome.webRequest && chrome.webRequest.onBeforeRequest) {
         chrome.webRequest.onBeforeRequest.addListener(
             handleFoloRequest,
             { urls: ["https://api.folo.is/collections"] },
-            ["requestBody", "blocking"]
+            ["requestBody"]
         );
-        console.log('Folo listening enabled with blocking');
+    }
+    
+    // 使用declarativeNetRequest拦截请求
+    try {
+        await chrome.declarativeNetRequest.updateDynamicRules({
+            addRules: [{
+                id: 1,
+                priority: 1,
+                action: { type: "block" },
+                condition: {
+                    urlFilter: "https://api.folo.is/collections",
+                    resourceTypes: ["xmlhttprequest"],
+                    requestMethods: ["post"]
+                }
+            }],
+            removeRuleIds: [1]
+        });
+        console.log('Folo listening enabled with request blocking');
+    } catch (error) {
+        console.error('Failed to setup request blocking:', error);
     }
 }
 
 // 禁用folo监听
-function disableFoloListening() {
+async function disableFoloListening() {
     if (chrome.webRequest && chrome.webRequest.onBeforeRequest) {
         chrome.webRequest.onBeforeRequest.removeListener(handleFoloRequest);
+    }
+    
+    try {
+        await chrome.declarativeNetRequest.updateDynamicRules({
+            removeRuleIds: [1]
+        });
         console.log('Folo listening disabled');
+    } catch (error) {
+        console.error('Failed to remove request blocking:', error);
     }
 }
 
@@ -65,19 +93,15 @@ function handleFoloRequest(details) {
             
             if (entryId) {
                 console.log('Intercepted folo collection request, entryId:', entryId);
+                console.log('Request will be blocked by declarativeNetRequest');
+                
                 // 获取文章详情并剪藏
                 processFoloArticle(entryId, details.tabId);
-                
-                // 完全拦截请求，阻止发送到folo服务器
-                return { cancel: true };
             }
         } catch (error) {
             console.error('Failed to parse folo request:', error);
         }
     }
-    
-    // 如果不是我们要拦截的请求，让它正常进行
-    return { cancel: false };
 }
 
 // 处理folo文章剪藏
@@ -177,19 +201,6 @@ function clipFoloArticle(articleData, tabId, entryId) {
         return;
     }
     
-    // 发送开始剪藏的日志
-    sendLogToGlobalOverlay(
-        `开始剪藏Folo文章：《${articleData.title}》`, 
-        'INFO', 
-        'Folo自动剪藏',
-        { 
-            title: articleData.title,
-            url: articleData.url,
-            entryId: entryId,
-            author: articleData.author
-        }
-    );
-
     // 使用现有的剪藏功能，在页面上下文中执行
     chrome.scripting.executeScript({
         target: { tabId: tabId },
@@ -280,12 +291,12 @@ async function sendLogToGlobalOverlay(message, level = 'INFO', source = 'SiYuan 
 }
 
 // 监听存储变化，动态启用/禁用folo监听
-chrome.storage.onChanged.addListener((changes, namespace) => {
+chrome.storage.onChanged.addListener(async (changes, namespace) => {
     if (namespace === 'sync' && changes.foloListenEnabled) {
         if (changes.foloListenEnabled.newValue) {
-            enableFoloListening();
+            await enableFoloListening();
         } else {
-            disableFoloListening();
+            await disableFoloListening();
         }
     }
 });

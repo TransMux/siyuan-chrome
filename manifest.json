@@ -32,7 +32,8 @@
     "clipboardWrite",
     "storage",
     "tabs",
-    "webRequest"
+    "webRequest",
+    "declarativeNetRequest"
   ],
   "host_permissions": [
     "*://*/*",
