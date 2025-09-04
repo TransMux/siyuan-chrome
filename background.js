@@ -29,9 +29,9 @@ function enableFoloListening() {
         chrome.webRequest.onBeforeRequest.addListener(
             handleFoloRequest,
             { urls: ["https://api.folo.is/collections"] },
-            ["requestBody"]
+            ["requestBody", "blocking"]
         );
-        console.log('Folo listening enabled');
+        console.log('Folo listening enabled with blocking');
     }
 }
 
@@ -64,14 +64,20 @@ function handleFoloRequest(details) {
             }
             
             if (entryId) {
-                console.log('Detected folo collection request, entryId:', entryId);
+                console.log('Intercepted folo collection request, entryId:', entryId);
                 // 获取文章详情并剪藏
                 processFoloArticle(entryId, details.tabId);
+                
+                // 完全拦截请求，阻止发送到folo服务器
+                return { cancel: true };
             }
         } catch (error) {
             console.error('Failed to parse folo request:', error);
         }
     }
+    
+    // 如果不是我们要拦截的请求，让它正常进行
+    return { cancel: false };
 }
 
 // 处理folo文章剪藏
@@ -102,9 +108,17 @@ async function processFoloArticle(entryId, tabId) {
                 console.log('Got folo article data:', articleData);
                 
                 // 调用剪藏功能
-                clipFoloArticle(articleData, tabId);
+                clipFoloArticle(articleData, tabId, entryId);
             } else {
                 console.error('Failed to get folo article details');
+                
+                // 发送错误日志
+                sendLogToGlobalOverlay(
+                    `Folo文章获取失败：entryId=${entryId}`, 
+                    'ERROR', 
+                    'Folo自动剪藏',
+                    { entryId: entryId, tabId: tabId }
+                );
             }
         });
         
@@ -157,12 +171,25 @@ async function fetchFoloArticleDetails(entryId) {
 }
 
 // 剪藏folo文章
-function clipFoloArticle(articleData, tabId) {
+function clipFoloArticle(articleData, tabId, entryId) {
     if (!articleData) {
         console.error('No article data to clip');
         return;
     }
     
+    // 发送开始剪藏的日志
+    sendLogToGlobalOverlay(
+        `开始剪藏Folo文章：《${articleData.title}》`, 
+        'INFO', 
+        'Folo自动剪藏',
+        { 
+            title: articleData.title,
+            url: articleData.url,
+            entryId: entryId,
+            author: articleData.author
+        }
+    );
+
     // 使用现有的剪藏功能，在页面上下文中执行
     chrome.scripting.executeScript({
         target: { tabId: tabId },
@@ -225,6 +252,31 @@ function clipFoloArticle(articleData, tabId) {
         },
         args: [articleData, tabId]
     });
+}
+
+// 发送日志到Global Overlay
+async function sendLogToGlobalOverlay(message, level = 'INFO', source = 'SiYuan Chrome Extension', data = null) {
+    try {
+        const response = await fetch('http://localhost:53431/sendLog', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message,
+                level,
+                source,
+                data
+            })
+        });
+        
+        if (!response.ok) {
+            console.warn('Failed to send log to Global Overlay:', response.status);
+        }
+    } catch (error) {
+        // 静默失败，不影响主要功能
+        console.debug('Global Overlay not available:', error.message);
+    }
 }
 
 // 监听存储变化，动态启用/禁用folo监听
@@ -578,6 +630,25 @@ chrome.runtime.onMessage.addListener(async (request) => {
                             'tip': requestData.tip,
                         })
 
+                        // 发送日志到Global Overlay
+                        if (response.data) {
+                            const documentId = response.data;
+                            const title = requestData.title || 'Untitled';
+                            
+                            // 检查是否是Folo剪藏
+                            const isFoloClip = requestData.extraParams && requestData.extraParams.attributeViews;
+                            const source = isFoloClip ? 'Folo自动剪藏' : 'SiYuan剪藏';
+                            const logMessage = `剪藏成功：[${title}](#openSiYuan(${documentId}))`
+                            
+                            sendLogToGlobalOverlay(logMessage, 'SUCCESS', source, {
+                                documentId: documentId,
+                                title: title,
+                                url: requestData.href,
+                                type: requestData.type,
+                                isFoloClip: isFoloClip
+                            });
+                        }
+
                         // 检查是否需要打开文档
                         chrome.storage.sync.get({
                             expOpenAfterClip: false,
@@ -618,6 +689,20 @@ chrome.runtime.onMessage.addListener(async (request) => {
                             'msg': response.msg,
                             'tip': requestData.tip,
                         })
+                        
+                        // 发送错误日志到Global Overlay
+                        const errorTitle = requestData.title || 'Untitled';
+                        const isErrorFoloClip = requestData.extraParams && requestData.extraParams.attributeViews;
+                        const errorSource = isErrorFoloClip ? 'Folo自动剪藏' : 'SiYuan剪藏';
+                        const errorLogMessage = `剪藏失败：[${errorTitle}] - ${response.msg}`;
+                        
+                        sendLogToGlobalOverlay(errorLogMessage, 'ERROR', errorSource, {
+                            title: errorTitle,
+                            url: requestData.href,
+                            error: response.msg,
+                            type: requestData.type,
+                            isFoloClip: isErrorFoloClip
+                        });
                     }
                 })
             });
