@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 siyuanSendUpload(tempElement, request.tabId, request.srcUrl, "part", undefined, undefined, request.insertAtFocus)
             } else {
                 const tempElement = document.createElement('div')
-                const href = window.location.href
+                let href = window.location.href
                 const hostname = window.location.hostname || ''
                 const isDouyin = hostname.indexOf('douyin.com') !== -1 || hostname.indexOf('iesdouyin.com') !== -1
 
@@ -52,6 +52,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         const visibleElements = elements.filter(el => el && el.offsetParent !== null)
                         if (0 < visibleElements.length) {
                             titles = visibleElements.map(el => (el.innerText || '').replace(/[\r\n]+/g, ' ').trim()).filter(t => t)
+                        }
+
+                        // set href
+                        if (href.indexOf('modal_id') === -1) {
+                            // data-e2e-vid="7539492141777669411"
+                            href = 'https://www.douyin.com/jingxuan?modal_id=' + feedActiveVideo.dataset.e2eVid
                         }
                     }
                 }
