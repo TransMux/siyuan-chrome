@@ -25,7 +25,7 @@ async function initFoloListenRules() {
 
 // 启用folo监听
 async function enableFoloListening() {
-    // 使用webRequest监听请求内容
+    // 使用非阻塞webRequest监听请求内容
     if (chrome.webRequest && chrome.webRequest.onBeforeRequest) {
         chrome.webRequest.onBeforeRequest.addListener(
             handleFoloRequest,
@@ -36,6 +36,12 @@ async function enableFoloListening() {
     
     // 使用declarativeNetRequest拦截请求
     try {
+        // 先移除现有规则
+        await chrome.declarativeNetRequest.updateDynamicRules({
+            removeRuleIds: [1]
+        });
+        
+        // 添加新的阻塞规则
         await chrome.declarativeNetRequest.updateDynamicRules({
             addRules: [{
                 id: 1,
@@ -46,12 +52,11 @@ async function enableFoloListening() {
                     resourceTypes: ["xmlhttprequest"],
                     requestMethods: ["post"]
                 }
-            }],
-            removeRuleIds: [1]
+            }]
         });
-        console.log('Folo listening enabled with request blocking');
+        console.log('Folo listening enabled with declarativeNetRequest blocking');
     } catch (error) {
-        console.error('Failed to setup request blocking:', error);
+        console.error('Failed to setup declarativeNetRequest blocking:', error);
     }
 }
 
@@ -478,6 +483,11 @@ function getSimpleDateTime() {
 }
 
 chrome.runtime.onMessage.addListener(async (request) => {
+    if (request.type === 'keepAlive') {
+        // 处理keepAlive消息，保持service worker活跃
+        return Promise.resolve();
+    }
+    
     if (request.func !== 'upload-copy') {
         return
     }
