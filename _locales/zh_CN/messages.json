@@ -44,6 +44,9 @@
   "auto_clip_url_patterns_placeholder": {
     "message": "例如：*github.com*, *news*, https://example.com/*"
   },
+  "folo_listen_enabled": {
+    "message": "启用folo收藏操作监听"
+  },
   "exp": {
     "message": "显示实验性特性"
   },

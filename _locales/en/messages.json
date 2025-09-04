@@ -44,6 +44,9 @@
   "auto_clip_url_patterns_placeholder": {
     "message": "e.g., *github.com*, *news*, https://example.com/*"
   },
+  "folo_listen_enabled": {
+    "message": "Enable folo collection listening"
+  },
   "exp": {
     "message": "Show experimental features"
   },

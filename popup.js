@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const expSvgToImgElement = document.getElementById('expSvgToImg')
     const autoClipEnabledElement = document.getElementById('autoClipEnabled')
     const autoClipUrlPatternsElement = document.getElementById('autoClipUrlPatterns')
+    const foloListenEnabledElement = document.getElementById('foloListenEnabled')
     const languageElement = document.getElementById('language')
 
     ipElement.addEventListener('change', () => {
@@ -180,6 +181,11 @@ document.addEventListener('DOMContentLoaded', () => {
             autoClipUrlPatterns: autoClipUrlPatternsElement.value,
         })
     })
+    foloListenEnabledElement.addEventListener('change', () => {
+        chrome.storage.sync.set({
+            foloListenEnabled: foloListenEnabledElement.checked,
+        })
+    })
     expElement.addEventListener('change', function () {
         if (expElement.checked) {
             expGroupElement.style.display = 'block';
@@ -259,6 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         expSvgToImg: false,
         autoClipEnabled: false,
         autoClipUrlPatterns: '',
+        foloListenEnabled: false,
         clipTemplate: '---\n' +
             '\n' +
             '- ${title}${siteName ? " - " + siteName : ""}\n' +
@@ -304,6 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         expSvgToImgElement.checked = items.expSvgToImg
         autoClipEnabledElement.checked = items.autoClipEnabled
         autoClipUrlPatternsElement.value = items.autoClipUrlPatterns || ''
+        foloListenEnabledElement.checked = items.foloListenEnabled
         updateSearch()
     })
 })

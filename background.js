@@ -10,6 +10,232 @@ chrome.runtime.onInstalled.addListener(() => {
     setInterval(() => {
         chrome.runtime.sendMessage({ type: 'keepAlive' });
     }, 30000);
+    
+    // 初始化folo监听规则
+    initFoloListenRules();
+});
+
+// 初始化folo监听规则
+async function initFoloListenRules() {
+    const items = await chrome.storage.sync.get({ foloListenEnabled: false });
+    if (items.foloListenEnabled) {
+        enableFoloListening();
+    }
+}
+
+// 启用folo监听
+function enableFoloListening() {
+    if (chrome.webRequest && chrome.webRequest.onBeforeRequest) {
+        chrome.webRequest.onBeforeRequest.addListener(
+            handleFoloRequest,
+            { urls: ["https://api.folo.is/collections"] },
+            ["requestBody"]
+        );
+        console.log('Folo listening enabled');
+    }
+}
+
+// 禁用folo监听
+function disableFoloListening() {
+    if (chrome.webRequest && chrome.webRequest.onBeforeRequest) {
+        chrome.webRequest.onBeforeRequest.removeListener(handleFoloRequest);
+        console.log('Folo listening disabled');
+    }
+}
+
+// 处理folo收藏请求
+function handleFoloRequest(details) {
+    if (details.method === 'POST' && details.requestBody) {
+        try {
+            let entryId = null;
+            
+            // 从requestBody中提取entryId
+            if (details.requestBody.raw) {
+                const decoder = new TextDecoder('utf-8');
+                const bodyText = decoder.decode(details.requestBody.raw[0].bytes);
+                const bodyData = JSON.parse(bodyText);
+                entryId = bodyData.entryId;
+            } else if (details.requestBody.formData) {
+                // 如果是form data格式
+                const formData = details.requestBody.formData;
+                if (formData.entryId) {
+                    entryId = formData.entryId[0];
+                }
+            }
+            
+            if (entryId) {
+                console.log('Detected folo collection request, entryId:', entryId);
+                // 获取文章详情并剪藏
+                processFoloArticle(entryId, details.tabId);
+            }
+        } catch (error) {
+            console.error('Failed to parse folo request:', error);
+        }
+    }
+}
+
+// 处理folo文章剪藏
+async function processFoloArticle(entryId, tabId) {
+    try {
+        console.log('Processing folo article:', entryId);
+        
+        // 获取必要的配置
+        const items = await chrome.storage.sync.get({
+            token: '',
+            notebook: '',
+            ip: 'http://127.0.0.1:6806'
+        });
+        
+        if (!items.token || !items.notebook) {
+            console.error('Missing SiYuan configuration');
+            return;
+        }
+        
+        // 在当前标签页执行获取文章详情的脚本
+        chrome.scripting.executeScript({
+            target: { tabId: tabId },
+            func: fetchFoloArticleDetails,
+            args: [entryId]
+        }, (results) => {
+            if (results && results[0] && results[0].result) {
+                const articleData = results[0].result;
+                console.log('Got folo article data:', articleData);
+                
+                // 调用剪藏功能
+                clipFoloArticle(articleData, tabId);
+            } else {
+                console.error('Failed to get folo article details');
+            }
+        });
+        
+    } catch (error) {
+        console.error('Failed to process folo article:', error);
+    }
+}
+
+// 在页面上下文中获取folo文章详情的函数
+async function fetchFoloArticleDetails(entryId) {
+    try {
+        const response = await fetch(`https://api.folo.is/entries?id=${entryId}`, {
+            method: 'GET',
+            headers: {
+                'accept': '*/*',
+                'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
+                'cache-control': 'no-store',
+                'user-agent': navigator.userAgent,
+                'x-app-name': 'Folo Web',
+                'x-app-platform': 'desktop/web',
+                'x-app-version': '0.7.0'
+            },
+            credentials: 'include'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.code === 0 && data.data && data.data.entries) {
+            const entry = data.data.entries;
+            return {
+                title: entry.title || 'Untitled',
+                url: entry.url || '',
+                author: entry.author || '',
+                content: entry.content || entry.description || '',
+                siteName: data.data.feeds ? data.data.feeds.title : '',
+                publishedAt: entry.publishedAt || ''
+            };
+        } else {
+            throw new Error('Invalid response format');
+        }
+        
+    } catch (error) {
+        console.error('Failed to fetch folo article:', error);
+        return null;
+    }
+}
+
+// 剪藏folo文章
+function clipFoloArticle(articleData, tabId) {
+    if (!articleData) {
+        console.error('No article data to clip');
+        return;
+    }
+    
+    // 使用现有的剪藏功能，在页面上下文中执行
+    chrome.scripting.executeScript({
+        target: { tabId: tabId },
+        func: function(articleData, tabId) {
+            // 创建临时元素来包装文章内容
+            const tempElement = document.createElement('div');
+            
+            // 添加文章标题
+            const titleElement = document.createElement('h1');
+            titleElement.textContent = articleData.title;
+            tempElement.appendChild(titleElement);
+            
+            // 添加文章内容
+            const contentElement = document.createElement('div');
+            contentElement.innerHTML = articleData.content;
+            tempElement.appendChild(contentElement);
+            
+            // 构造文章信息对象
+            const article = {
+                title: articleData.title,
+                siteName: articleData.siteName || 'Folo',
+                excerpt: articleData.content ? articleData.content.substring(0, 200) : ''
+            };
+            
+            // 通过postMessage传递extraParams
+            window.__siyuanFoloExtraParams = {
+                attributeViews: [
+                    {
+                        avID: '20250102171020-4cqqonx', // 输入数据库
+                        values: {
+                            '20250209201903-a01feo9': {
+                                // 链接列
+                                url: {
+                                    content: articleData.url,
+                                },
+                            },
+                            '20250209201845-at8lrm2': {
+                                // 来源列
+                                mSelect: [{ color: '14', content: 'RSS' }],
+                            },
+                            '20250830154540-udvlq8y': {
+                                // 关联列
+                                relation: { blockIDs: [] },
+                            },
+                            "20250904212513-5wb92lu": {
+                                // 作者列
+                                text: {content: articleData.author || ""}
+                            }
+                        },
+                    },
+                ],
+            };
+            
+            // 调用现有的剪藏函数，不刷新页面
+            if (typeof siyuanSendUpload === 'function') {
+                siyuanSendUpload(tempElement, tabId, undefined, "article", article, articleData.url, undefined, false, true);
+            } else {
+                console.error('siyuanSendUpload function not found');
+            }
+        },
+        args: [articleData, tabId]
+    });
+}
+
+// 监听存储变化，动态启用/禁用folo监听
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === 'sync' && changes.foloListenEnabled) {
+        if (changes.foloListenEnabled.newValue) {
+            enableFoloListening();
+        } else {
+            disableFoloListening();
+        }
+    }
 });
 
 // URL模式匹配函数
@@ -111,7 +337,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
 
 // 添加模板渲染函数
 function renderTemplate(template, data) {
-    return template.replace(/\${([^}]+)}/g, function (match, key) {
+    return template.replace(/\${([^}]+)}/g, function (_, key) {
         // 检查是否为条件表达式
         const conditionalMatch = key.match(/(.+?)\s*\?\s*(.*?)\s*:\s*(.*)/);
         if (conditionalMatch) {
@@ -188,7 +414,7 @@ function getSimpleDateTime() {
     return { date, time };
 }
 
-chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (request) => {
     if (request.func !== 'upload-copy') {
         return
     }
@@ -380,7 +606,8 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                         if (requestData.closeTabAfter) {
                             // 如果是通过快捷键触发的，关闭标签页
                             chrome.tabs.remove(requestData.tabId);
-                        } else {
+                        } else if (!requestData.noReload) {
+                            // 如果没有设置noReload，则刷新页面
                             chrome.tabs.sendMessage(requestData.tabId, {
                                 'func': 'reload',
                             })

@@ -1024,7 +1024,7 @@ function siyuanConvertZhihuRedirectLinks(tempElement) {
     });
 }
 
-const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href, insertAtFocus, closeTabAfter = false) => {
+const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href, insertAtFocus, closeTabAfter = false, noReload = false) => {
     // 处理知乎跳转链接
     siyuanConvertZhihuRedirectLinks(tempElement);
     chrome.storage.sync.get({
@@ -1164,33 +1164,42 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
              tabId,
              insertAtFocus: insertAtFocus,
              closeTabAfter: closeTabAfter,
+             noReload: noReload,
          };
 
         if (type === 'part') {
             chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
         } else {
-            // 如果是全文剪藏获取页面中 __siyuanCreateDocExtraParam 函数的返回值
-            
-            // 向页面发送消息请求额外参数
-            window.postMessage({
-                type: 'GET_SIYUAN_EXTRA_PARAMS',
-                source: 'siyuan-chrome-extension'
-            }, '*');
-            
-            // 监听页面返回的消息
-            const messageHandler = (event) => {
-                if (event.data && event.data.type === 'SIYUAN_EXTRA_PARAMS_RESPONSE' && 
-                    event.data.source === 'siyuan-chrome-extension') {
-                    if (event.data.params && typeof event.data.params === 'object' && !Array.isArray(event.data.params)) {
-                        msgJSON.extraParams = event.data.params;
+            // 检查是否是folo剪藏，如果是则使用预设的extraParams
+            if (window.__siyuanFoloExtraParams) {
+                msgJSON.extraParams = window.__siyuanFoloExtraParams;
+                // 清除extraParams，避免影响后续剪藏
+                delete window.__siyuanFoloExtraParams;
+                chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON });
+            } else {
+                // 如果是全文剪藏获取页面中 __siyuanCreateDocExtraParam 函数的返回值
+                
+                // 向页面发送消息请求额外参数
+                window.postMessage({
+                    type: 'GET_SIYUAN_EXTRA_PARAMS',
+                    source: 'siyuan-chrome-extension'
+                }, '*');
+                
+                // 监听页面返回的消息
+                const messageHandler = (event) => {
+                    if (event.data && event.data.type === 'SIYUAN_EXTRA_PARAMS_RESPONSE' && 
+                        event.data.source === 'siyuan-chrome-extension') {
+                        if (event.data.params && typeof event.data.params === 'object' && !Array.isArray(event.data.params)) {
+                            msgJSON.extraParams = event.data.params;
+                        }
+                        // 移除消息监听器
+                        window.removeEventListener('message', messageHandler);
+                        chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
                     }
-                    // 移除消息监听器
-                    window.removeEventListener('message', messageHandler);
-                    chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON })
-                }
-            };
-            
-            window.addEventListener('message', messageHandler);
+                };
+                
+                window.addEventListener('message', messageHandler);
+            }
         }
     })
 }

@@ -31,10 +31,12 @@
     "contextMenus",
     "clipboardWrite",
     "storage",
-    "tabs"
+    "tabs",
+    "webRequest"
   ],
   "host_permissions": [
-    "*://*/*"
+    "*://*/*",
+    "*://api.folo.is/*"
   ],
   "browser_specific_settings": {
     "gecko": {
