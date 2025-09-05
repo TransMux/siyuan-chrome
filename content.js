@@ -975,8 +975,33 @@ function applySymbolMappings(text) {
     return result;
 }
 
-// 添加 KaTeX 公式处理，提取 LaTeX 源并替换为文本节点
+// 添加 KaTeX 和 MathJax 公式处理，提取 LaTeX 源并替换为文本节点
 function siyuanProcessKaTeX(tempElement) {
+    // 处理 MathJax 公式：从 script 标签中提取 LaTeX 源码
+    tempElement.querySelectorAll('script[type="math/tex"], script[type="math/tex; mode=display"]').forEach(script => {
+        const latex = script.textContent.trim();
+        const isDisplay = script.getAttribute('type') === 'math/tex; mode=display';
+        const delim = isDisplay ? ['$$', '$$'] : ['$', '$'];
+        
+        if (latex) {
+            const textNode = document.createTextNode(delim[0] + latex + delim[1]);
+            script.replaceWith(textNode);
+        }
+    });
+    
+    // 清理多余的 MathJax 渲染元素，只保留 LaTeX 源码
+    tempElement.querySelectorAll('.MathJax_Display').forEach(display => {
+        display.remove();
+    });
+    
+    tempElement.querySelectorAll('span.MathJax').forEach(mathJax => {
+        mathJax.remove();
+    });
+    
+    tempElement.querySelectorAll('.MathJax_Preview').forEach(preview => {
+        preview.remove();
+    });
+    
     // 原生 KaTeX: 从 katex-mathml 注释中提取 LaTeX，并根据 display 类区分行内($)或块级($$)包裹
     tempElement.querySelectorAll('span.katex-mathml').forEach(block => {
         const annotation = block.querySelector('annotation[encoding="application/x-tex"]');
