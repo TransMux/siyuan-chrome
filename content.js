@@ -99,7 +99,58 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 if (0 === titles.length) {
-                    const defaultTitle = (document.title || '').trim()
+                    let defaultTitle = (document.title || '').trim()
+                    let shouldConvert = false;
+                    let bvid = null;
+                    
+                    // 检查是否是哔哩哔哩稍后再看页面
+                    if (href.includes('bilibili.com/list/watchlater') && 
+                        defaultTitle.endsWith('-赤羽Eirc-稍后再看-哔哩哔哩视频')) {
+                        
+                        shouldConvert = true;
+                        defaultTitle = defaultTitle.replace(/-赤羽Eirc-稍后再看-哔哩哔哩视频$/, '');
+                        
+                        try {
+                            const url = new URL(href);
+                            bvid = url.searchParams.get('bvid');
+                        } catch (e) {
+                            console.warn('Failed to parse watchlater URL:', e);
+                        }
+                    }
+                    // 检查是否是哔哩哔哩收藏夹页面
+                    else if (href.includes('bilibili.com/list/ml')) {
+                        // 匹配各种收藏夹格式
+                        if (defaultTitle.endsWith('-赤羽Eirc-默认收藏夹-哔哩哔哩视频')) {
+                            shouldConvert = true;
+                            defaultTitle = defaultTitle.replace(/-赤羽Eirc-默认收藏夹-哔哩哔哩视频$/, '');
+                        } else if (defaultTitle.match(/-赤羽Eirc-.*-哔哩哔哩视频$/)) {
+                            shouldConvert = true;
+                            defaultTitle = defaultTitle.replace(/-赤羽Eirc-.*-哔哩哔哩视频$/, '');
+                        }
+                        
+                        if (shouldConvert) {
+                            try {
+                                const url = new URL(href);
+                                bvid = url.searchParams.get('bvid');
+                            } catch (e) {
+                                console.warn('Failed to parse collection URL:', e);
+                            }
+                        }
+                    }
+                    
+                    // 如果需要转换且找到了bvid，执行转换
+                    if (shouldConvert && bvid && bvid.startsWith('BV')) {
+                        // 转换链接
+                        href = `https://www.bilibili.com/video/${bvid}`;
+                        
+                        console.log('Converted current page Bilibili link:', {
+                            originalTitle: (document.title || '').trim(),
+                            newTitle: defaultTitle,
+                            originalHref: window.location.href,
+                            newHref: href
+                        });
+                    }
+                    
                     titles = [defaultTitle || href]
                 }
 
@@ -1074,9 +1125,85 @@ function siyuanConvertZhihuRedirectLinks(tempElement) {
     });
 }
 
+// 转换哔哩哔哩特殊链接为标准视频链接
+function siyuanConvertBilibiliWatchLaterLinks(tempElement) {
+    // 处理页面中的所有链接
+    const links = tempElement.querySelectorAll('a');
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+        const linkText = link.textContent;
+        
+        if (!href || !linkText) return;
+        
+        let shouldConvert = false;
+        let cleanTitle = linkText;
+        let bvid = null;
+        
+        // 检查是否是哔哩哔哩稍后再看的链接
+        if (href.includes('bilibili.com/list/watchlater') && 
+            linkText.endsWith('-赤羽Eirc-稍后再看-哔哩哔哩视频')) {
+            
+            shouldConvert = true;
+            cleanTitle = linkText.replace(/-赤羽Eirc-稍后再看-哔哩哔哩视频$/, '');
+            
+            try {
+                const url = new URL(href);
+                bvid = url.searchParams.get('bvid');
+            } catch (e) {
+                console.warn('Failed to parse watchlater URL:', href, e);
+            }
+        }
+        // 检查是否是哔哩哔哩收藏夹链接
+        else if (href.includes('bilibili.com/list/ml') && 
+                 linkText.endsWith('-赤羽Eirc-默认收藏夹-哔哩哔哩视频')) {
+            
+            shouldConvert = true;
+            cleanTitle = linkText.replace(/-赤羽Eirc-默认收藏夹-哔哩哔哩视频$/, '');
+            
+            try {
+                const url = new URL(href);
+                bvid = url.searchParams.get('bvid');
+            } catch (e) {
+                console.warn('Failed to parse collection URL:', href, e);
+            }
+        }
+        // 检查其他可能的收藏夹格式（如自定义收藏夹名称）
+        else if (href.includes('bilibili.com/list/ml') && 
+                 linkText.match(/-赤羽Eirc-.*-哔哩哔哩视频$/)) {
+            
+            shouldConvert = true;
+            cleanTitle = linkText.replace(/-赤羽Eirc-.*-哔哩哔哩视频$/, '');
+            
+            try {
+                const url = new URL(href);
+                bvid = url.searchParams.get('bvid');
+            } catch (e) {
+                console.warn('Failed to parse custom collection URL:', href, e);
+            }
+        }
+        
+        // 如果需要转换且找到了bvid，执行转换
+        if (shouldConvert && bvid && bvid.startsWith('BV')) {
+            // 设置新的链接和标题
+            link.setAttribute('href', `https://www.bilibili.com/video/${bvid}`);
+            link.textContent = cleanTitle;
+            
+            console.log('Converted Bilibili link:', {
+                original: href,
+                new: `https://www.bilibili.com/video/${bvid}`,
+                originalTitle: linkText,
+                newTitle: cleanTitle
+            });
+        }
+    });
+}
+
 const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href, insertAtFocus, closeTabAfter = false, noReload = false) => {
     // 处理知乎跳转链接
     siyuanConvertZhihuRedirectLinks(tempElement);
+    
+    // 处理哔哩哔哩稍后再看链接
+    siyuanConvertBilibiliWatchLaterLinks(tempElement);
     chrome.storage.sync.get({
         ip: 'http://127.0.0.1:6806',
         showTip: true,
