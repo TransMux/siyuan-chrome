@@ -11,6 +11,9 @@
   "capture_full_page": {
     "message": "Capture selected tabs to SiYuan"
   },
+  "capture_full_page_close": {
+    "message": "Capture selected tabs to SiYuan and close"
+  },
   "show_tip": {
     "message": "Show Tip"
   },

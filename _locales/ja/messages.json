@@ -8,6 +8,12 @@
   "copy_to_siyuan": {
     "message": "SiYuanにコピー"
   },
+  "capture_full_page": {
+    "message": "選択したタブをSiYuanにキャプチャ"
+  },
+  "capture_full_page_close": {
+    "message": "選択したタブをSiYuanにキャプチャして閉じる"
+  },
   "show_tip": {
     "message": "ヒントを表示"
   },

@@ -8,6 +8,12 @@
   "copy_to_siyuan": {
     "message": "Copia in SiYuan"
   },
+  "capture_full_page": {
+    "message": "Cattura schede selezionate su SiYuan"
+  },
+  "capture_full_page_close": {
+    "message": "Cattura schede selezionate su SiYuan e chiudi"
+  },
   "show_tip": {
     "message": "Mostra suggerimenti"
   },

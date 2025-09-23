@@ -8,6 +8,12 @@
   "copy_to_siyuan": {
     "message": "Nach SiYuan kopieren"
   },
+  "capture_full_page": {
+    "message": "Ausgewählte Tabs zu SiYuan erfassen"
+  },
+  "capture_full_page_close": {
+    "message": "Ausgewählte Tabs zu SiYuan erfassen und schließen"
+  },
   "show_tip": {
     "message": "Tipp anzeigen"
   },

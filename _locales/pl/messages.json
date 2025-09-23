@@ -8,6 +8,12 @@
   "copy_to_siyuan": {
     "message": "Skopiuj do SiYuan"
   },
+  "capture_full_page": {
+    "message": "Przechwyć wybrane karty do SiYuan"
+  },
+  "capture_full_page_close": {
+    "message": "Przechwyć wybrane karty do SiYuan i zamknij"
+  },
   "show_tip": {
     "message": "Pokaż wskazówki"
   },

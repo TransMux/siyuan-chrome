@@ -11,6 +11,9 @@
   "capture_full_page": {
     "message": "抓取选中标签页到思源"
   },
+  "capture_full_page_close": {
+    "message": "抓取选中标签页到思源并关闭"
+  },
   "show_tip": {
     "message": "显示提示"
   },

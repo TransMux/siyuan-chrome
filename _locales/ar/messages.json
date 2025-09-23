@@ -8,6 +8,12 @@
   "copy_to_siyuan": {
     "message": "نسخ إلى سييوان"
   },
+  "capture_full_page": {
+    "message": "التقاط علامات التبويب المحددة إلى SiYuan"
+  },
+  "capture_full_page_close": {
+    "message": "التقاط علامات التبويب المحددة إلى SiYuan وإغلاق"
+  },
   "show_tip": {
     "message": "إظهار النصائح"
   },

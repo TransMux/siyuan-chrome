@@ -8,6 +8,12 @@
   "copy_to_siyuan": {
     "message": "Копировать в SiYuan"
   },
+  "capture_full_page": {
+    "message": "Захватить выбранные вкладки в SiYuan"
+  },
+  "capture_full_page_close": {
+    "message": "Захватить выбранные вкладки в SiYuan и закрыть"
+  },
   "show_tip": {
     "message": "Показать подсказку"
   },

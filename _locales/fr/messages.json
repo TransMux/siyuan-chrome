@@ -8,6 +8,12 @@
   "copy_to_siyuan": {
     "message": "Copier vers SiYuan"
   },
+  "capture_full_page": {
+    "message": "Capturer les onglets sélectionnés vers SiYuan"
+  },
+  "capture_full_page_close": {
+    "message": "Capturer les onglets sélectionnés vers SiYuan et fermer"
+  },
   "show_tip": {
     "message": "Afficher les astuces"
   },

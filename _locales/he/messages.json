@@ -8,6 +8,12 @@
   "copy_to_siyuan": {
     "message": "העתק ל-SiYuan"
   },
+  "capture_full_page": {
+    "message": "לכידת כרטיסיות נבחרות ל-SiYuan"
+  },
+  "capture_full_page_close": {
+    "message": "לכידת כרטיסיות נבחרות ל-SiYuan וסגירה"
+  },
   "show_tip": {
     "message": "הצג טיפים"
   },
