@@ -1300,8 +1300,10 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
                 response = await fetch(src, {
                     "headers": {
                         "accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
-                        "sec-fetch-dest": "image",
+                        "referer": window.location.href,
                     },
+                    credentials: 'include',
+                    mode: 'cors'
                 });
             } catch (e) {
                 console.warn("fetch [" + src + "] failed", e)
@@ -1309,7 +1311,7 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
                 continue
             }
             const image = await response.blob()
-            files[escape(src)] = {
+            files[encodeURIComponent(src)] = {
                 type: image.type,
                 data: await siyuanConvertBlobToBase64(image),
             }
@@ -1500,6 +1502,67 @@ const siyuanGetExtraParams = async () => {
     });
 };
 
+// 从markdown内容中提取图片URL
+const extractImageUrlsFromMarkdown = (markdownContent) => {
+    const imageRegex = /!\[.*?\]\((https?:\/\/[^\s\)]+)\)/g;
+    const urls = [];
+    let match;
+    
+    while ((match = imageRegex.exec(markdownContent)) !== null) {
+        urls.push(match[1]);
+    }
+    
+    return [...new Set(urls)]; // 去重
+};
+
+// 下载图片文件并转换为Base64
+const downloadMarkdownImages = async (imageUrls) => {
+    const files = {};
+    let fetchFileErr = false;
+    
+    for (let i = 0; i < imageUrls.length; i++) {
+        let src = imageUrls[i];
+        siyuanShowTip(chrome.i18n.getMessage("tip_clip_img") + ' [' + (i + 1) + '/' + imageUrls.length + ']...');
+        
+        try {
+            // Wikipedia 使用图片原图处理
+            if (-1 !== src.indexOf('wikipedia/commons/thumb/')) {
+                let idx = src.lastIndexOf('.')
+                let ext = src.substring(idx)
+                if (0 < src.indexOf('.svg.png')) {
+                    ext = '.svg'
+                }
+                idx = src.indexOf(ext + '/')
+                if (0 < idx) {
+                    src = src.substring(0, idx + ext.length)
+                    src = src.replace('/commons/thumb/', '/commons/')
+                }
+            }
+            
+            const response = await fetch(src, {
+                "headers": {
+                    "accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+                    "referer": window.location.href,
+                },
+                credentials: 'include',
+                mode: 'cors'
+            });
+            
+            const image = await response.blob()
+            files[encodeURIComponent(src)] = {
+                type: image.type,
+                data: await siyuanConvertBlobToBase64(image),
+            }
+        } catch (e) {
+            console.warn("fetch [" + src + "] failed", e)
+            fetchFileErr = true;
+            continue
+        }
+    }
+    
+    return { files, fetchFileErr };
+};
+
 // 处理markdown内容直接发送给思源
 const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabAfter = false, noReload = false) => {
     try {
@@ -1520,10 +1583,23 @@ const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabA
             expListDocTree: false,
         })
         
-        // 构建请求数据，markdown内容不需要files
+        let files = {};
+        let fetchFileErr = false;
+        
+        // 如果启用了资源下载，处理markdown中的图片
+        if (items.assets) {
+            const imageUrls = extractImageUrlsFromMarkdown(markdownContent);
+            if (imageUrls.length > 0) {
+                const downloadResult = await downloadMarkdownImages(imageUrls);
+                files = downloadResult.files;
+                fetchFileErr = downloadResult.fetchFileErr;
+            }
+        }
+        
+        // 构建请求数据
         const msgJSON = {
-            fetchFileErr: false,
-            files: {},
+            fetchFileErr,
+            files,
             dom: markdownContent, // 直接使用markdown内容
             api: items.ip,
             token: items.token,

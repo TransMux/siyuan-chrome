@@ -653,40 +653,6 @@ function getSimpleDateTime() {
     return { date, time };
 }
 
-// 判断是否为 Markdown，如果是则直接返回结构，否则走 API
-async function 转换为Markdown(api, options) {
-    const formData = options.body;
-    
-    // 判断 body 是否为 markdown 内容（判断isMarkdown）
-    if (formData.has('isMarkdown') && formData.get('isMarkdown') === 'true') {
-        // 是 markdown 内容，直接返回与 API 返回结构类似的对象
-        const markdownContent = formData.get('dom');
-        const { date, time } = getSimpleDateTime();
-        
-        // 构造模拟的 API 响应
-        const mockResponse = {
-            json: async () => ({
-                code: 0,
-                msg: '',
-                data: {
-                    md: markdownContent,
-                    url: formData.get('href'),
-                    title: formData.get('title') || 'Untitled',
-                    id: `markdown-${Date.now()}`, // 生成唯一ID
-                    time: `${date} ${time}`,
-                    withMath: false
-                }
-            }),
-            redirected: false
-        };
-        
-        return mockResponse;
-    }
-
-    // 非 markdown，走 API
-    return fetch(api + '/api/extension/copy', options);
-}
-
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     if (request.type === 'keepAlive') {
         // 处理keepAlive消息，保持service worker活跃
@@ -765,7 +731,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     formData.append("insertAtFocus", requestData.insertAtFocus)
     formData.append("title", requestData.title || "")
 
-    转换为Markdown(requestData.api, {
+    fetch(requestData.api + '/api/extension/copy', {
         method: 'POST',
         headers: {
             'Authorization': 'Token ' + requestData.token,
