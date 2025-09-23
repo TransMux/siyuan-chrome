@@ -4,8 +4,15 @@ window.addEventListener('message', async (event) => {
         event.data.type === 'GET_SIYUAN_EXTRA_PARAMS' &&
         event.data.source === 'siyuan-chrome-extension'
     ) {
-        // 通过函数调用获取参数
-        let params = window.__siyuanGetCaptureParam ? await window.__siyuanGetCaptureParam() : {};
+        let params = {};
+        let error = null;
+        
+        try {
+            // 通过函数调用获取参数
+            params = window.__siyuanGetCaptureParam ? await window.__siyuanGetCaptureParam() : {};
+        } catch (e) {
+            error = e.message || '获取捕获参数时发生错误';
+        }
 
         // 返回结果给content script
         window.postMessage(
@@ -13,6 +20,7 @@ window.addEventListener('message', async (event) => {
                 type: 'SIYUAN_EXTRA_PARAMS_RESPONSE',
                 source: 'siyuan-chrome-extension',
                 params: params,
+                error: error,
             },
             '*'
         );
@@ -24,8 +32,15 @@ window.addEventListener('message', async (event) => {
         event.data.type === 'GET_PAGE_CONTENT' &&
         event.data.source === 'siyuan-chrome-extension'
     ) {
-        // 通过函数调用获取页面内容
-        let contentResult = window.__siyuanGetPageContent ? await window.__siyuanGetPageContent() : null;
+        let contentResult = null;
+        let error = null;
+        
+        try {
+            // 通过函数调用获取页面内容
+            contentResult = window.__siyuanGetPageContent ? await window.__siyuanGetPageContent() : null;
+        } catch (e) {
+            error = e.message || '获取页面内容时发生错误';
+        }
 
         // 返回结果给content script
         window.postMessage(
@@ -35,6 +50,7 @@ window.addEventListener('message', async (event) => {
                 contentType: contentResult ? contentResult.type : null,
                 content: contentResult ? contentResult.content : null,
                 success: contentResult ? contentResult.success : false,
+                error: error,
             },
             '*'
         );

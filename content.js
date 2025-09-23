@@ -1446,7 +1446,7 @@ const siyuanGetPageContent = async () => {
         // 设置超时，避免长时间等待
         const timeout = setTimeout(() => {
             window.removeEventListener('message', messageHandler);
-            resolve(null);
+            throw new Error('等待页面返回消息超时');
         }, 30000); // 30秒超时
 
         // 监听页面返回的消息
@@ -1455,6 +1455,9 @@ const siyuanGetPageContent = async () => {
                 event.data.source === 'siyuan-chrome-extension') {
                     clearTimeout(timeout);
                     window.removeEventListener('message', messageHandler);
+                    if (event.data.error) {
+                        throw new Error(event.data.error);
+                    }
                     resolve(event.data);
                 }
             };
