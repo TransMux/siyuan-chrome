@@ -1401,7 +1401,7 @@ const siyuanCaptureFullPage = async (tabId, closeTabAfter = false) => {
             
             if (preEmbeddedContent.contentType === 'markdown') {
                 // 对于markdown类型，直接发送给思源，跳过HTML解析
-                siyuanSendMarkdownContent(preEmbeddedContent.content, tabId, window.location.href, closeTabAfter, true);
+                siyuanSendMarkdownContent(preEmbeddedContent.content, tabId, window.location.href, closeTabAfter, true, preEmbeddedContent.title);
                 return;
             } else if (preEmbeddedContent.contentType === 'dom') {
                 // 对于DOM类型，使用预埋的内容
@@ -1567,7 +1567,7 @@ const downloadMarkdownImages = async (imageUrls) => {
 };
 
 // 处理markdown内容直接发送给思源
-const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabAfter = false, noReload = false) => {
+const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabAfter = false, noReload = false, title = "") => {
     try {
         const items = await chrome.storage.sync.get({
             ip: 'http://127.0.0.1:6806',
@@ -1612,7 +1612,7 @@ const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabA
             tags: items.tags,
             assets: items.assets,
             tip: items.showTip,
-            title: document.title || "",
+            title: title === "" ? document.title : title,
             siteName: "",
             excerpt: "",
             listDocTree: items.expListDocTree,

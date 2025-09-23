@@ -50,6 +50,7 @@ window.addEventListener('message', async (event) => {
                 contentType: contentResult ? contentResult.type : null,
                 content: contentResult ? contentResult.content : null,
                 success: contentResult ? contentResult.success : false,
+                title: contentResult ? contentResult.title : null,
                 error: error,
             },
             '*'
@@ -80,6 +81,7 @@ window.__siyuanGetPageContent = () => {
     return {
         type: null,
         content: null,
-        success: false
+        success: false,
+        title: null
     };
 };
