@@ -1392,16 +1392,16 @@ const siyuanCaptureFullPage = async (tabId, closeTabAfter = false) => {
 
     try {
         // 首先尝试获取页面预埋的内容
+        siyuanShowTip("尝试从页面中获取信息...", 60 * 1000)
         const preEmbeddedContent = await siyuanGetPageContent();
-        
         if (preEmbeddedContent && preEmbeddedContent.success && preEmbeddedContent.content) {
             console.log('Found pre-embedded content, using it directly');
             
-            if (preEmbeddedContent.type === 'markdown') {
+            if (preEmbeddedContent.contentType === 'markdown') {
                 // 对于markdown类型，直接发送给思源，跳过HTML解析
                 siyuanSendMarkdownContent(preEmbeddedContent.content, tabId, window.location.href, closeTabAfter);
                 return;
-            } else if (preEmbeddedContent.type === 'dom') {
+            } else if (preEmbeddedContent.contentType === 'dom') {
                 // 对于DOM类型，使用预埋的内容
                 const tempElement = document.createElement('div');
                 tempElement.innerHTML = preEmbeddedContent.content;
@@ -1411,6 +1411,7 @@ const siyuanCaptureFullPage = async (tabId, closeTabAfter = false) => {
         }
 
         // 如果没有预埋内容或获取失败，使用Readability处理
+        siyuanShowTip("使用Readability处理页面...", 60 * 1000)
         console.log('No pre-embedded content found, using Readability');
         
         // 浏览器剪藏扩展剪藏某些网页代码块丢失注释 https://github.com/siyuan-note/siyuan/issues/5676
@@ -1445,17 +1446,17 @@ const siyuanGetPageContent = async () => {
             window.removeEventListener('message', messageHandler);
             resolve(null);
         }, 30000); // 30秒超时
-        
+
         // 监听页面返回的消息
         const messageHandler = (event) => {
             if (event.data && event.data.type === 'PAGE_CONTENT_RESPONSE' && 
                 event.data.source === 'siyuan-chrome-extension') {
-                clearTimeout(timeout);
-                window.removeEventListener('message', messageHandler);
-                resolve(event.data);
-            }
-        };
-        
+                    clearTimeout(timeout);
+                    window.removeEventListener('message', messageHandler);
+                    resolve(event.data);
+                }
+            };
+            
         window.addEventListener('message', messageHandler);
 
         // 向页面发送消息请求预埋内容

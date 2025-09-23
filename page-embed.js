@@ -32,7 +32,7 @@ window.addEventListener('message', async (event) => {
             {
                 type: 'PAGE_CONTENT_RESPONSE',
                 source: 'siyuan-chrome-extension',
-                type: contentResult ? contentResult.type : null,
+                contentType: contentResult ? contentResult.type : null,
                 content: contentResult ? contentResult.content : null,
                 success: contentResult ? contentResult.success : false,
             },
