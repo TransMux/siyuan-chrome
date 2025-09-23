@@ -1391,6 +1391,28 @@ const siyuanCaptureFullPage = async (tabId, closeTabAfter = false) => {
     }
 
     try {
+        // 首先尝试获取页面预埋的内容
+        const preEmbeddedContent = await siyuanGetPageContent();
+        
+        if (preEmbeddedContent && preEmbeddedContent.success && preEmbeddedContent.content) {
+            console.log('Found pre-embedded content, using it directly');
+            
+            if (preEmbeddedContent.type === 'markdown') {
+                // 对于markdown类型，直接发送给思源，跳过HTML解析
+                siyuanSendMarkdownContent(preEmbeddedContent.content, tabId, window.location.href, closeTabAfter);
+                return;
+            } else if (preEmbeddedContent.type === 'dom') {
+                // 对于DOM类型，使用预埋的内容
+                const tempElement = document.createElement('div');
+                tempElement.innerHTML = preEmbeddedContent.content;
+                siyuanSendUpload(tempElement, tabId, undefined, "article", null, window.location.href, undefined, closeTabAfter);
+                return;
+            }
+        }
+
+        // 如果没有预埋内容或获取失败，使用Readability处理
+        console.log('No pre-embedded content found, using Readability');
+        
         // 浏览器剪藏扩展剪藏某些网页代码块丢失注释 https://github.com/siyuan-note/siyuan/issues/5676
         document.querySelectorAll(".hljs-comment").forEach(item => {
             item.classList.remove("hljs-comment")
@@ -1414,3 +1436,70 @@ const siyuanCaptureFullPage = async (tabId, closeTabAfter = false) => {
         siyuanShowTip(e.message, 7 * 1000)
     }
 }
+
+// 获取页面预埋内容函数
+const siyuanGetPageContent = async () => {
+    return new Promise((resolve) => {
+        // 设置超时，避免长时间等待
+        const timeout = setTimeout(() => {
+            window.removeEventListener('message', messageHandler);
+            resolve(null);
+        }, 30000); // 30秒超时
+        
+        // 监听页面返回的消息
+        const messageHandler = (event) => {
+            if (event.data && event.data.type === 'PAGE_CONTENT_RESPONSE' && 
+                event.data.source === 'siyuan-chrome-extension') {
+                clearTimeout(timeout);
+                window.removeEventListener('message', messageHandler);
+                resolve(event.data);
+            }
+        };
+        
+        window.addEventListener('message', messageHandler);
+
+        // 向页面发送消息请求预埋内容
+        window.postMessage({
+            type: 'GET_PAGE_CONTENT',
+            source: 'siyuan-chrome-extension'
+        }, '*');
+    });
+};
+
+// 处理markdown内容直接发送给思源
+const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabAfter = false) => {
+    try {
+        const items = await chrome.storage.sync.get(['ip', 'token', 'notebook', 'parentDoc', 'parentHPath', 'tags', 'assets', 'showTip', 'expListDocTree'])
+        
+        // 构建请求数据，markdown内容不需要files
+        const msgJSON = {
+            fetchFileErr: false,
+            files: {},
+            dom: markdownContent, // 直接使用markdown内容
+            api: items.ip,
+            token: items.token,
+            notebook: items.notebook,
+            parentDoc: items.parentDoc,
+            parentHPath: items.parentHPath.substring(items.parentHPath.indexOf('/')),
+            tags: items.tags,
+            assets: items.assets,
+            tip: items.showTip,
+            title: document.title || "",
+            siteName: "",
+            excerpt: "",
+            listDocTree: items.expListDocTree,
+            href: href,
+            type: 'article', // 标记为article类型
+            tabId: tabId,
+            insertAtFocus: false,
+            closeTabAfter: closeTabAfter,
+            noReload: false,
+            isMarkdown: true // 添加标记表示这是markdown内容
+        };
+
+        chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON });
+    } catch (e) {
+        console.error('Error sending markdown content:', e);
+        siyuanShowTip(e.message, 7 * 1000);
+    }
+};

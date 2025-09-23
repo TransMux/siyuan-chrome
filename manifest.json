@@ -56,6 +56,12 @@
         "default": "Alt+2"
       },
       "description": "__MSG_capture_full_page__"
+    },
+    "capture-full-page-close": {
+      "suggested_key": {
+        "default": "Alt+3"
+      },
+      "description": "__MSG_capture_full_page_close__"
     }
   },
   "name": "__MSG_extension_name__",

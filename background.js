@@ -538,6 +538,23 @@ chrome.commands.onCommand.addListener((command) => {
                         chrome.tabs.sendMessage(tab.id, {
                             'func': 'capture-full-page',
                             'tabId': tab.id,
+                            'closeTabAfter': false,
+                        });
+                    }, index * 100);
+                });
+            }
+        })
+    } else if (command === 'capture-full-page-close') {
+        // 获取所有选中的标签页
+        chrome.tabs.query({ highlighted: true, currentWindow: true }, (tabs) => {
+            if (tabs.length > 0) {
+                console.log(`开始批量抓取 ${tabs.length} 个标签页`);
+                // 对每个选中的标签页执行抓取操作，添加延迟避免并发问题
+                tabs.forEach((tab, index) => {
+                    setTimeout(() => {
+                        chrome.tabs.sendMessage(tab.id, {
+                            'func': 'capture-full-page',
+                            'tabId': tab.id,
                             'closeTabAfter': true,
                         });
                     }, index * 100);
@@ -692,6 +709,12 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     const dom = requestData.dom
     const files = requestData.files
     const formData = new FormData()
+    
+    // 如果是markdown内容，添加特殊标记
+    if (requestData.isMarkdown) {
+        formData.append('isMarkdown', 'true')
+    }
+    
     formData.append('dom', dom)
     for (const key of Object.keys(files)) {
         const data = files[key].data
