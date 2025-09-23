@@ -1399,13 +1399,13 @@ const siyuanCaptureFullPage = async (tabId, closeTabAfter = false) => {
             
             if (preEmbeddedContent.contentType === 'markdown') {
                 // 对于markdown类型，直接发送给思源，跳过HTML解析
-                siyuanSendMarkdownContent(preEmbeddedContent.content, tabId, window.location.href, closeTabAfter);
+                siyuanSendMarkdownContent(preEmbeddedContent.content, tabId, window.location.href, closeTabAfter, true);
                 return;
             } else if (preEmbeddedContent.contentType === 'dom') {
                 // 对于DOM类型，使用预埋的内容
                 const tempElement = document.createElement('div');
                 tempElement.innerHTML = preEmbeddedContent.content;
-                siyuanSendUpload(tempElement, tabId, undefined, "article", null, window.location.href, undefined, closeTabAfter);
+                siyuanSendUpload(tempElement, tabId, undefined, "article", null, window.location.href, undefined, closeTabAfter, true);
                 return;
             }
         }
@@ -1467,10 +1467,58 @@ const siyuanGetPageContent = async () => {
     });
 };
 
+// 获取页面额外参数函数
+const siyuanGetExtraParams = async () => {
+    return new Promise((resolve) => {
+        // 设置超时，避免长时间等待
+        const timeout = setTimeout(() => {
+            window.removeEventListener('message', messageHandler);
+            resolve(null);
+        }, 3000); // 3秒超时
+
+        // 监听页面返回的消息
+        const messageHandler = (event) => {
+            if (event.data && event.data.type === 'SIYUAN_EXTRA_PARAMS_RESPONSE' && 
+                event.data.source === 'siyuan-chrome-extension') {
+                clearTimeout(timeout);
+                window.removeEventListener('message', messageHandler);
+                resolve(event.data.params);
+            }
+        };
+        
+        // 先添加监听器
+        window.addEventListener('message', messageHandler);
+        
+        // 延迟发送消息，确保页面脚本有时间加载
+        setTimeout(() => {
+            console.log('Sending GET_SIYUAN_EXTRA_PARAMS request');
+            window.postMessage({
+                type: 'GET_SIYUAN_EXTRA_PARAMS',
+                source: 'siyuan-chrome-extension'
+            }, '*');
+        }, 100);
+    });
+};
+
 // 处理markdown内容直接发送给思源
-const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabAfter = false) => {
+const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabAfter = false, noReload = false) => {
     try {
-        const items = await chrome.storage.sync.get(['ip', 'token', 'notebook', 'parentDoc', 'parentHPath', 'tags', 'assets', 'showTip', 'expListDocTree'])
+        const items = await chrome.storage.sync.get({
+            ip: 'http://127.0.0.1:6806',
+            showTip: true,
+            token: '',
+            notebook: '',
+            parentDoc: '',
+            parentHPath: '',
+            tags: '',
+            assets: true,
+            expOpenAfterClip: false,
+            expSpan: false,
+            expBold: false,
+            expItalic: false,
+            expRemoveImgLink: false,
+            expListDocTree: false,
+        })
         
         // 构建请求数据，markdown内容不需要files
         const msgJSON = {
@@ -1494,9 +1542,14 @@ const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabA
             tabId: tabId,
             insertAtFocus: false,
             closeTabAfter: closeTabAfter,
-            noReload: false,
+            noReload: noReload,
             isMarkdown: true // 添加标记表示这是markdown内容
         };
+
+        // 同时获取extraParams (attributeView等)
+        const extraParams = await siyuanGetExtraParams();
+        console.log('Extra params:', extraParams);
+        msgJSON.extraParams = extraParams;
 
         chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON });
     } catch (e) {
