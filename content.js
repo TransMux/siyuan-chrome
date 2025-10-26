@@ -73,6 +73,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 const range = selection.getRangeAt(0)
                 const tempElement = document.createElement('div')
                 tempElement.appendChild(range.cloneContents())
+                console.log('选中文本处理前:', tempElement.innerHTML)
+                siyuanSpansAddBr(tempElement)
+                console.log('选中文本处理后:', tempElement.innerHTML)
                 siyuanSendUpload(tempElement, request.tabId, request.srcUrl, "part", undefined, undefined, request.insertAtFocus)
             } else {
                 const tempElement = document.createElement('div')
@@ -277,16 +280,19 @@ function isIgnoredElement(element) {
 function siyuanProcessTextByWhiteSpace(element) {
   const text = element.textContent;
   const whiteSpace = getComputedStyle(element).whiteSpace;
-  const brTag = '<br>';
+  const brTag = '<br><br>';
 
   switch (whiteSpace) {
     case 'normal':
     case 'nowrap':
       // 合并所有空白字符为一个空格；换行为 <br>；去除行末空格
+      // 特殊处理：保留句号、感叹号、问号后的换行为真正的换行
       return text
         .replace(/[ \t\r\f\v]+/g, ' ')         // 合并空格和制表符
         .replace(/[ \t]+\n/g, '\n')            // 去除行末空格
-        .replace(/\n+/g, brTag)               // 合并换行并转为 <br>
+        .replace(/([.!?！？。])\s*\n/g, '$1' + brTag)  // 句子结束后的换行转为 <br>
+        .replace(/\n\s*([.。])/g, brTag + '$1')       // 独立的句号前的换行转为 <br>
+        .replace(/\n+/g, brTag)               // 其他换行转为 <br>
         .trim();
     case 'pre':
       // 保留所有空白和换行，换行转为 <br>
@@ -330,24 +336,17 @@ function siyuanSpansAddBr(tempElement) {
     const matchedSpans = [];
 
     spans.forEach((span) => {
-        const style = window.getComputedStyle(span);
-
-        // 现有的条件判断，判断是否满足换行条件
-        if (
-            (style.whiteSpace.trim().toLowerCase() === 'normal' || style.whiteSpace.trim().toLowerCase() === 'pre-wrap') &&
-            (style.wordWrap.trim().toLowerCase() === 'break-word' || style.overflowWrap.trim().toLowerCase() === 'break-word' || style.wordBreak.trim().toLowerCase() === 'break-word')
-        ) {
-            // 检查父元素是否是 pre、code 或 span
-            if (isIgnoredElement(span)) {
-                console.log('Skipping span due to parent being pre, code or span.');
-                return; // 如果父元素是 pre、code 或 span 或者数学公式，跳过该 span
-            }
-
-            span.innerHTML = siyuanProcessTextByWhiteSpace(span);
-
-            // 添加到符合条件的数组中
-            matchedSpans.push(span);
+        // 检查父元素是否是 pre、code 或 span
+        if (isIgnoredElement(span)) {
+            console.log('Skipping span due to parent being pre, code or span.');
+            return; // 如果父元素是 pre、code 或 span 或者数学公式，跳过该 span
         }
+
+        // 对所有span元素应用软换行处理
+        span.innerHTML = siyuanProcessTextByWhiteSpace(span);
+
+        // 添加到符合条件的数组中
+        matchedSpans.push(span);
     });
 
     if (matchedSpans.length > 0) {
