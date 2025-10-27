@@ -62,6 +62,12 @@
         "default": "Alt+3"
       },
       "description": "__MSG_capture_full_page_close__"
+    },
+    "toggle-clipboard-monitor": {
+      "suggested_key": {
+        "default": "Alt+4"
+      },
+      "description": "__MSG_toggle_clipboard_monitor__"
     }
   },
   "name": "__MSG_extension_name__",

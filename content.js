@@ -21,6 +21,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 return
             }
 
+            if ('toggle-clipboard-monitor-hotkey' === request.func) {
+                // 切换当前标签页的剪贴板监控状态
+                const newState = !clipboardMonitor.contextMenuListener;
+                
+                if (newState) {
+                    clipboardMonitor.enableClipping();
+                    siyuanShowTip('剪贴板监控已启用', 2000);
+                } else {
+                    clipboardMonitor.disableClipping();
+                    siyuanShowTip('剪贴板监控已禁用', 2000);
+                }
+                return
+            }
+
+            if ('toggleClipboardMonitor' === request.func) {
+                if (request.enabled) {
+                    clipboardMonitor.enableClipping()
+                } else {
+                    clipboardMonitor.disableClipping()
+                }
+                return
+            }
+
             if ('capture-full-page' === request.func) {
                 siyuanCaptureFullPage(request.tabId, request.closeTabAfter)
                 return
@@ -171,19 +194,26 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
     const copyToClipboard = async (textToCopy) => {
-        // 修复无焦点的未捕获异常：https://github.com/siyuan-note/siyuan/issues/13208
-        await new Promise(resolve => requestAnimationFrame(resolve));
-
-        if (navigator.clipboard && window.isSecureContext) {
-            try {
-                return await navigator.clipboard.writeText(textToCopy);
-            } catch (error) {
-                //console.warn('Failed to copy text: ', error);
-            }
+        // 临时禁用复制监控，避免触发
+        const originalListener = clipboardMonitor.copyEventListener;
+        if (originalListener) {
+            document.removeEventListener('copy', originalListener);
         }
+        
+        try {
+            // 修复无焦点的未捕获异常：https://github.com/siyuan-note/siyuan/issues/13208
+            await new Promise(resolve => requestAnimationFrame(resolve));
 
-        let textArea = document.createElement('textarea')
-        textArea.value = textToCopy
+            if (navigator.clipboard && window.isSecureContext) {
+                try {
+                    return await navigator.clipboard.writeText(textToCopy);
+                } catch (error) {
+                    //console.warn('Failed to copy text: ', error);
+                }
+            }
+
+            let textArea = document.createElement('textarea')
+            textArea.value = textToCopy
         textArea.style.position = 'fixed'
         textArea.style.left = '-999999px'
         textArea.style.top = '-999999px'
@@ -194,6 +224,12 @@ document.addEventListener('DOMContentLoaded', function () {
             document.execCommand('copy') ? res() : rej()
             textArea.remove()
         })
+        } finally {
+            // 重新启用复制监控
+            if (originalListener) {
+                document.addEventListener('copy', originalListener);
+            }
+        }
     }
 })
 
@@ -1438,6 +1474,95 @@ const siyuanCaptureFullPage = async (tabId, closeTabAfter = false) => {
         siyuanShowTip(e.message, 7 * 1000)
     }
 }
+
+// 剪贴板监控功能
+let clipboardMonitor = {
+    contextMenuListener: null,
+    copyEventListener: null,
+    lastCopyTime: 0, // 简单的去重机制
+
+    // 使用思源API发送剪贴内容
+    sendToSiyuan: function(htmlContent) {
+        const now = Date.now();
+        // 简单去重：100ms内的重复操作忽略
+        if (now - this.lastCopyTime < 100) {
+            return;
+        }
+        this.lastCopyTime = now;
+        
+        const tempElement = document.createElement('div');
+        tempElement.innerHTML = htmlContent;
+        siyuanSpansAddBr(tempElement);
+        
+        // 获取当前标签页ID
+        chrome.runtime.sendMessage({func: 'getTabId'}, (response) => {
+            if (response && response.tabId) {
+                siyuanSendUpload(tempElement, response.tabId, window.location.href, "part", undefined, undefined, true);
+            }
+        });
+    },
+
+    // 监听用户的 copy 事件
+    monitorCopyEvent: function() {
+        this.copyEventListener = (event) => {
+            const selection = document.getSelection();
+            if (selection && selection.rangeCount > 0 && !selection.isCollapsed) {
+                const range = selection.getRangeAt(0);
+                const div = document.createElement("div");
+                div.appendChild(range.cloneContents());
+                console.log('Copy event detected:', div.innerHTML);
+                this.sendToSiyuan(div.innerHTML);
+            }
+        };
+        document.addEventListener('copy', this.copyEventListener);
+    },
+
+    // 启用右键菜单拦截
+    enableClipping: function() {
+        if (this.contextMenuListener) {
+            return; // 防止重复添加监听器
+        }
+
+        this.contextMenuListener = (event) => {
+            event.preventDefault();
+            const selection = window.getSelection();
+            let elementHTML = "";
+
+            if (selection && selection.rangeCount > 0 && !selection.isCollapsed) {
+                const range = selection.getRangeAt(0);
+                const div = document.createElement("div");
+                div.appendChild(range.cloneContents());
+                elementHTML = div.innerHTML;
+            } else {
+                const clickedElement = event.target;
+                elementHTML = clickedElement.outerHTML;
+            }
+
+            this.sendToSiyuan(elementHTML);
+        };
+
+        document.addEventListener('contextmenu', this.contextMenuListener);
+        this.monitorCopyEvent();
+        console.log("Clipping enabled");
+    },
+
+    // 禁用右键菜单拦截
+    disableClipping: function() {
+        if (this.contextMenuListener) {
+            document.removeEventListener('contextmenu', this.contextMenuListener);
+            this.contextMenuListener = null;
+        }
+        if (this.copyEventListener) {
+            document.removeEventListener('copy', this.copyEventListener);
+            this.copyEventListener = null;
+        }
+        console.log("Clipping disabled");
+    }
+};
+
+// 将启用和禁用函数暴露到 window 对象
+window.muxEnableClipping = () => clipboardMonitor.enableClipping();
+window.muxDisableClipping = () => clipboardMonitor.disableClipping();
 
 // 获取页面预埋内容函数
 const siyuanGetPageContent = async () => {

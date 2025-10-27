@@ -561,6 +561,15 @@ chrome.commands.onCommand.addListener((command) => {
                 });
             }
         })
+    } else if (command === 'toggle-clipboard-monitor') {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs.length > 0) {
+                chrome.tabs.sendMessage(tabs[0].id, {
+                    'func': 'toggle-clipboard-monitor-hotkey',
+                    'tabId': tabs[0].id,
+                })
+            }
+        })
     }
 })
 
@@ -658,6 +667,16 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         // 处理keepAlive消息，保持service worker活跃
         sendResponse({ status: 'alive' });
         return;
+    }
+    
+    if (request.func === 'getTabId') {
+        // 返回当前标签页ID
+        if (sender.tab && sender.tab.id) {
+            sendResponse({ tabId: sender.tab.id });
+        } else {
+            sendResponse({ tabId: null });
+        }
+        return true;
     }
     
     if (request.func === 'folo-clip') {
