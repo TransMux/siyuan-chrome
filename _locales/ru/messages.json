@@ -3,111 +3,147 @@
     "message": "SiYuan"
   },
   "extension_description": {
-    "message": "Сохраните веб-страницу в SiYuan одним щелчком мыши"
+    "message": "Save the web page to SiYuan with one click"
   },
   "copy_to_siyuan": {
-    "message": "Копировать в SiYuan"
+    "message": "Copy to SiYuan"
   },
   "capture_full_page": {
-    "message": "Захватить выбранные вкладки в SiYuan"
+    "message": "Capture selected tabs to SiYuan"
   },
   "capture_full_page_close": {
-    "message": "Захватить выбранные вкладки в SiYuan и закрыть"
+    "message": "Capture selected tabs to SiYuan and close"
+  },
+  "toggle_clipboard_monitor": {
+    "message": "Toggle clipboard monitoring"
   },
   "show_tip": {
-    "message": "Показать подсказку"
+    "message": "Show Tip"
   },
   "siyuan_url": {
-    "message": "URL SiYuan"
+    "message": "SiYuan URL"
   },
   "api_token": {
-    "message": "API токен"
+    "message": "API token"
   },
   "save_path": {
-    "message": "Путь сохранения"
+    "message": "Save path"
   },
   "save_path_placeholder": {
-    "message": "Введите ключевое слово и нажмите Enter для поиска"
+    "message": "Enter a keyword to search for the save path"
   },
   "tags": {
-    "message": "Теги"
+    "message": "Tags"
   },
   "tags_placeholder": {
-    "message": "Сохраните веб-страницу в SiYuan одним щелчком мыши, поддерживается автоматическая загрузка изображений на локальный диск, а также преобразование формул и блоков кода с большинства сайтов."
+    "message": "Use commas to separate multiple tags"
   },
   "assets": {
-    "message": "Скачать ресурсы"
+    "message": "Download assets"
+  },
+  "dirsFirst": {
+    "message": "Show directories first in path search"
+  },
+  "auto_clip_enabled": {
+    "message": "Enable auto-clipping"
+  },
+  "auto_clip_url_patterns": {
+    "message": "Auto-clipping URL patterns"
+  },
+  "auto_clip_url_patterns_placeholder": {
+    "message": "e.g., *github.com*, *news*, https://example.com/*"
+  },
+  "folo_listen_enabled": {
+    "message": "Enable folo collection listening"
   },
   "exp": {
-    "message": "Показать экспериментальные функции"
+    "message": "Show experimental features"
   },
   "exp_tips": {
-    "message": "*: Экспериментальные функции могут быть нестабильными. Если возникли проблемы с клиппингом, попробуйте изменить настройки."
+    "message": "*: Experimental features may be unstable. If there is a problem with clipping, consider switching it."
   },
   "exp_span": {
-    "message": "Обнаружить разрывы строк в span*"
+    "message": "Detect span text newlines*"
   },
   "exp_bold": {
-    "message": "Обнаружить стиль полужирного текста*"
+    "message": "Detect bold style*"
   },
   "exp_italic": {
-    "message": "Обнаружить стиль курсивом*"
+    "message": "Detect italic style*"
   },
   "exp_remove_img_link": {
-    "message": "Удалить ссылку на изображение*"
+    "message": "Remove image link*"
   },
   "exp_list_doc_tree": {
-    "message": "После вырезки веб-страницы отобразить дерево документа*"
+    "message": "After clipping a web page, display the document tree*"
   },
   "exp_open_after_clip": {
-    "message": "После вырезки веб-страницы открыть документ*"
+    "message": "After clipping a web page, open document*"
   },
   "exp_svg_to_img": {
-    "message": "Обнаружение SVG, встроенного в HTML*"
+    "message": "Detect SVG embedded in HTML*"
   },
   "language": {
-    "message": "Язык интерфейса"
+    "message": "Interface language"
   },
   "send": {
-    "message": "Отправить в SiYuan"
+    "message": "Send to SiYuan"
+  },
+  "send_and_close": {
+    "message": "Send to SiYuan and close"
   },
   "tip_first_time": {
-    "message": "После первого установления расширения SiYuan, пожалуйста, обновите страницу перед использованием"
+    "message": "After installing the SiYuan extension for the first time, please refresh the page before using it"
   },
   "tip_clipping": {
-    "message": "Клиппинг, подождите..."
+    "message": "Clipping, please wait a moment..."
   },
   "tip_clip_img": {
-    "message": "Клиппинг изображений"
+    "message": "Clipping images"
   },
   "tip_clip_ok": {
-    "message": "Клиппинг выполнен успешно"
+    "message": "Clipping successfully"
   },
   "tip_token_miss": {
-    "message": "Пожалуйста, настройте API токен перед клиппингом"
+    "message": "Please config API token before clipping content"
   },
   "tip_token_invalid": {
-    "message": "Неверный API токен"
+    "message": "Invalid API token"
   },
   "tip_save_path_miss": {
-    "message": "Пожалуйста, выберите путь сохранения перед клиппингом"
+    "message": "Please select save path before clipping content"
   },
   "tip_siyuan_kernel_unavailable": {
-    "message": "Пожалуйста, запустите SiYuan и убедитесь в наличии сетевого соединения перед повторной попыткой"
+    "message": "Please start SiYuan and ensure network connectivity before trying again"
   },
   "template_config": {
-    "message": "Конфигурация шаблона"
+    "message": "Clipping template"
   },
   "template_save": {
-    "message": "Сохранить"
+    "message": "Save"
   },
   "template_cancel": {
-    "message": "Отмена"
+    "message": "Cancel"
   },
   "template_saved": {
-    "message": "Шаблон успешно сохранен"
+    "message": "Template saved successfully"
   },
   "template_help": {
-    "message": "Доступные переменные:<br>${title} - Заголовок страницы<br>${url} - URL страницы<br>${siteName} - Имя сайта<br>${date} - Текущая дата (yyyy-MM-dd)<br>${time} - Текущее время (HH:mm)<br>${tags} - Теги<br>${excerpt} - Извлечение страницы<br>${content} - Содержимое страницы"
+    "message": "Available variables:<br>${title} - Page title<br>${url} - Page URL<br>${siteName} - Site name<br>${date} - Current date (yyyy-MM-dd)<br>${time} - Current time (HH:mm)<br>${tags} - Tags<br>${excerpt} - Page excerpt<br>${content} - Page content"
+  },
+  "template_restore_default": {
+    "message": "Restore default"
+  },
+  "database_label": {
+    "message": "Add to database"
+  },
+  "database_search_placeholder": {
+    "message": "Enter a keyword to search the database"
+  },
+  "save_path_none": {
+    "message": "None"
+  },
+  "database_none": {
+    "message": "None"
   }
 }

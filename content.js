@@ -85,6 +85,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 return
             }
 
+            if ('siyuanGetReadability' === request.func) {
+                siyuanGetReadability(request.tabId)
+                return
+            }
+
             if ('copy' !== request.func) {
                 return
             }
@@ -193,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 siyuanSendUpload(tempElement, request.tabId, request.srcUrl, "part", undefined, undefined, request.insertAtFocus)
             }
         })
+
     const copyToClipboard = async (textToCopy) => {
         // 临时禁用复制监控，避免触发
         const originalListener = clipboardMonitor.copyEventListener;
@@ -279,6 +285,37 @@ const siyuanConvertBlobToBase64 = (blob) => new Promise((resolve, reject) => {
     reader.onload = () => resolve(reader.result)
     reader.readAsDataURL(blob)
 })
+
+// 网页换行用 span 样式 word-break 的特殊处理 https://github.com/siyuan-note/siyuan/issues/13195
+// 递归查找父元素直到找到 pre、code、span、math 或 math相关标签
+function isIgnoredElement(element) {
+    // 递归查找父元素直到找到 pre、code、span、math 或 math相关标签
+    while (element) {
+        let tagName = element.tagName.toLowerCase();
+        const className = element.className.toLowerCase();
+        if (tagName === 'math' ||
+            className.includes('math') || className.includes('mathjax') || className.includes('latex') ||
+            className.includes('katex') || className.includes('mjx') || className.includes('mathml') ||
+            className.includes('equation') || className.includes('formula')) {
+            return true;
+        }
+
+        element = element.parentElement; // 移动到父元素
+        if (!element) {
+            break;
+        }
+
+        tagName = element.tagName.toLowerCase();
+
+        // 如果父元素是 pre、code、span、math 或与数学相关的类名
+        if (tagName === 'pre' || tagName === 'code' || tagName === 'span' || tagName === 'section') {
+            return true;
+        } else if (tagName === 'div' || tagName === 'p') {
+            return false; // 找到 div、p 直接返回
+        }
+    }
+    return false; // 没找到时返回 false
+}
 
 // 网页换行用 span 样式 word-break 的特殊处理 https://github.com/siyuan-note/siyuan/issues/13195
 // 递归查找父元素直到找到 pre、code、span、math 或 math相关标签
@@ -597,7 +634,7 @@ async function siyuanSvgToBase64(svgNode) {
         svgStr = '<?xml version="1.0" encoding="UTF-8"?>' + svgStr;
     }
 
-    const svgBlob = new Blob([svgStr], { type: 'image/svg+xml' });
+    const svgBlob = new Blob([svgStr], {type: 'image/svg+xml'});
 
     const dataUrl = await new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -1254,6 +1291,7 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
         expItalic: false,
         expRemoveImgLink: false,
         expListDocTree: false,
+        selectedDatabaseID: ''
     }, async function (items) {
         if (!items.token) {
             siyuanShowTipByKey("tip_token_miss")
@@ -1760,3 +1798,37 @@ const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabA
         siyuanShowTip(e.message, 7 * 1000);
     }
 };
+
+const siyuanGetReadability = async (tabId) => {
+    try {
+        siyuanShowTipByKey("tip_clipping", 60 * 1000)
+    } catch (e) {
+        alert(chrome.i18n.getMessage("tip_first_time"));
+        window.location.reload();
+        return;
+    }
+
+    try {
+        // 浏览器剪藏扩展剪藏某些网页代码块丢失注释 https://github.com/siyuan-note/siyuan/issues/5676
+        document.querySelectorAll(".hljs-comment").forEach(item => {
+            item.classList.remove("hljs-comment")
+            item.classList.add("hljs-cmt")
+        })
+
+        // 重构并合并 Readability 前处理 https://github.com/siyuan-note/siyuan/issues/13306
+        const clonedDoc = await siyuanGetCloneNode(document);
+
+        const article = new Readability(clonedDoc, {
+            keepClasses: true,
+            charThreshold: 16,
+            debug: true
+        }).parse()
+        const tempElement = document.createElement('div')
+        tempElement.innerHTML = article.content
+        // console.log(article)
+        siyuanSendUpload(tempElement, tabId, undefined, "article", article, window.location.href)
+    } catch (e) {
+        console.error(e)
+        siyuanShowTip(e.message, 7 * 1000)
+    }
+}

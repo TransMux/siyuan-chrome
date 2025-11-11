@@ -14,6 +14,9 @@
   "capture_full_page_close": {
     "message": "選択したタブをSiYuanにキャプチャして閉じる"
   },
+  "toggle_clipboard_monitor": {
+    "message": "クリップボード監視を切り替え"
+  },
   "show_tip": {
     "message": "ヒントを表示"
   },
@@ -27,7 +30,7 @@
     "message": "保存先"
   },
   "save_path_placeholder": {
-    "message": "キーワードを入力し、Enterキーを押して検索"
+    "message": "保存先パスを検索するキーワードを入力"
   },
   "tags": {
     "message": "タグ"
@@ -37,6 +40,21 @@
   },
   "assets": {
     "message": "リソースをダウンロード"
+  },
+  "dirsFirst": {
+    "message": "パス検索でフォルダを優先表示"
+  },
+  "auto_clip_enabled": {
+    "message": "自動クリッピングを有効にする"
+  },
+  "auto_clip_url_patterns": {
+    "message": "自動クリッピングURLパターン"
+  },
+  "auto_clip_url_patterns_placeholder": {
+    "message": "例：*github.com*, *news*, https://example.com/*"
+  },
+  "folo_listen_enabled": {
+    "message": "foloコレクション監視を有効にする"
   },
   "exp": {
     "message": "実験的な機能を表示"
@@ -56,20 +74,23 @@
   "exp_remove_img_link": {
     "message": "画像リンクを削除"
   },
-  "exp_svg_to_img": {
-    "message": "HTMLに埋め込まれたSVGの検出*"
-  },
-  "language": {
-    "message": "インターフェース言語"
-  },
   "exp_list_doc_tree": {
     "message": "ウェブページのクリッピング後、文書ツリーを表示*"
   },
   "exp_open_after_clip": {
     "message": "ウェブページのクリッピング後、ドキュメントを開く*"
   },
+  "exp_svg_to_img": {
+    "message": "HTMLに埋め込まれたSVGの検出*"
+  },
+  "language": {
+    "message": "インターフェース言語"
+  },
   "send": {
     "message": "SiYuanに送信"
+  },
+  "send_and_close": {
+    "message": "SiYuanに送信して閉じる"
   },
   "tip_first_time": {
     "message": "SiYuan拡張機能を初めてインストールした後、使用する前にページを更新してください"
@@ -109,5 +130,20 @@
   },
   "template_help": {
     "message": "利用可能な変数：<br>${title} - ページタイトル<br>${url} - ページURL<br>${siteName} - サイト名<br>${date} - 現在の日付 (yyyy-MM-dd)<br>${time} - 現在の時間 (HH:mm)<br>${tags} - タグ<br>${excerpt} - ページの抜粋<br>${content} - ページの内容"
+  },
+  "template_restore_default": {
+    "message": "デフォルトに戻す"
+  },
+  "database_label": {
+    "message": "データベースに追加"
+  },
+  "database_search_placeholder": {
+    "message": "データベースを検索するキーワードを入力"
+  },
+  "save_path_none": {
+    "message": "なし"
+  },
+  "database_none": {
+    "message": "なし"
   }
 }

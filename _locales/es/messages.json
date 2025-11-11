@@ -3,111 +3,147 @@
     "message": "SiYuan"
   },
   "extension_description": {
-    "message": "Guarda la página web en SiYuan con un solo clic"
+    "message": "Save the web page to SiYuan with one click"
   },
   "copy_to_siyuan": {
-    "message": "Copiar a SiYuan"
+    "message": "Copy to SiYuan"
   },
   "capture_full_page": {
-    "message": "Capturar pestañas seleccionadas a SiYuan"
+    "message": "Capture selected tabs to SiYuan"
   },
   "capture_full_page_close": {
-    "message": "Capturar pestañas seleccionadas a SiYuan y cerrar"
+    "message": "Capture selected tabs to SiYuan and close"
+  },
+  "toggle_clipboard_monitor": {
+    "message": "Toggle clipboard monitoring"
   },
   "show_tip": {
-    "message": "Mostrar consejo"
+    "message": "Show Tip"
   },
   "siyuan_url": {
-    "message": "URL de SiYuan"
+    "message": "SiYuan URL"
   },
   "api_token": {
-    "message": "Token API"
+    "message": "API token"
   },
   "save_path": {
-    "message": "Ruta de guardado"
+    "message": "Save path"
   },
   "save_path_placeholder": {
-    "message": "Introduce la palabra clave y presiona Enter para buscar"
+    "message": "Enter a keyword to search for the save path"
   },
   "tags": {
-    "message": "Etiquetas"
+    "message": "Tags"
   },
   "tags_placeholder": {
-    "message": "Usa comas para separar múltiples etiquetas"
+    "message": "Use commas to separate multiple tags"
   },
   "assets": {
-    "message": "Descargar recursos"
+    "message": "Download assets"
+  },
+  "dirsFirst": {
+    "message": "Show directories first in path search"
+  },
+  "auto_clip_enabled": {
+    "message": "Enable auto-clipping"
+  },
+  "auto_clip_url_patterns": {
+    "message": "Auto-clipping URL patterns"
+  },
+  "auto_clip_url_patterns_placeholder": {
+    "message": "e.g., *github.com*, *news*, https://example.com/*"
+  },
+  "folo_listen_enabled": {
+    "message": "Enable folo collection listening"
   },
   "exp": {
-    "message": "Mostrar características experimentales"
+    "message": "Show experimental features"
   },
   "exp_tips": {
-    "message": "*: Las características experimentales pueden ser inestables. Si hay un problema con el recorte, intenta cambiarlo."
+    "message": "*: Experimental features may be unstable. If there is a problem with clipping, consider switching it."
   },
   "exp_span": {
-    "message": "Detectar saltos de línea en span*"
+    "message": "Detect span text newlines*"
   },
   "exp_bold": {
-    "message": "Detectar estilo negrita*"
+    "message": "Detect bold style*"
   },
   "exp_italic": {
-    "message": "Detectar estilo cursiva*"
+    "message": "Detect italic style*"
   },
   "exp_remove_img_link": {
-    "message": "Eliminar enlace de imagen*"
+    "message": "Remove image link*"
   },
   "exp_list_doc_tree": {
-    "message": "Después de recortar una página web, mostrar árbol de documentos*"
+    "message": "After clipping a web page, display the document tree*"
   },
   "exp_open_after_clip": {
-    "message": "Después de recortar una página web, abrir documento*"
+    "message": "After clipping a web page, open document*"
   },
   "exp_svg_to_img": {
-    "message": "Detectar SVG incrustado en HTML*"
+    "message": "Detect SVG embedded in HTML*"
   },
   "language": {
-    "message": "Idioma de la interfaz"
+    "message": "Interface language"
   },
   "send": {
-    "message": "Enviar a SiYuan"
+    "message": "Send to SiYuan"
+  },
+  "send_and_close": {
+    "message": "Send to SiYuan and close"
   },
   "tip_first_time": {
-    "message": "Después de instalar la extensión SiYuan por primera vez, actualice la página antes de usarla"
+    "message": "After installing the SiYuan extension for the first time, please refresh the page before using it"
   },
   "tip_clipping": {
-    "message": "Recortando, por favor espere..."
+    "message": "Clipping, please wait a moment..."
   },
   "tip_clip_img": {
-    "message": "Recortando imagen"
+    "message": "Clipping images"
   },
   "tip_clip_ok": {
-    "message": "Recorte exitoso"
+    "message": "Clipping successfully"
   },
   "tip_token_miss": {
-    "message": "Configure el token API antes de recortar el contenido"
+    "message": "Please config API token before clipping content"
   },
   "tip_token_invalid": {
-    "message": "Token API inválido"
+    "message": "Invalid API token"
   },
   "tip_save_path_miss": {
-    "message": "Seleccione la ruta de guardado antes de recortar el contenido"
+    "message": "Please select save path before clipping content"
   },
   "tip_siyuan_kernel_unavailable": {
-    "message": "Inicie SiYuan y asegúrese de que haya conectividad de red antes de intentar nuevamente"
+    "message": "Please start SiYuan and ensure network connectivity before trying again"
   },
   "template_config": {
-    "message": "Configuración de plantilla de recorte"
+    "message": "Clipping template"
   },
   "template_save": {
-    "message": "Guardar"
+    "message": "Save"
   },
   "template_cancel": {
-    "message": "Cancelar"
+    "message": "Cancel"
   },
   "template_saved": {
-    "message": "Plantilla guardada exitosamente"
+    "message": "Template saved successfully"
   },
   "template_help": {
-    "message": "Variables disponibles:<br>${title} - Título de la página<br>${url} - URL de la página<br>${siteName} - Nombre del sitio<br>${date} - Fecha actual (yyyy-MM-dd)<br>${time} - Hora actual (HH:mm)<br>${tags} - Etiquetas<br>${excerpt} - Extracto de la página<br>${content} - Contenido de la página"
+    "message": "Available variables:<br>${title} - Page title<br>${url} - Page URL<br>${siteName} - Site name<br>${date} - Current date (yyyy-MM-dd)<br>${time} - Current time (HH:mm)<br>${tags} - Tags<br>${excerpt} - Page excerpt<br>${content} - Page content"
+  },
+  "template_restore_default": {
+    "message": "Restore default"
+  },
+  "database_label": {
+    "message": "Add to database"
+  },
+  "database_search_placeholder": {
+    "message": "Enter a keyword to search the database"
+  },
+  "save_path_none": {
+    "message": "None"
+  },
+  "database_none": {
+    "message": "None"
   }
 }

@@ -1,113 +1,149 @@
 {
   "extension_name": {
-    "message": "سييوان (SiYuan)"
+    "message": "SiYuan"
   },
   "extension_description": {
-    "message": "احفظ صفحة الويب في SiYuan بنقرة واحدة"
+    "message": "Save the web page to SiYuan with one click"
   },
   "copy_to_siyuan": {
-    "message": "نسخ إلى سييوان"
+    "message": "Copy to SiYuan"
   },
   "capture_full_page": {
-    "message": "التقاط علامات التبويب المحددة إلى SiYuan"
+    "message": "Capture selected tabs to SiYuan"
   },
   "capture_full_page_close": {
-    "message": "التقاط علامات التبويب المحددة إلى SiYuan وإغلاق"
+    "message": "Capture selected tabs to SiYuan and close"
+  },
+  "toggle_clipboard_monitor": {
+    "message": "Toggle clipboard monitoring"
   },
   "show_tip": {
-    "message": "إظهار النصائح"
+    "message": "Show Tip"
   },
   "siyuan_url": {
-    "message": "رابط سييوان"
+    "message": "SiYuan URL"
   },
   "api_token": {
-    "message": "رمز API"
+    "message": "API token"
   },
   "save_path": {
-    "message": "مسار الحفظ"
+    "message": "Save path"
   },
   "save_path_placeholder": {
-    "message": "أدخل الكلمة المفتاحية ثم اضغط Enter للبحث"
+    "message": "Enter a keyword to search for the save path"
   },
   "tags": {
-    "message": "العلامات"
+    "message": "Tags"
   },
   "tags_placeholder": {
-    "message": "استخدم الفواصل لفصل العلامات"
+    "message": "Use commas to separate multiple tags"
   },
   "assets": {
-    "message": "تحميل الأصول"
+    "message": "Download assets"
+  },
+  "dirsFirst": {
+    "message": "Show directories first in path search"
+  },
+  "auto_clip_enabled": {
+    "message": "Enable auto-clipping"
+  },
+  "auto_clip_url_patterns": {
+    "message": "Auto-clipping URL patterns"
+  },
+  "auto_clip_url_patterns_placeholder": {
+    "message": "e.g., *github.com*, *news*, https://example.com/*"
+  },
+  "folo_listen_enabled": {
+    "message": "Enable folo collection listening"
   },
   "exp": {
-    "message": "عرض الميزات التجريبية"
+    "message": "Show experimental features"
   },
   "exp_tips": {
-    "message": "*: الميزات التجريبية قد تكون غير مستقرة. إذا كانت هناك مشكلة في القص، حاول التبديل بينها."
+    "message": "*: Experimental features may be unstable. If there is a problem with clipping, consider switching it."
   },
   "exp_span": {
-    "message": "اكتشاف فواصل النص في span*"
+    "message": "Detect span text newlines*"
   },
   "exp_bold": {
-    "message": "اكتشاف النصوص العريضة*"
+    "message": "Detect bold style*"
   },
   "exp_italic": {
-    "message": "اكتشاف النصوص المائلة*"
+    "message": "Detect italic style*"
   },
   "exp_remove_img_link": {
-    "message": "إزالة رابط الصورة*"
+    "message": "Remove image link*"
   },
   "exp_list_doc_tree": {
-    "message": "بعد قص صفحة الويب، قم بإظهار شجرة المستند*"
+    "message": "After clipping a web page, display the document tree*"
   },
   "exp_open_after_clip": {
-    "message": "بعد قص صفحة الويب، افتح المستند*"
+    "message": "After clipping a web page, open document*"
   },
   "exp_svg_to_img": {
-    "message": "الكشف عن SVG المضمن في HTML*"
+    "message": "Detect SVG embedded in HTML*"
   },
   "language": {
-    "message": "لغة الواجهة"
+    "message": "Interface language"
   },
   "send": {
-    "message": "إرسال إلى سييوان"
+    "message": "Send to SiYuan"
+  },
+  "send_and_close": {
+    "message": "Send to SiYuan and close"
   },
   "tip_first_time": {
-    "message": "بعد تثبيت الإضافة لأول مرة، يُرجى تحديث الصفحة قبل استخدامها"
+    "message": "After installing the SiYuan extension for the first time, please refresh the page before using it"
   },
   "tip_clipping": {
-    "message": "جارٍ القص، يرجى الانتظار..."
+    "message": "Clipping, please wait a moment..."
   },
   "tip_clip_img": {
-    "message": "جارٍ قص الصورة"
+    "message": "Clipping images"
   },
   "tip_clip_ok": {
-    "message": "تم القص بنجاح"
+    "message": "Clipping successfully"
   },
   "tip_token_miss": {
-    "message": "يرجى تكوين رمز API قبل قص المحتوى"
+    "message": "Please config API token before clipping content"
   },
   "tip_token_invalid": {
-    "message": "رمز API غير صالح"
+    "message": "Invalid API token"
   },
   "tip_save_path_miss": {
-    "message": "يرجى اختيار مسار الحفظ قبل قص المحتوى"
+    "message": "Please select save path before clipping content"
   },
   "tip_siyuan_kernel_unavailable": {
-    "message": "يرجى تشغيل سييوان والتأكد من الاتصال بالشبكة قبل المحاولة مرة أخرى"
+    "message": "Please start SiYuan and ensure network connectivity before trying again"
   },
   "template_config": {
-    "message": "إعداد قالب القص"
+    "message": "Clipping template"
   },
   "template_save": {
-    "message": "حفظ"
+    "message": "Save"
   },
   "template_cancel": {
-    "message": "إلغاء"
+    "message": "Cancel"
   },
   "template_saved": {
-    "message": "تم حفظ القالب بنجاح"
+    "message": "Template saved successfully"
   },
   "template_help": {
-    "message": "المتغيرات المتاحة:<br>${title} - عنوان الصفحة<br>${url} - رابط الصفحة<br>${siteName} - اسم الموقع<br>${date} - التاريخ الحالي (yyyy-MM-dd)<br>${time} - الوقت الحالي (HH:mm)<br>${tags} - العلامات<br>${excerpt} - مقتطف من الصفحة<br>${content} - محتوى الصفحة"
+    "message": "Available variables:<br>${title} - Page title<br>${url} - Page URL<br>${siteName} - Site name<br>${date} - Current date (yyyy-MM-dd)<br>${time} - Current time (HH:mm)<br>${tags} - Tags<br>${excerpt} - Page excerpt<br>${content} - Page content"
+  },
+  "template_restore_default": {
+    "message": "Restore default"
+  },
+  "database_label": {
+    "message": "Add to database"
+  },
+  "database_search_placeholder": {
+    "message": "Enter a keyword to search the database"
+  },
+  "save_path_none": {
+    "message": "None"
+  },
+  "database_none": {
+    "message": "None"
   }
 }

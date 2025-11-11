@@ -30,7 +30,7 @@
     "message": "儲存路徑"
   },
   "save_path_placeholder": {
-    "message": "輸入關鍵字然後按回車鍵開始搜尋"
+    "message": "輸入關鍵字搜尋保存路徑"
   },
   "tags": {
     "message": "標籤"
@@ -40,6 +40,21 @@
   },
   "assets": {
     "message": "下載資源"
+  },
+  "dirsFirst": {
+    "message": "路徑搜尋時目錄優先顯示"
+  },
+  "auto_clip_enabled": {
+    "message": "啟用自動剪藏"
+  },
+  "auto_clip_url_patterns": {
+    "message": "自動剪藏URL模式"
+  },
+  "auto_clip_url_patterns_placeholder": {
+    "message": "例如：*github.com*, *news*, https://example.com/*"
+  },
+  "folo_listen_enabled": {
+    "message": "啟用folo收藏操作監聽"
   },
   "exp": {
     "message": "顯示實驗性特性"
@@ -73,6 +88,9 @@
   },
   "send": {
     "message": "發送到思源(SiYuan)"
+  },
+  "send_and_close": {
+    "message": "發送到思源並關閉"
   },
   "tip_first_time": {
     "message": "首次安裝思源擴展後，請刷新頁面後再使用"
@@ -112,5 +130,20 @@
   },
   "template_help": {
     "message": "可用變數：<br>${title} - 頁面標題<br>${url} - 頁面URL<br>${siteName} - 網站名稱<br>${date} - 當前日期 (yyyy-MM-dd)<br>${time} - 當前時間 (HH:mm)<br>${tags} - 標籤<br>${excerpt} - 頁面摘要<br>${content} - 頁面內容"
+  },
+  "template_restore_default": {
+    "message": "恢復預設"
+  },
+  "database_label": {
+    "message": "添加到資料庫"
+  },
+  "database_search_placeholder": {
+    "message": "輸入關鍵字搜尋資料庫"
+  },
+  "save_path_none": {
+    "message": "無"
+  },
+  "database_none": {
+    "message": "無"
   }
 }

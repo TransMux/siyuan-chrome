@@ -3,111 +3,147 @@
     "message": "SiYuan"
   },
   "extension_description": {
-    "message": "Enregistrez la page web dans SiYuan en un clic"
+    "message": "Save the web page to SiYuan with one click"
   },
   "copy_to_siyuan": {
-    "message": "Copier vers SiYuan"
+    "message": "Copy to SiYuan"
   },
   "capture_full_page": {
-    "message": "Capturer les onglets sélectionnés vers SiYuan"
+    "message": "Capture selected tabs to SiYuan"
   },
   "capture_full_page_close": {
-    "message": "Capturer les onglets sélectionnés vers SiYuan et fermer"
+    "message": "Capture selected tabs to SiYuan and close"
+  },
+  "toggle_clipboard_monitor": {
+    "message": "Toggle clipboard monitoring"
   },
   "show_tip": {
-    "message": "Afficher les astuces"
+    "message": "Show Tip"
   },
   "siyuan_url": {
-    "message": "URL de SiYuan"
+    "message": "SiYuan URL"
   },
   "api_token": {
-    "message": "Jeton API"
+    "message": "API token"
   },
   "save_path": {
-    "message": "Chemin de sauvegarde"
+    "message": "Save path"
   },
   "save_path_placeholder": {
-    "message": "Entrez le mot-clé puis appuyez sur Entrée pour rechercher"
+    "message": "Enter a keyword to search for the save path"
   },
   "tags": {
     "message": "Tags"
   },
   "tags_placeholder": {
-    "message": "Utilisez des virgules pour séparer plusieurs tags"
+    "message": "Use commas to separate multiple tags"
   },
   "assets": {
-    "message": "Télécharger les ressources"
+    "message": "Download assets"
+  },
+  "dirsFirst": {
+    "message": "Show directories first in path search"
+  },
+  "auto_clip_enabled": {
+    "message": "Enable auto-clipping"
+  },
+  "auto_clip_url_patterns": {
+    "message": "Auto-clipping URL patterns"
+  },
+  "auto_clip_url_patterns_placeholder": {
+    "message": "e.g., *github.com*, *news*, https://example.com/*"
+  },
+  "folo_listen_enabled": {
+    "message": "Enable folo collection listening"
   },
   "exp": {
-    "message": "Afficher les fonctionnalités expérimentales"
+    "message": "Show experimental features"
   },
   "exp_tips": {
-    "message": "*: Les fonctionnalités expérimentales peuvent être instables. Si vous avez un problème de clipping, essayez de les changer."
+    "message": "*: Experimental features may be unstable. If there is a problem with clipping, consider switching it."
   },
   "exp_span": {
-    "message": "Détecter les sauts de ligne dans span*"
+    "message": "Detect span text newlines*"
   },
   "exp_bold": {
-    "message": "Détecter le style gras*"
+    "message": "Detect bold style*"
   },
   "exp_italic": {
-    "message": "Détecter le style italique*"
+    "message": "Detect italic style*"
   },
   "exp_remove_img_link": {
-    "message": "Supprimer le lien de l'image*"
+    "message": "Remove image link*"
   },
   "exp_list_doc_tree": {
-    "message": "Après extraction de page web, afficher l'arborescence du document*"
+    "message": "After clipping a web page, display the document tree*"
   },
   "exp_open_after_clip": {
-    "message": "Après extraction de page web, ouvrir le document*"
+    "message": "After clipping a web page, open document*"
   },
   "exp_svg_to_img": {
-    "message": "Détecter SVG intégré dans HTML*"
+    "message": "Detect SVG embedded in HTML*"
   },
   "language": {
-    "message": "Langue de l'interface"
+    "message": "Interface language"
   },
   "send": {
-    "message": "Envoyer à SiYuan"
+    "message": "Send to SiYuan"
+  },
+  "send_and_close": {
+    "message": "Send to SiYuan and close"
   },
   "tip_first_time": {
-    "message": "Après avoir installé l'extension SiYuan pour la première fois, veuillez rafraîchir la page avant de l'utiliser"
+    "message": "After installing the SiYuan extension for the first time, please refresh the page before using it"
   },
   "tip_clipping": {
-    "message": "Clipping, veuillez patienter..."
+    "message": "Clipping, please wait a moment..."
   },
   "tip_clip_img": {
-    "message": "Clipping des images"
+    "message": "Clipping images"
   },
   "tip_clip_ok": {
-    "message": "Clipping réussi"
+    "message": "Clipping successfully"
   },
   "tip_token_miss": {
-    "message": "Veuillez configurer le jeton API avant de recouper le contenu"
+    "message": "Please config API token before clipping content"
   },
   "tip_token_invalid": {
-    "message": "Jeton API invalide"
+    "message": "Invalid API token"
   },
   "tip_save_path_miss": {
-    "message": "Veuillez sélectionner le chemin de sauvegarde avant de recouper le contenu"
+    "message": "Please select save path before clipping content"
   },
   "tip_siyuan_kernel_unavailable": {
-    "message": "Veuillez démarrer SiYuan et vous assurer que la connexion réseau fonctionne avant de réessayer"
+    "message": "Please start SiYuan and ensure network connectivity before trying again"
   },
   "template_config": {
-    "message": "Configuration du modèle de clipping"
+    "message": "Clipping template"
   },
   "template_save": {
-    "message": "Enregistrer"
+    "message": "Save"
   },
   "template_cancel": {
-    "message": "Annuler"
+    "message": "Cancel"
   },
   "template_saved": {
-    "message": "Modèle enregistré avec succès"
+    "message": "Template saved successfully"
   },
   "template_help": {
-    "message": "Variables disponibles:<br>${title} - Titre de la page<br>${url} - URL de la page<br>${siteName} - Nom du site<br>${date} - Date actuelle (yyyy-MM-dd)<br>${time} - Heure actuelle (HH:mm)<br>${tags} - Tags<br>${excerpt} - Extrait de la page<br>${content} - Contenu de la page"
+    "message": "Available variables:<br>${title} - Page title<br>${url} - Page URL<br>${siteName} - Site name<br>${date} - Current date (yyyy-MM-dd)<br>${time} - Current time (HH:mm)<br>${tags} - Tags<br>${excerpt} - Page excerpt<br>${content} - Page content"
+  },
+  "template_restore_default": {
+    "message": "Restore default"
+  },
+  "database_label": {
+    "message": "Add to database"
+  },
+  "database_search_placeholder": {
+    "message": "Enter a keyword to search the database"
+  },
+  "save_path_none": {
+    "message": "None"
+  },
+  "database_none": {
+    "message": "None"
   }
 }
