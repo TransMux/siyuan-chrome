@@ -94,7 +94,7 @@
                 case 'fallback':
                     return ""
                 default:
-                    // throw Error(`⚠️ 未支持的块类型: ${blockType}`);
+                    console.log(`⚠️ 未支持的块类型: ${blockType}`, block);
                     return ""
             }
         }
