@@ -868,7 +868,8 @@
                 return {
                     type: "markdown",
                     content: null,
-                    success: false
+                    success: false,
+                    refresh: false
                 };
             }
 
@@ -879,7 +880,8 @@
                 return {
                     type: "markdown",
                     content: null,
-                    success: false
+                    success: false,
+                    refresh: false
                 };
             }
 
@@ -913,7 +915,8 @@
                 type: "markdown",
                 title: converter.getDocumentTitle(),
                 content: markdown,
-                success: true
+                success: true,
+                refresh: false
             };
         } catch (error) {
             console.error('❌ 转换过程中发生错误:', error);
@@ -921,7 +924,8 @@
                 type: "markdown",
                 content: null,
                 success: false,
-                error: error.message
+                error: error.message,
+                refresh: false
             };
         }
     };

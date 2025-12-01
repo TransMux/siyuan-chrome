@@ -1458,6 +1458,7 @@ const siyuanSendUpload = async (tempElement, tabId, srcUrl, type, article, href,
 
 // 完整页面抓取函数
 const siyuanCaptureFullPage = async (tabId, closeTabAfter = false) => {
+    debugger
     try {
         siyuanShowTipByKey("tip_clipping", 60 * 1000)
     } catch (e) {
@@ -1466,21 +1467,26 @@ const siyuanCaptureFullPage = async (tabId, closeTabAfter = false) => {
     }
 
     try {
+        debugger
         // 首先尝试获取页面预埋的内容
         siyuanShowTip("尝试从页面中获取信息...", 60 * 1000)
         const preEmbeddedContent = await siyuanGetPageContent();
         if (preEmbeddedContent && preEmbeddedContent.success && preEmbeddedContent.content) {
             console.log('Found pre-embedded content, using it directly');
             
+            // 检查是否需要刷新页面
+            const shouldRefresh = preEmbeddedContent.refresh === true;
+            const noReload = !shouldRefresh;
+            
             if (preEmbeddedContent.contentType === 'markdown') {
                 // 对于markdown类型，直接发送给思源，跳过HTML解析
-                siyuanSendMarkdownContent(preEmbeddedContent.content, tabId, window.location.href, closeTabAfter, true, preEmbeddedContent.title);
+                siyuanSendMarkdownContent(preEmbeddedContent.content, tabId, window.location.href, closeTabAfter, noReload, preEmbeddedContent.title);
                 return;
             } else if (preEmbeddedContent.contentType === 'dom') {
                 // 对于DOM类型，使用预埋的内容
                 const tempElement = document.createElement('div');
                 tempElement.innerHTML = preEmbeddedContent.content;
-                siyuanSendUpload(tempElement, tabId, undefined, "article", null, window.location.href, undefined, closeTabAfter, true);
+                siyuanSendUpload(tempElement, tabId, undefined, "article", null, window.location.href, undefined, closeTabAfter, noReload);
                 return;
             }
         }

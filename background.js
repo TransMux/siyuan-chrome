@@ -489,10 +489,11 @@ function matchesUrlPattern(url, pattern) {
     }
     
     // 将通配符模式转换为正则表达式
-    // 先转义所有特殊字符，然后将 \* 替换为 .*
+    // 先将 * 替换为临时占位符，转义其他特殊字符，然后再替换回来
     const regexPattern = normalizedPattern
+        .replace(/\*/g, '__WILDCARD__') // 先用占位符替换 *
         .replace(/[.+?^${}()|[\]\\]/g, '\\$&') // 转义正则特殊字符
-        .replace(/\\\*/g, '.*'); // 将 \* 替换为 .*
+        .replace(/__WILDCARD__/g, '.*'); // 将占位符替换为 .*
     
     try {
         const regex = new RegExp('^' + regexPattern + '$', 'i');
@@ -571,15 +572,33 @@ async function injectScriptsForTab(tabId, url) {
             try {
                 const scriptPath = script.inject;
                 
+                // 检查标签页是否仍然存在
+                try {
+                    await chrome.tabs.get(tabId);
+                } catch (e) {
+                    console.warn(`Tab ${tabId} no longer exists, skipping script injection`);
+                    return;
+                }
+                
                 // 使用 chrome.scripting.executeScript 注入脚本文件
                 await chrome.scripting.executeScript({
                     target: { tabId: tabId },
-                    files: [scriptPath]
+                    files: [scriptPath],
+                    world: 'MAIN'
                 });
                 
                 console.log(`✅ Injected script: ${scriptPath}`);
             } catch (error) {
-                console.error(`❌ Failed to inject script ${script.inject}:`, error);
+                // 忽略常见的错误（如标签页已关闭、页面无法访问等）
+                if (error.message && (
+                    error.message.includes('No tab with id') ||
+                    error.message.includes('Cannot access') ||
+                    error.message.includes('Receiving end does not exist')
+                )) {
+                    console.debug(`Skipping script injection for tab ${tabId}:`, error.message);
+                } else {
+                    console.error(`❌ Failed to inject script ${script.inject}:`, error);
+                }
             }
         }
     } catch (error) {

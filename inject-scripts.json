@@ -11,6 +11,14 @@
     {
       "url_pattern": "*.feishu.cn/wiki/*",
       "inject": "inject/飞书wiki.js"
+    },
+    {
+      "url_pattern": "*.feishu.cn/docx/*",
+      "inject": "inject/飞书wiki.js"
+    },
+    {
+      "url_pattern": "bytedance.larkoffice.com/docx/*",
+      "inject": "inject/飞书wiki.js"
     }
   ]
 }
