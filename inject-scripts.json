@@ -1,0 +1,16 @@
+{
+  "scripts": [
+    {
+      "url_pattern": "*",
+      "inject": "inject/全局.js"
+    },
+    {
+      "url_pattern": "*.zhihu.com/*",
+      "inject": "inject/知乎.js"
+    },
+    {
+      "url_pattern": "*.feishu.cn/wiki/*",
+      "inject": "inject/飞书wiki.js"
+    }
+  ]
+}

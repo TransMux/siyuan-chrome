@@ -18,6 +18,11 @@ chrome.runtime.onInstalled.addListener(() => {
     
     // 初始化folo监听规则
     initFoloListenRules();
+    
+    // 预加载注入脚本配置
+    loadInjectScriptsConfig().catch(error => {
+        console.error('Failed to preload inject scripts config:', error);
+    });
 });
 
 // 初始化folo监听规则
@@ -470,12 +475,116 @@ function matchesUrlPattern(url, pattern) {
     if (!pattern || pattern.trim() === '') return false;
     
     // 将通配符模式转换为正则表达式
-    const regexPattern = pattern
-        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // 转义正则特殊字符
+    // 处理常见的URL模式格式，如 *.example.com/* 或 *://*.example.com/*
+    let normalizedPattern = pattern.trim();
+    
+    // 如果模式是 "*"，匹配所有URL
+    if (normalizedPattern === '*') {
+        return true;
+    }
+    
+    // 如果模式不包含协议，添加通配符协议匹配
+    if (!normalizedPattern.includes('://')) {
+        normalizedPattern = '*://' + normalizedPattern;
+    }
+    
+    // 将通配符模式转换为正则表达式
+    // 先转义所有特殊字符，然后将 \* 替换为 .*
+    const regexPattern = normalizedPattern
+        .replace(/[.+?^${}()|[\]\\]/g, '\\$&') // 转义正则特殊字符
         .replace(/\\\*/g, '.*'); // 将 \* 替换为 .*
     
-    const regex = new RegExp('^' + regexPattern + '$', 'i');
-    return regex.test(url);
+    try {
+        const regex = new RegExp('^' + regexPattern + '$', 'i');
+        return regex.test(url);
+    } catch (error) {
+        console.error('Invalid URL pattern:', pattern, error);
+        return false;
+    }
+}
+
+// 加载注入脚本配置
+let injectScriptsConfig = null;
+let injectScriptsConfigPromise = null;
+
+async function loadInjectScriptsConfig() {
+    if (injectScriptsConfig) {
+        return injectScriptsConfig;
+    }
+    
+    if (injectScriptsConfigPromise) {
+        return injectScriptsConfigPromise;
+    }
+    
+    injectScriptsConfigPromise = (async () => {
+        try {
+            const configUrl = chrome.runtime.getURL('inject-scripts.json');
+            const response = await fetch(configUrl);
+            if (!response.ok) {
+                console.warn('Failed to load inject-scripts.json:', response.status);
+                return null;
+            }
+            const config = await response.json();
+            injectScriptsConfig = config;
+            console.log('✅ Loaded inject scripts config:', config);
+            return config;
+        } catch (error) {
+            console.error('❌ Failed to load inject-scripts.json:', error);
+            return null;
+        } finally {
+            injectScriptsConfigPromise = null;
+        }
+    })();
+    
+    return injectScriptsConfigPromise;
+}
+
+// 为页面注入脚本
+async function injectScriptsForTab(tabId, url) {
+    try {
+        // 排除特殊页面
+        if (!url || url.startsWith('chrome://') || url.startsWith('chrome-extension://') || url.startsWith('edge://')) {
+            return;
+        }
+        
+        const config = await loadInjectScriptsConfig();
+        if (!config || !config.scripts || !Array.isArray(config.scripts)) {
+            return;
+        }
+        
+        // 找到匹配的脚本
+        const matchedScripts = config.scripts.filter(script => {
+            if (!script.url_pattern || !script.inject) {
+                return false;
+            }
+            return matchesUrlPattern(url, script.url_pattern);
+        });
+        
+        if (matchedScripts.length === 0) {
+            return;
+        }
+        
+        console.log(`🔧 Injecting ${matchedScripts.length} script(s) for URL: ${url}`);
+        
+        // 注入所有匹配的脚本
+        for (const script of matchedScripts) {
+            try {
+                const scriptPath = script.inject;
+                
+                // 使用 chrome.scripting.executeScript 注入脚本文件
+                await chrome.scripting.executeScript({
+                    target: { tabId: tabId },
+                    files: [scriptPath]
+                });
+                
+                console.log(`✅ Injected script: ${scriptPath}`);
+            } catch (error) {
+                console.error(`❌ Failed to inject script ${script.inject}:`, error);
+            }
+        }
+    } catch (error) {
+        console.error('❌ Error injecting scripts:', error);
+    }
 }
 
 // 检查URL是否匹配任何配置的模式
@@ -488,8 +597,16 @@ function shouldAutoClip(url, patterns) {
 
 // 监听标签页更新事件
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (!tab.url) return;
+    
     // 只在页面加载完成时触发
-    if (changeInfo.status === 'complete' && tab.url) {
+    if (changeInfo.status === 'complete') {
+        // 首先注入脚本
+        injectScriptsForTab(tabId, tab.url).catch(error => {
+            console.error('Failed to inject scripts:', error);
+        });
+        
+        // 然后处理自动剪藏逻辑
         chrome.storage.sync.get({
             autoClipEnabled: false,
             autoClipUrlPatterns: '',
