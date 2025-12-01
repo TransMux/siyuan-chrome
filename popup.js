@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const expRemoveImgLinkElement = document.getElementById('expRemoveImgLink')
     const expListDocTreeElement = document.getElementById('expListDocTree')
     const expSvgToImgElement = document.getElementById('expSvgToImg')
+    const expInjectPageScriptsElement = document.getElementById('expInjectPageScripts')
     const autoClipEnabledElement = document.getElementById('autoClipEnabled')
     const autoClipUrlPatternsElement = document.getElementById('autoClipUrlPatterns')
     const foloListenEnabledElement = document.getElementById('foloListenEnabled')
@@ -279,6 +280,11 @@ document.addEventListener('DOMContentLoaded', () => {
             expSvgToImg: expSvgToImgElement.checked,
         })
     })
+    expInjectPageScriptsElement.addEventListener('change', () => {
+        chrome.storage.sync.set({
+            expInjectPageScripts: expInjectPageScriptsElement.checked,
+        })
+    })
     autoClipEnabledElement.addEventListener('change', () => {
         chrome.storage.sync.set({
             autoClipEnabled: autoClipEnabledElement.checked,
@@ -369,6 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
         expRemoveImgLink: false,
         expListDocTree: false,
         expSvgToImg: false,
+        expInjectPageScripts: false,
         autoClipEnabled: false,
         autoClipUrlPatterns: '',
         foloListenEnabled: false,
@@ -417,6 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
         expRemoveImgLinkElement.checked = items.expRemoveImgLink
         expListDocTreeElement.checked = items.expListDocTree
         expSvgToImgElement.checked = items.expSvgToImg
+        expInjectPageScriptsElement.checked = items.expInjectPageScripts
         autoClipEnabledElement.checked = items.autoClipEnabled
         autoClipUrlPatternsElement.value = items.autoClipUrlPatterns || ''
         foloListenEnabledElement.checked = items.foloListenEnabled

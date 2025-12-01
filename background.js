@@ -553,19 +553,28 @@ async function injectScriptsForTab(tabId, url) {
             return;
         }
         
+        // 检查是否启用了注入特征页面脚本
+        const storage = await chrome.storage.sync.get({ expInjectPageScripts: false });
+        const injectPageScripts = storage.expInjectPageScripts;
+        
         // 找到匹配的脚本
-        const matchedScripts = config.scripts.filter(script => {
+        let matchedScripts = config.scripts.filter(script => {
             if (!script.url_pattern || !script.inject) {
                 return false;
             }
             return matchesUrlPattern(url, script.url_pattern);
         });
         
+        // 如果未启用注入特征页面脚本，只保留全局脚本（url_pattern 为 "*"）
+        if (!injectPageScripts) {
+            matchedScripts = matchedScripts.filter(script => script.url_pattern === '*');
+        }
+        
         if (matchedScripts.length === 0) {
             return;
         }
         
-        console.log(`🔧 Injecting ${matchedScripts.length} script(s) for URL: ${url}`);
+        console.log(`🔧 Injecting ${matchedScripts.length} script(s) for URL: ${url} (page scripts: ${injectPageScripts})`);
         
         // 注入所有匹配的脚本
         for (const script of matchedScripts) {

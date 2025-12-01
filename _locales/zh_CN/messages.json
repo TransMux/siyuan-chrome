@@ -83,6 +83,9 @@
   "exp_svg_to_img": {
     "message": "识别 HTML 中嵌入的 SVG*"
   },
+  "exp_inject_page_scripts": {
+    "message": "注入特征页面脚本以获取环境信息*"
+  },
   "language": {
     "message": "界面语言"
   },

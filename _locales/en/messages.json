@@ -83,6 +83,9 @@
   "exp_svg_to_img": {
     "message": "Detect SVG embedded in HTML*"
   },
+  "exp_inject_page_scripts": {
+    "message": "Inject page-specific scripts to get environment info*"
+  },
   "language": {
     "message": "Interface language"
   },
