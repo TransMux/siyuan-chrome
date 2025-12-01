@@ -92,9 +92,6 @@
   "send": {
     "message": "Send to SiYuan"
   },
-  "send_and_close": {
-    "message": "Send to SiYuan and close"
-  },
   "tip_first_time": {
     "message": "After installing the SiYuan extension for the first time, please refresh the page before using it"
   },

@@ -89,9 +89,6 @@
   "send": {
     "message": "SiYuanに送信"
   },
-  "send_and_close": {
-    "message": "SiYuanに送信して閉じる"
-  },
   "tip_first_time": {
     "message": "SiYuan拡張機能を初めてインストールした後、使用する前にページを更新してください"
   },

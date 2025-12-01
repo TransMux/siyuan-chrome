@@ -92,9 +92,6 @@
   "send": {
     "message": "发送到思源(SiYuan)"
   },
-  "send_and_close": {
-    "message": "发送到思源并关闭"
-  },
   "tip_first_time": {
     "message": "首次安装思源扩展后，请刷新页面后再使用"
   },

@@ -337,22 +337,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })
 
-    const sendCloseElement = document.getElementById('sendClose')
-    if (sendCloseElement) {
-        sendCloseElement.addEventListener('click', () => {
-            chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-                chrome.scripting.executeScript({
-                    target: { tabId: tabs[0].id },
-                    func: function (tabId) { siyuanGetReadability(tabId); },
-                    args: [tabs[0].id],
-                }, function () {
-                    chrome.tabs.remove(tabs[0].id);
-                    window.close();
-                })
-            });
-        })
-    }
-
     chrome.storage.sync.get({
         langCode: siyuanGetDefaultLangCode(),
         ip: 'http://127.0.0.1:6806',

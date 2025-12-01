@@ -89,9 +89,6 @@
   "send": {
     "message": "發送到思源(SiYuan)"
   },
-  "send_and_close": {
-    "message": "發送到思源並關閉"
-  },
   "tip_first_time": {
     "message": "首次安裝思源擴展後，請刷新頁面後再使用"
   },

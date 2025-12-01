@@ -89,9 +89,6 @@
   "send": {
     "message": "Nach SiYuan senden"
   },
-  "send_and_close": {
-    "message": "Nach SiYuan senden und schließen"
-  },
   "tip_first_time": {
     "message": "Bitte laden Sie die Seite nach der ersten Installation der SiYuan-Erweiterung neu, bevor Sie sie verwenden"
   },
