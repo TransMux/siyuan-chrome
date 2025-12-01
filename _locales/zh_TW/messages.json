@@ -71,6 +71,9 @@
   "exp_italic": {
     "message": "識別斜體樣式*"
   },
+  "exp_underline": {
+    "message": "識別下劃線樣式*"
+  },
   "exp_remove_img_link": {
     "message": "移除圖片鏈接*"
   },
@@ -82,6 +85,9 @@
   },
   "exp_svg_to_img": {
     "message": "識別 HTML 中嵌入的 SVG*"
+  },
+  "exp_inject_page_scripts": {
+    "message": "注入特徵頁面腳本以獲取環境信息*"
   },
   "language": {
     "message": "介面語言"

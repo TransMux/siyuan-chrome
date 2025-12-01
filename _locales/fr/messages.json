@@ -3,10 +3,10 @@
     "message": "SiYuan"
   },
   "extension_description": {
-    "message": "Save the web page to SiYuan with one click"
+    "message": "Enregistrez la page web dans SiYuan en un clic"
   },
   "copy_to_siyuan": {
-    "message": "Copy to SiYuan"
+    "message": "Copier vers SiYuan"
   },
   "capture_full_page": {
     "message": "Capture selected tabs to SiYuan"
@@ -18,31 +18,31 @@
     "message": "Toggle clipboard monitoring"
   },
   "show_tip": {
-    "message": "Show Tip"
+    "message": "Afficher les astuces"
   },
   "siyuan_url": {
-    "message": "SiYuan URL"
+    "message": "URL de SiYuan"
   },
   "api_token": {
-    "message": "API token"
+    "message": "Jeton API"
   },
   "save_path": {
-    "message": "Save path"
+    "message": "Chemin de sauvegarde"
   },
   "save_path_placeholder": {
-    "message": "Enter a keyword to search for the save path"
+    "message": "Entrez un mot-clé pour rechercher le chemin d’enregistrement"
   },
   "tags": {
     "message": "Tags"
   },
   "tags_placeholder": {
-    "message": "Use commas to separate multiple tags"
+    "message": "Utilisez des virgules pour séparer plusieurs tags"
   },
   "assets": {
-    "message": "Download assets"
+    "message": "Télécharger les ressources"
   },
   "dirsFirst": {
-    "message": "Show directories first in path search"
+    "message": "Dossiers d'abord dans la recherche de chemin"
   },
   "auto_clip_enabled": {
     "message": "Enable auto-clipping"
@@ -57,90 +57,96 @@
     "message": "Enable folo collection listening"
   },
   "exp": {
-    "message": "Show experimental features"
+    "message": "Afficher les fonctionnalités expérimentales"
   },
   "exp_tips": {
-    "message": "*: Experimental features may be unstable. If there is a problem with clipping, consider switching it."
+    "message": "*: Les fonctionnalités expérimentales peuvent être instables. Si vous avez un problème de clipping, essayez de les changer."
   },
   "exp_span": {
-    "message": "Detect span text newlines*"
+    "message": "Détecter les sauts de ligne dans span*"
   },
   "exp_bold": {
-    "message": "Detect bold style*"
+    "message": "Détecter le style gras*"
   },
   "exp_italic": {
-    "message": "Detect italic style*"
+    "message": "Détecter le style italique*"
+  },
+  "exp_underline": {
+    "message": "Détecter le style souligné*"
   },
   "exp_remove_img_link": {
-    "message": "Remove image link*"
+    "message": "Supprimer le lien de l'image*"
   },
   "exp_list_doc_tree": {
-    "message": "After clipping a web page, display the document tree*"
+    "message": "Après extraction de page web, afficher l'arborescence du document*"
   },
   "exp_open_after_clip": {
-    "message": "After clipping a web page, open document*"
+    "message": "Après extraction de page web, ouvrir le document*"
   },
   "exp_svg_to_img": {
-    "message": "Detect SVG embedded in HTML*"
+    "message": "Détecter SVG intégré dans HTML*"
+  },
+  "exp_inject_page_scripts": {
+    "message": "Inject page-specific scripts to get environment info*"
   },
   "language": {
-    "message": "Interface language"
+    "message": "Langue de l'interface"
   },
   "send": {
-    "message": "Send to SiYuan"
+    "message": "Envoyer à SiYuan"
   },
   "tip_first_time": {
-    "message": "After installing the SiYuan extension for the first time, please refresh the page before using it"
+    "message": "Après avoir installé l'extension SiYuan pour la première fois, veuillez rafraîchir la page avant de l'utiliser"
   },
   "tip_clipping": {
-    "message": "Clipping, please wait a moment..."
+    "message": "Clipping, veuillez patienter..."
   },
   "tip_clip_img": {
-    "message": "Clipping images"
+    "message": "Clipping des images"
   },
   "tip_clip_ok": {
-    "message": "Clipping successfully"
+    "message": "Clipping réussi"
   },
   "tip_token_miss": {
-    "message": "Please config API token before clipping content"
+    "message": "Veuillez configurer le jeton API avant de recouper le contenu"
   },
   "tip_token_invalid": {
-    "message": "Invalid API token"
+    "message": "Jeton API invalide"
   },
   "tip_save_path_miss": {
-    "message": "Please select save path before clipping content"
+    "message": "Veuillez sélectionner le chemin de sauvegarde avant de recouper le contenu"
   },
   "tip_siyuan_kernel_unavailable": {
-    "message": "Please start SiYuan and ensure network connectivity before trying again"
+    "message": "Veuillez démarrer SiYuan et vous assurer que la connexion réseau fonctionne avant de réessayer"
   },
   "template_config": {
-    "message": "Clipping template"
+    "message": "Configuration du modèle de clipping"
   },
   "template_save": {
-    "message": "Save"
+    "message": "Enregistrer"
   },
   "template_cancel": {
-    "message": "Cancel"
+    "message": "Annuler"
   },
   "template_saved": {
-    "message": "Template saved successfully"
+    "message": "Modèle enregistré avec succès"
   },
   "template_help": {
-    "message": "Available variables:<br>${title} - Page title<br>${url} - Page URL<br>${siteName} - Site name<br>${date} - Current date (yyyy-MM-dd)<br>${time} - Current time (HH:mm)<br>${tags} - Tags<br>${excerpt} - Page excerpt<br>${content} - Page content"
+    "message": "Variables disponibles:<br>${title} - Titre de la page<br>${url} - URL de la page<br>${siteName} - Nom du site<br>${date} - Date actuelle (yyyy-MM-dd)<br>${time} - Heure actuelle (HH:mm)<br>${tags} - Tags<br>${excerpt} - Extrait de la page<br>${content} - Contenu de la page"
   },
   "template_restore_default": {
-    "message": "Restore default"
+    "message": "Restaurer par défaut"
   },
   "database_label": {
-    "message": "Add to database"
+    "message": "Ajouter à la base de données"
   },
   "database_search_placeholder": {
-    "message": "Enter a keyword to search the database"
+    "message": "Entrez un mot-clé pour rechercher dans la base de données"
   },
   "save_path_none": {
-    "message": "None"
+    "message": "Aucun"
   },
   "database_none": {
-    "message": "None"
+    "message": "Aucun"
   }
 }

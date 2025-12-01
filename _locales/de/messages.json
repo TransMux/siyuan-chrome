@@ -71,6 +71,9 @@
   "exp_italic": {
     "message": "Kursiv-Stil erkennen*"
   },
+  "exp_underline": {
+    "message": "Unterstrichen-Stil erkennen*"
+  },
   "exp_remove_img_link": {
     "message": "Bildlink entfernen*"
   },
@@ -82,6 +85,9 @@
   },
   "exp_svg_to_img": {
     "message": "SVG in HTML eingebettet erkennen*"
+  },
+  "exp_inject_page_scripts": {
+    "message": "Seitenspezifische Skripte injizieren, um Umgebungsinformationen zu erhalten*"
   },
   "language": {
     "message": "Schnittstellensprache"
