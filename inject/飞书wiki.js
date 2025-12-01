@@ -12,7 +12,7 @@
             }
 
             const title = this.getDocumentTitle();
-            console.error(`开始转换文档: ${title}`);
+            // console.error(`开始转换文档: ${title}`);
 
             let content = [];
             // content.push(`# ${title}\n\n`);
@@ -51,7 +51,7 @@
             if (!blockType) {
                 return '';
             }
-            console.error(`convertBlock: ${blockType}, ${block}`);
+            // console.error(`convertBlock: ${blockType}, ${block}`);
 
             switch (blockType) {
                 case 'text':
@@ -99,7 +99,7 @@
                 case 'fallback':
                     return ""
                 default:
-                    console.error(`⚠️ 未支持的块类型: ${blockType}, ${block}`);
+                    // console.error(`⚠️ 未支持的块类型: ${blockType}, ${block}`);
                     return ""
             }
         }
@@ -342,11 +342,11 @@
             try {
                 const imageUrl = await this.whiteboardToPNG(block);
                 if (imageUrl) {
-                    console.error('🎨 成功将白板转换为PNG图片');
+                    // console.error('🎨 成功将白板转换为PNG图片');
                     return `![${altText}](${imageUrl})\n\n`;
                 }
             } catch (error) {
-                console.warn('⚠️ 白板转PNG失败，使用URL fallback:', error.message);
+                // console.warn('⚠️ 白板转PNG失败，使用URL fallback:', error.message);
             }
 
             // Fallback: 使用传统的白板URL
@@ -356,7 +356,7 @@
                 return `![${altText}](${url})\n\n`;
             }
 
-            console.error('⚠️ Whiteboard block missing token:', block);
+            // console.error('⚠️ Whiteboard block missing token:', block);
             return '';
         }
 
@@ -371,7 +371,7 @@
                     return text.replace(/\n$/, '');
                 }
             } catch (e) {
-                console.warn('提取caption失败:', e);
+                // console.warn('提取caption失败:', e);
             }
 
             return '';
@@ -834,7 +834,7 @@
                     return linkText;
 
                 default:
-                    console.error(`⚠️ 发现未支持的inline-component类型: "${componentType}"`, component);
+                    // console.error(`⚠️ 发现未支持的inline-component类型: "${componentType}"`, component);
                     return originalText || `[${componentType}]`;
             }
         }
@@ -897,11 +897,11 @@
 
     window.__siyuanGetPageContent = async function () {
         try {
-            console.error('🚀 飞书文档转Markdown工具启动...');
+            // console.error('🚀 飞书文档转Markdown工具启动...');
 
             // 检查运行环境
             if (typeof window === 'undefined') {
-                console.error('❌ 此工具只能在浏览器环境中运行，请在飞书文档页面的控制台中执行');
+                // console.error('❌ 此工具只能在浏览器环境中运行，请在飞书文档页面的控制台中执行');
                 return {
                     type: "markdown",
                     content: null,
@@ -912,8 +912,8 @@
 
             // 获取PageMain数据
             if (!window.PageMain?.blockManager?.rootBlockModel) {
-                console.error('❌ 未找到PageMain数据源，请确保在飞书文档页面运行此脚本');
-                console.error('💡 提示：请打开一个飞书文档页面，然后在浏览器控制台中运行此脚本');
+                // console.error('❌ 未找到PageMain数据源，请确保在飞书文档页面运行此脚本');
+                // console.error('💡 提示：请打开一个飞书文档页面，然后在浏览器控制台中运行此脚本');
                 return {
                     type: "markdown",
                     content: null,
@@ -922,31 +922,31 @@
                 };
             }
 
-            console.error('✅ 检测到飞书文档页面，正在从PageMain读取文档数据...');
+            // console.error('✅ 检测到飞书文档页面，正在从PageMain读取文档数据...');
             const rootBlock = window.PageMain.blockManager.rootBlockModel;
 
-            console.error('✅ 成功获取文档数据');
+            // console.error('✅ 成功获取文档数据');
 
             const converter = new PageMainConverter(rootBlock);
             const markdown = await converter.convertToMarkdown();
 
-            console.error('=== 转换完成 ===\n');
-            console.error(markdown);
-            console.error('\n=== Markdown内容已输出到控制台 ===');
+            // console.error('=== 转换完成 ===\n');
+            // console.error(markdown);
+            // console.error('\n=== Markdown内容已输出到控制台 ===');
 
             // 尝试复制到剪贴板
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(markdown).then(() => {
-                    console.error('✅ Markdown内容已复制到剪贴板');
+                    // console.error('✅ Markdown内容已复制到剪贴板');
                 }).catch(err => {
-                    console.error('❌ 复制到剪贴板失败:', err);
+                    // console.error('❌ 复制到剪贴板失败:', err);
                 });
             }
 
-            console.error(`\n✅ 转换成功完成！`);
-            console.error(`📄 Markdown长度: ${markdown.length} 字符`);
-            console.error(`🎨 支持粗体、颜色高亮、callout等格式化`);
-            console.error(`📋 内容已输出到控制台，可直接复制使用`);
+            // console.error(`\n✅ 转换成功完成！`);
+            // console.error(`📄 Markdown长度: ${markdown.length} 字符`);
+            // console.error(`🎨 支持粗体、颜色高亮、callout等格式化`);
+            // console.error(`📋 内容已输出到控制台，可直接复制使用`);
 
             return {
                 type: "markdown",
@@ -956,7 +956,7 @@
                 refresh: false
             };
         } catch (error) {
-            console.error('❌ 转换过程中发生错误:', error);
+            // console.error('❌ 转换过程中发生错误:', error);
             return {
                 type: "markdown",
                 content: null,
