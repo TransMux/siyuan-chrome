@@ -1,0 +1,2739 @@
+{
+    "block_map": {
+        "doxcn0j97W6yMqROOg2NNNJhDFb": {
+            "id": "doxcn0j97W6yMqROOg2NNNJhDFb",
+            "version": 5,
+            "data": {
+                "type": "file",
+                "parent_id": "doxcnmypktcJFQio8ycSE3uIxIh",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "align": "",
+                "file": {
+                    "token": "VESXbDSUZokIO8xxC6xc2tzsnld",
+                    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                    "size": 721494,
+                    "name": "LORA.pptx",
+                    "width": 0,
+                    "height": 0,
+                    "originWidth": 0,
+                    "originHeight": 0
+                }
+            }
+        },
+        "doxcn2DROsLkKXVax6HMVkzVXte": {
+            "id": "doxcn2DROsLkKXVax6HMVkzVXte",
+            "version": 11,
+            "data": {
+                "type": "heading1",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 1,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+g"
+                        },
+                        "text": {
+                            "0": "OnlyForByteDance"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcn3zm448MK9sK6pHuPsqtH8f": {
+            "id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+            "version": 544,
+            "data": {
+                "type": "page",
+                "parent_id": "",
+                "comments": null,
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [
+                    "doxcnh3FuWjS2iLJGAU8cZrEP1g",
+                    "doxcnaYu1WyeFrT1g2jJAxseBvc",
+                    "doxcnLozlCmcYCaar2gDrbq4ooc",
+                    "doxcnKL8Hs5yc7CjzZF7SYy9pLD",
+                    "doxcnddo9O9IKpSKk6JKk7SBCUg",
+                    "doxcnDS6OHagtnoKDDXo8yYMCvd",
+                    "doxcng5qF2MfREn0FxfgIob7aUh",
+                    "doxcnkkF6BFBdGTJkKzBKZIKU2u",
+                    "doxcnd77cJP2AFAHiFFhKoM0iyd",
+                    "doxcniPjUJiw6fexhOBgeqnmSE3",
+                    "doxcnuo8kLiDrto43YAFxgg6efc",
+                    "doxcn2DROsLkKXVax6HMVkzVXte",
+                    "doxcn4J4ywevhlSIKzm0KchIWYf",
+                    "doxcnml0hKpserrecUj2DHIr7Kb",
+                    "doxcnvaXMAna4FRSfKmKzH31Dfe",
+                    "doxcnLhzAcUksBijs7vJoxvz8pf",
+                    "doxcnDSkreaz7hV4y4zqmQ47SAg",
+                    "doxcnkHhnZfgLtz1vigaZFWl8sh",
+                    "doxcn7Z1Dw0hytzgqkUkG4yl1Ub",
+                    "doxcnixx90dQKbY9sK80rwQBkZg",
+                    "doxcna6CC7JW8bniMFWQgjqUjah",
+                    "doxcnciS1LhxGC65K8Nx0Wc0vgR",
+                    "doxcn4QWCPqyoWzqhEpF0xR5svb",
+                    "doxcnUAB5rQnExhkY6V5125CofM",
+                    "doxcnIaKhiRJV0SAwOvksqWo86f",
+                    "doxcnLjnXMbFWSuYdBoTQOl4jop",
+                    "doxcnSKLKg3lY9VYsyljtxZ6Jmg",
+                    "doxcngVhgKeO1V4MZiNmTzGrzge",
+                    "doxcnmypktcJFQio8ycSE3uIxIh",
+                    "doxcn6ccXKeO0SmPKx0geEt1zMg",
+                    "doxcnMzXIHTlcAlKxS7E0ZCAqMd",
+                    "doxcng39UJ25JYeSM31IeNZOPrd",
+                    "doxcnwQTkjlauJP6dWGIhleXdUg",
+                    "doxcnk8ghDNMKzUc45NExxvzdrd",
+                    "doxcnfWEMs19uxSQexNy63vdHid",
+                    "doxcnHdaSzvVboUl2ndf844ewZC",
+                    "doxcnnKEUfjDLMjRlejClKtkR9o",
+                    "doxcnl5FEyz7pAcU133SBZT3pfg",
+                    "doxcnni1KsyvxXg1XygQ07a9ord",
+                    "doxcncOMsZqmk5lSleIM4tstWhh",
+                    "doxcnlzlrJsm7ZbXdalDNs5I5Kb",
+                    "doxcnRDcFL0t2DRSNxor6MX81jf",
+                    "doxcnhHrokAcQm3XpotqhCqzqxs",
+                    "doxcnN3Op97QOfF8sbPDk81EWUh",
+                    "doxcnc6LClOHtwN6slQv7uWdiHe"
+                ],
+                "text": {
+                    "apool": {
+                        "nextNum": 2,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "abbreviation-data",
+                                "{\"id\":\"a84f6592-b87f-42f1-b1d9-3e03dba87ad8\",\"abbr_ids\":\"enterprise_7167288734680367107\",\"is_visible\":1,\"is_first\":1}"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+p*1*0+3"
+                        },
+                        "text": {
+                            "0": "Modest Understandings on LLM"
+                        }
+                    }
+                },
+                "align": "",
+                "cover": {
+                    "token": "QKIxbmU33oQVodxaE6Ic1B4Znog",
+                    "url": "",
+                    "offset_ratio_y": 0,
+                    "offset_ratio_x": 0,
+                    "type": 1,
+                    "mime_type": "image/jpeg"
+                },
+                "doc_info": {
+                    "editors": [
+                        "7098877293704904705",
+                        "7221978030413987841"
+                    ],
+                    "options": [
+                        "editors",
+                        "create_time"
+                    ],
+                    "deleted_editors": [],
+                    "option_modified": null
+                }
+            }
+        },
+        "doxcn4J4ywevhlSIKzm0KchIWYf": {
+            "id": "doxcn4J4ywevhlSIKzm0KchIWYf",
+            "version": 3,
+            "data": {
+                "type": "ordered",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 3,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"99768e7f-098c-4f67-89bf-afe4bb5b27cf\",\"data\":{\"token\":\"Ee2hdHJkQomikDxufoqcwFX1nXg\",\"title\":\"如何在字节内部部署一个LLM？以Baichuan为例\",\"file_type\":22,\"raw_url\":\"https://bytedance.feishu.cn/docx/Ee2hdHJkQomikDxufoqcwFX1nXg\",\"tenant_id\":\"1\",\"icon_type\":22}}"
+                            ],
+                            "2": [
+                                "link-id",
+                                "d701f3d0-3bb9-4875-9a99-28ec5202f3b0"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0*1*2+1*0*2+1"
+                        },
+                        "text": {
+                            "0": "  "
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "seq": "1"
+            }
+        },
+        "doxcn4QWCPqyoWzqhEpF0xR5svb": {
+            "id": "doxcn4QWCPqyoWzqhEpF0xR5svb",
+            "version": 1,
+            "data": {
+                "type": "heading1",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 1,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+8"
+                        },
+                        "text": {
+                            "0": "Practice"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcn4sM1xsULCFkZf6jZqpnYse": {
+            "id": "doxcn4sM1xsULCFkZf6jZqpnYse",
+            "version": 14,
+            "data": {
+                "type": "grid_column",
+                "parent_id": "doxcnaYu1WyeFrT1g2jJAxseBvc",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [
+                    "doxcnJsjJL4MrvG7EhhnPSEhgze",
+                    "doxcnRMX3mAJbwR94EmbRUbKjsb"
+                ],
+                "width_ratio": 0.46312263826863626
+            }
+        },
+        "doxcn6ccXKeO0SmPKx0geEt1zMg": {
+            "id": "doxcn6ccXKeO0SmPKx0geEt1zMg",
+            "version": 73,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 6,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "bold",
+                                "true"
+                            ],
+                            "2": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "3": [
+                                "abbreviation-data",
+                                "{\"id\":\"b99763c7-719b-47fd-b50a-a01d5dc714e0\",\"abbr_ids\":\"enterprise_7241023527233716228\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "4": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"90e30628-b685-48ba-a4f9-a1383beb391c\",\"data\":{\"token\":\"KWTkdA6EmonokyxdCmocdbXmnwc\",\"title\":\"AdaLoRA：更强大的LoRA\",\"file_type\":22,\"raw_url\":\"https://readpaper.feishu.cn/docx/KWTkdA6EmonokyxdCmocdbXmnwc\",\"tenant_id\":\"7221977973900443649\",\"icon_type\":22}}"
+                            ],
+                            "5": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1km4y117At%2F"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0*1+7*0+6*0*1*2+7*3*0*1*2+2*0+3*0*1*2+2*0+8*0*1*2+5*0|1+1*0+6*0*4+1*0+d*0*5+8*0+9"
+                        },
+                        "text": {
+                            "0": "AdaLoRA: 通过正则模拟精准SVD分解自适应分配参数，并探究各层增量重要性\n📖Doc：  📺BiliVideo：【论文粗读·2】  👍👍👍 "
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcn7Z1Dw0hytzgqkUkG4yl1Ub": {
+            "id": "doxcn7Z1Dw0hytzgqkUkG4yl1Ub",
+            "version": 34,
+            "data": {
+                "type": "ordered",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 5,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "abbreviation-data",
+                                "{\"id\":\"ff11d664-3945-4cde-97a2-9ffcdff9e1ec\",\"abbr_ids\":\"enterprise_33794490\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "2": [
+                                "link",
+                                "https%3A%2F%2Fgithub.com%2Fhuggingface%2Ftransformers%2Fpull%2F23901"
+                            ],
+                            "3": [
+                                "link",
+                                "https%3A%2F%2Fgithub.com%2Fvllm-project%2Fvllm%2Fpull%2F784"
+                            ],
+                            "4": [
+                                "link-id",
+                                "3506f3bf-82fe-44fb-abd5-817cb63df1d4"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+7*1*0+2*0+2*0*2+c*0+2*0*3*4+4"
+                        },
+                        "text": {
+                            "0": "一些有趣的开源PR： transformers, vllm"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "seq": "auto"
+            }
+        },
+        "doxcn82W0MCYjRxHfFpqtQy1bLh": {
+            "id": "doxcn82W0MCYjRxHfFpqtQy1bLh",
+            "version": 1,
+            "data": {
+                "type": "grid_column",
+                "parent_id": "doxcna6CC7JW8bniMFWQgjqUjah",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [
+                    "doxcndkmYBpotxJOQskx1noooxH"
+                ],
+                "width_ratio": 0.5
+            }
+        },
+        "doxcn8GxhKL58yVBAK17IM8AUeh": {
+            "id": "doxcn8GxhKL58yVBAK17IM8AUeh",
+            "version": 1,
+            "data": {
+                "type": "bullet",
+                "parent_id": "doxcnkkF6BFBdGTJkKzBKZIKU2u",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 5,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "link",
+                                "https%3A%2F%2Fhuggingface.co%2Fblog%2Fmoe"
+                            ],
+                            "2": [
+                                "link-id",
+                                "0ade9dae-e358-4980-83b0-a7f07066ed64"
+                            ],
+                            "3": [
+                                "link",
+                                "https%3A%2F%2Fhuggingface.co%2Fblog%2Fzh%2Fmoe"
+                            ],
+                            "4": [
+                                "link-id",
+                                "875ad869-1f04-4824-9f3c-b418785c786b"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+f*0*1*2+s*0+2*0*3*4+f*0+1"
+                        },
+                        "text": {
+                            "0": "Translation of Mixture of Experts Explained, 混合专家模型 (MoE) 详解。"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnDS6OHagtnoKDDXo8yYMCvd": {
+            "id": "doxcnDS6OHagtnoKDDXo8yYMCvd",
+            "version": 6,
+            "data": {
+                "type": "image",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "align": "center",
+                "image": {
+                    "token": "Gy73blFtMo1pxrxhIjvcvJ7knYc",
+                    "mimeType": "image/jpeg",
+                    "size": 978546,
+                    "scale": 0.05068528575122834,
+                    "width": 3867,
+                    "height": 3369,
+                    "name": "img_v2_553c7e90-aae8-4614-844a-312e25dae0dg.jpg",
+                    "crop": [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": 0,
+                    "caption": {
+                        "text": {
+                            "apool": {
+                                "nextNum": 0,
+                                "numToAttrib": null
+                            },
+                            "initialAttributedTexts": {
+                                "attribs": null,
+                                "text": null
+                            }
+                        }
+                    }
+                },
+                "area_comments": null
+            }
+        },
+        "doxcnDSkreaz7hV4y4zqmQ47SAg": {
+            "id": "doxcnDSkreaz7hV4y4zqmQ47SAg",
+            "version": 10,
+            "data": {
+                "type": "heading1",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 1,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+b"
+                        },
+                        "text": {
+                            "0": "Interesting"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnDvesGTnpvbhrkYY6ZhqBre": {
+            "id": "doxcnDvesGTnpvbhrkYY6ZhqBre",
+            "version": 26,
+            "data": {
+                "type": "ordered",
+                "parent_id": "doxcnphymoh0YryvJCirnrzSPtb",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 2,
+                        "numToAttrib": {
+                            "0": [
+                                "abbreviation-data",
+                                "{\"id\":\"8b8ac62c-c88c-42bc-a795-e4867435ba51\",\"abbr_ids\":\"enterprise_7142754906204651523,enterprise_7090743817791438852\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "1": [
+                                "author",
+                                "7098877293704904705"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0*1+3*1+o"
+                        },
+                        "text": {
+                            "0": "CTF 偷鸡拿了社工题的一血薅 1000 京东卡羊毛。"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "seq": "4"
+            }
+        },
+        "doxcnHdaSzvVboUl2ndf844ewZC": {
+            "id": "doxcnHdaSzvVboUl2ndf844ewZC",
+            "version": 62,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 6,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "2": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"958308fc-6cca-4cf0-a452-5852d107741b\",\"data\":{\"token\":\"AC7JdtLrhoKpgxxSRM8cfUounsh\",\"title\":\"FlashAttention: 更快训练更长上下文的GPT\",\"file_type\":22,\"raw_url\":\"https://readpaper.feishu.cn/docx/AC7JdtLrhoKpgxxSRM8cfUounsh\",\"icon_type\":22}}"
+                            ],
+                            "3": [
+                                "author",
+                                "7221978030413987841"
+                            ],
+                            "4": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1SW4y1X7kh%2F"
+                            ],
+                            "5": [
+                                "link-id",
+                                "22f32049-b4b8-440e-94cc-32e780003224"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+n*0*1+4*0+b*0*1+5*0|1+7*0+6*0*2+1*0+d*3*4*5+8"
+                        },
+                        "text": {
+                            "0": "FlashAttention：深入底层, 具有IO感知的,快速的,省显存的,精确无近似的注意力算法\n📖Doc：  📺BiliVideo：【论文粗读·6】"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnIaKhiRJV0SAwOvksqWo86f": {
+            "id": "doxcnIaKhiRJV0SAwOvksqWo86f",
+            "version": 2,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 6,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7221978030413987841"
+                            ],
+                            "1": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "2": [
+                                "link-id",
+                                "3a045331-ed5c-4fde-b197-4d82da4fe411"
+                            ],
+                            "3": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "4": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1Zs4y1F7f6"
+                            ],
+                            "5": [
+                                "link-id",
+                                "22f32049-b4b8-440e-94cc-32e780003224"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+q*0*1+c*0+3*0*1+d*0|1+1*0+7*0*2+v*0+e*3*4*5+8"
+                        },
+                        "text": {
+                            "0": "Attn-Visual：通过可视化注意力，了解模型对不同token的关注程度，对于不同上下文的理解和生成偏好\n🔗Link：https://attn-visual.yxinyu.com/  📺BiliVideo：【有点意思·3】"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnJsjJL4MrvG7EhhnPSEhgze": {
+            "id": "doxcnJsjJL4MrvG7EhhnPSEhgze",
+            "version": 4,
+            "data": {
+                "type": "bookmark",
+                "parent_id": "doxcn4sM1xsULCFkZf6jZqpnYse",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "bookmark": {
+                    "title": "小杨不努力0v0的个人空间_哔哩哔哩_bilibili",
+                    "url": "https://space.bilibili.com/1564408396",
+                    "cover_width": 440,
+                    "cover_height": 276,
+                    "summary": "哔哩哔哩小杨不努力0v0的个人空间，提供小杨不努力0v0分享的视频、音频、文章、动态、收藏等内容，关注小杨不努力0v0账号，第一时间了解UP注动态。不懂机器学习"
+                },
+                "align": ""
+            }
+        },
+        "doxcnKL8Hs5yc7CjzZF7SYy9pLD": {
+            "id": "doxcnKL8Hs5yc7CjzZF7SYy9pLD",
+            "version": 3,
+            "data": {
+                "type": "heading1",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 1,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+10"
+                        },
+                        "text": {
+                            "0": "📖Accumulate 📝Integrate 👨‍💻Create"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnLhzAcUksBijs7vJoxvz8pf": {
+            "id": "doxcnLhzAcUksBijs7vJoxvz8pf",
+            "version": 1,
+            "data": {
+                "type": "ordered",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 2,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"da35d739-98db-49b4-a8cb-14c52df6bb25\",\"data\":{\"token\":\"BiHydIdjkogQ5XxU5OvcFCjQnHe\",\"title\":\"Guanaco-33B Finetuning 效果\",\"file_type\":22,\"raw_url\":\"https://bytedance.feishu.cn/docx/BiHydIdjkogQ5XxU5OvcFCjQnHe\",\"tenant_id\":\"1\",\"icon_type\":22}}"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+e*0*1+1"
+                        },
+                        "text": {
+                            "0": "QLoRA训练33B模型：  "
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "seq": "auto"
+            }
+        },
+        "doxcnLjnXMbFWSuYdBoTQOl4jop": {
+            "id": "doxcnLjnXMbFWSuYdBoTQOl4jop",
+            "version": 1,
+            "data": {
+                "type": "grid",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "children": [
+                    "doxcnjTOpdg4LYtEiYKcFOGMArg",
+                    "doxcnVlhOhdNsgX56RKmPicJAig"
+                ]
+            }
+        },
+        "doxcnLozlCmcYCaar2gDrbq4ooc": {
+            "id": "doxcnLozlCmcYCaar2gDrbq4ooc",
+            "version": 42,
+            "data": {
+                "type": "heading1",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 2,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "abbreviation-data",
+                                "{\"id\":\"80a9a795-989a-4f7f-8494-29218851dace\",\"abbr_ids\":\"enterprise_342\",\"is_visible\":1,\"is_first\":1}"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+2*1*0+3*0+b"
+                        },
+                        "text": {
+                            "0": "拒绝KPI式学习，脑子会了手不会"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "text_indent": 0
+            }
+        },
+        "doxcnMzXIHTlcAlKxS7E0ZCAqMd": {
+            "id": "doxcnMzXIHTlcAlKxS7E0ZCAqMd",
+            "version": 58,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 8,
+                        "numToAttrib": {
+                            "0": [
+                                "abbreviation-data",
+                                "{\"id\":\"c0ae99a3-8cb4-4170-b72c-0fdad698e6d5\",\"abbr_ids\":\"enterprise_42178994\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "1": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "2": [
+                                "bold",
+                                "true"
+                            ],
+                            "3": [
+                                "abbreviation-data",
+                                "{\"id\":\"bbce5f72-2099-4499-854d-09d7acdfd658\",\"abbr_ids\":\"enterprise_29300628,enterprise_7207797614339604481,enterprise_42937752\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "4": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "5": [
+                                "abbreviation-data",
+                                "{\"id\":\"0a1abdd5-3eae-4d06-a6f2-5c6b93ec9a67\",\"abbr_ids\":\"enterprise_7241023552747634692\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "6": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"0cf32b27-31c3-457b-a5df-d85461c13f3b\",\"data\":{\"token\":\"HaM7d7uGhoQ2VPxxZBacpduDny7\",\"title\":\"OBD\\u0026OBS：给神经网络做个外科手术\",\"file_type\":22,\"raw_url\":\"https://readpaper.feishu.cn/docx/HaM7d7uGhoQ2VPxxZBacpduDny7\",\"tenant_id\":\"7221977973900443649\",\"icon_type\":22}}"
+                            ],
+                            "7": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1im4y117T5%2F"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0*1*2+3*1*2+1*3*1*2+3*1+4*1*2*4+7*1+9*5*1+4*1*2*4+4*1|1+7*1+6*1*6+1*1+d*1*7+8*1+2"
+                        },
+                        "text": {
+                            "0": "OBD&OBS：30年LeCun大佬论文历久弥新，引入二阶导数海森矩阵进行模型剪枝\n📖Doc：  📺BiliVideo：【论文粗读·3】👍"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnN3Op97QOfF8sbPDk81EWUh": {
+            "id": "doxcnN3Op97QOfF8sbPDk81EWUh",
+            "version": 9,
+            "data": {
+                "type": "ordered",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 2,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "link",
+                                "https%3A%2F%2Fkikaben.com%2Ftransformers-positional-encoding%2F%23post-title"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+j*0*1+17"
+                        },
+                        "text": {
+                            "0": "Position Encoding: KiKaBeN - Transformer’s Positional Encoding"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "seq": "1"
+            }
+        },
+        "doxcnOHmymkNlqHeLB58ey2m6D3": {
+            "id": "doxcnOHmymkNlqHeLB58ey2m6D3",
+            "version": 8,
+            "data": {
+                "type": "iframe",
+                "parent_id": "doxcnTcYoDG6wC23mrM8lm4XFK0",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "iframe": {
+                    "resize_type": 2,
+                    "component": {
+                        "original_text": "https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dz7GVHB2wiyg",
+                        "url": "https://www.youtube.com/embed/z7GVHB2wiyg",
+                        "type": "youtube"
+                    },
+                    "width": 568,
+                    "height": 319.3268,
+                    "original_height": 461,
+                    "original_width": 820,
+                    "is_modified": true
+                },
+                "align": "center"
+            }
+        },
+        "doxcnRDcFL0t2DRSNxor6MX81jf": {
+            "id": "doxcnRDcFL0t2DRSNxor6MX81jf",
+            "version": 1,
+            "data": {
+                "type": "text",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 0,
+                        "numToAttrib": {}
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": ""
+                        },
+                        "text": {
+                            "0": ""
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnRMX3mAJbwR94EmbRUbKjsb": {
+            "id": "doxcnRMX3mAJbwR94EmbRUbKjsb",
+            "version": 5,
+            "data": {
+                "type": "bookmark",
+                "parent_id": "doxcn4sM1xsULCFkZf6jZqpnYse",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "bookmark": {
+                    "title": "cauyxy - Overview",
+                    "url": "https://github.com/cauyxy",
+                    "cover_url": "https://avatars.githubusercontent.com/u/45619430?v=4?s=400",
+                    "cover_width": 460,
+                    "cover_height": 460,
+                    "summary": "cauyxy has 15 repositories available. Follow their code on GitHub."
+                },
+                "align": ""
+            }
+        },
+        "doxcnSKLKg3lY9VYsyljtxZ6Jmg": {
+            "id": "doxcnSKLKg3lY9VYsyljtxZ6Jmg",
+            "version": 11,
+            "data": {
+                "type": "heading1",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 1,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+a"
+                        },
+                        "text": {
+                            "0": "PEFT/Quant"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnTcYoDG6wC23mrM8lm4XFK0": {
+            "id": "doxcnTcYoDG6wC23mrM8lm4XFK0",
+            "version": 9,
+            "data": {
+                "type": "grid_column",
+                "parent_id": "doxcnaYu1WyeFrT1g2jJAxseBvc",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [
+                    "doxcnOHmymkNlqHeLB58ey2m6D3"
+                ],
+                "width_ratio": 0.536877361731364
+            }
+        },
+        "doxcnUAB5rQnExhkY6V5125CofM": {
+            "id": "doxcnUAB5rQnExhkY6V5125CofM",
+            "version": 2,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 7,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "textHighlightBackground",
+                                "rgba(255,246,122,0.8)"
+                            ],
+                            "2": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "3": [
+                                "bold",
+                                "true"
+                            ],
+                            "4": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"97a45197-97ed-41ab-97fa-4f2dcc7e2843\",\"data\":{\"token\":\"A7uKdZAmwoY5phxihltc1ajXnvg\",\"title\":\"如何训练一个适合特定任务的LLM？\",\"file_type\":22,\"raw_url\":\"https://readpaper.feishu.cn/docx/A7uKdZAmwoY5phxihltc1ajXnvg\",\"tenant_id\":\"7221977973900443649\",\"icon_type\":22}}"
+                            ],
+                            "5": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV16g4y1K7RU"
+                            ],
+                            "6": [
+                                "link-id",
+                                "22f32049-b4b8-440e-94cc-32e780003224"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+8*0*1+3*0+7*0*2+4*0+3*0*3*2+4*0+1*0*3*2+4*0+1*0*3*2+4*0*3+4*0|1+1*0+6*0*4+1*0+d*0*5*6+8"
+                        },
+                        "text": {
+                            "0": "LLM-FT：以西游记为例，对模型在业务数据上进行继续训练，指令粗调，指令精调三步流程\n📖Doc：  📺BiliVideo：【有点意思·2】"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnVEHKOVGkvGzq710tHESj0b": {
+            "id": "doxcnVEHKOVGkvGzq710tHESj0b",
+            "version": 20,
+            "data": {
+                "type": "bullet",
+                "parent_id": "doxcnkkF6BFBdGTJkKzBKZIKU2u",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 2,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "abbreviation-data",
+                                "{\"id\":\"15243467-9549-4b8f-acf0-b9faeb783c67\",\"abbr_ids\":\"enterprise_7090743817791438852,enterprise_7142754906204651523\",\"is_visible\":1,\"is_first\":1}"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+4*1*0+3*0+y"
+                        },
+                        "text": {
+                            "0": "3rd CTF 英语题目赛道偷鸡拿了社工题的一血薅 1000 京东卡羊毛，哈哈哈。"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnVlhOhdNsgX56RKmPicJAig": {
+            "id": "doxcnVlhOhdNsgX56RKmPicJAig",
+            "version": 1,
+            "data": {
+                "type": "grid_column",
+                "parent_id": "doxcnLjnXMbFWSuYdBoTQOl4jop",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "children": [
+                    "doxcnvcFJSsdvCuTXWuT2pN5rBc"
+                ],
+                "width_ratio": 0.6607159128715694
+            }
+        },
+        "doxcna6CC7JW8bniMFWQgjqUjah": {
+            "id": "doxcna6CC7JW8bniMFWQgjqUjah",
+            "version": 1,
+            "data": {
+                "type": "grid",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [
+                    "doxcnphymoh0YryvJCirnrzSPtb",
+                    "doxcn82W0MCYjRxHfFpqtQy1bLh"
+                ]
+            }
+        },
+        "doxcnaYu1WyeFrT1g2jJAxseBvc": {
+            "id": "doxcnaYu1WyeFrT1g2jJAxseBvc",
+            "version": 5,
+            "data": {
+                "type": "grid",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [
+                    "doxcn4sM1xsULCFkZf6jZqpnYse",
+                    "doxcnTcYoDG6wC23mrM8lm4XFK0"
+                ]
+            }
+        },
+        "doxcnbuEbyzDvXu8P062U49zYzc": {
+            "id": "doxcnbuEbyzDvXu8P062U49zYzc",
+            "version": 21,
+            "data": {
+                "type": "bullet",
+                "parent_id": "doxcnkkF6BFBdGTJkKzBKZIKU2u",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 5,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "link",
+                                "https%3A%2F%2Fgithub.com%2FLightning-AI%2Fpytorch-lightning%2Fpull%2F19437"
+                            ],
+                            "2": [
+                                "link-id",
+                                "4b656b48-05a7-410b-866b-55815b577d9e"
+                            ],
+                            "3": [
+                                "link",
+                                "https%3A%2F%2Fgithub.com%2FLightning-AI%2Fpytorch-lightning%2Fpull%2F19439"
+                            ],
+                            "4": [
+                                "link-id",
+                                "d2047d03-1c2e-4c6e-a39b-e85fe915a841"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+14*0*1*2+8*0+1*0*3*4+8*0+1"
+                        },
+                        "text": {
+                            "0": "Lightning-Pytorch2.0 一个release，两个bugfix。PR-19437，PR-19439。"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnc6LClOHtwN6slQv7uWdiHe": {
+            "id": "doxcnc6LClOHtwN6slQv7uWdiHe",
+            "version": 1,
+            "data": {
+                "type": "text",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 0,
+                        "numToAttrib": {}
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": ""
+                        },
+                        "text": {
+                            "0": ""
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcncAVJmOYahJ8nJb1SSsSfxe": {
+            "id": "doxcncAVJmOYahJ8nJb1SSsSfxe",
+            "version": 19,
+            "data": {
+                "type": "bullet",
+                "parent_id": "doxcnkkF6BFBdGTJkKzBKZIKU2u",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 5,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "link",
+                                "https%3A%2F%2Fhuggingface.co%2Fblog%2F2023-in-llms"
+                            ],
+                            "2": [
+                                "link-id",
+                                "ab373a73-859f-4e91-a30c-2cfcfd5ac8e3"
+                            ],
+                            "3": [
+                                "link",
+                                "https%3A%2F%2Fmp.weixin.qq.com%2Fs%2Fu4h-MJFPMNpHd2RBBDpZ9w"
+                            ],
+                            "4": [
+                                "link-id",
+                                "a8c23047-7c55-4637-9d25-e4f1de9d3038"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+f*0*1*2+n*0+1*0*3*4+u*0+1"
+                        },
+                        "text": {
+                            "0": "Translation of 2023, year of open LLMs，Hugging Face 年度回顾：2023，开源大模型之年。"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcncOMsZqmk5lSleIM4tstWhh": {
+            "id": "doxcncOMsZqmk5lSleIM4tstWhh",
+            "version": 55,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 6,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "textHighlightBackground",
+                                "rgb(251,191,188)"
+                            ],
+                            "2": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "3": [
+                                "abbreviation-data",
+                                "{\"id\":\"776d81fc-9448-4b2b-85bd-061202091e40\",\"abbr_ids\":\"enterprise_37689686\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "4": [
+                                "link",
+                                "https%3A%2F%2Fyxinyu.com%2F"
+                            ],
+                            "5": [
+                                "link-id",
+                                "22f32049-b4b8-440e-94cc-32e780003224"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+7*0*1+i*0+4*0*2+5*0+7*0*2+5*3*0*2+3*0|1+3*0+q*0*4*5+6"
+                        },
+                        "text": {
+                            "0": "Blip-2：MiniGPT4/VisualGLM原理。以Query作为桥梁，沟通图像和文本多模态信息\n📖Doc：🚧🚧🚧  📺BiliVideo：🚧🚧🚧"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnciS1LhxGC65K8Nx0Wc0vgR": {
+            "id": "doxcnciS1LhxGC65K8Nx0Wc0vgR",
+            "version": 15,
+            "data": {
+                "type": "ordered",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 2,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "inline-component",
+                                "{\"type\":\"user\",\"id\":\"6da0ecaa-1d5d-4110-9ed9-bdbbc7247e2d\",\"data\":{\"uid\":\"7098877293704904705\",\"mention_id\":\"7c88abaa-3987-44bf-9748-9f385dc62932\"}}"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+g*0*1+1"
+                        },
+                        "text": {
+                            "0": "更多垂直领域的应用例子请联系交流 "
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "seq": "5"
+            }
+        },
+        "doxcnd77cJP2AFAHiFFhKoM0iyd": {
+            "id": "doxcnd77cJP2AFAHiFFhKoM0iyd",
+            "version": 4,
+            "data": {
+                "type": "heading1",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 1,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7221978030413987841"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+7"
+                        },
+                        "text": {
+                            "0": "MindMap"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnddo9O9IKpSKk6JKk7SBCUg": {
+            "id": "doxcnddo9O9IKpSKk6JKk7SBCUg",
+            "version": 20,
+            "data": {
+                "type": "heading1",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 2,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "inline-component",
+                                "{\"type\":\"user\",\"id\":\"2ac712b1-2934-4582-a35c-fb9f239dbd71\",\"data\":{\"uid\":\"7098877293704904705\",\"mention_id\":\"d925970d-db4c-4896-8689-3587d541b585\"}}"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+6*0*1+1*0+g"
+                        },
+                        "text": {
+                            "0": "欢迎交流学习 ，Tel：18338224727"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "text_indent": 0
+            }
+        },
+        "doxcndkmYBpotxJOQskx1noooxH": {
+            "id": "doxcndkmYBpotxJOQskx1noooxH",
+            "version": 4,
+            "data": {
+                "type": "image",
+                "parent_id": "doxcn82W0MCYjRxHfFpqtQy1bLh",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "align": "center",
+                "image": {
+                    "token": "Jj5ebuE31o21hYx9510cP4OenJh",
+                    "mimeType": "image/png",
+                    "size": 97687,
+                    "scale": 1,
+                    "width": 2406,
+                    "height": 176,
+                    "name": "image.png",
+                    "crop": [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": 0,
+                    "caption": {
+                        "text": {
+                            "apool": {
+                                "nextNum": 0,
+                                "numToAttrib": null
+                            },
+                            "initialAttributedTexts": {
+                                "attribs": null,
+                                "text": null
+                            }
+                        }
+                    }
+                },
+                "area_comments": null
+            }
+        },
+        "doxcnfWEMs19uxSQexNy63vdHid": {
+            "id": "doxcnfWEMs19uxSQexNy63vdHid",
+            "version": 47,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 8,
+                        "numToAttrib": {
+                            "0": [
+                                "abbreviation-data",
+                                "{\"id\":\"eda4a4d5-ec13-420e-a3dd-83dcb3a1a208\",\"abbr_ids\":\"enterprise_88\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "1": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "2": [
+                                "abbreviation-data",
+                                "{\"id\":\"23188836-85ad-4d62-83ed-f63a04512567\",\"abbr_ids\":\"enterprise_7241023518895620100\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "3": [
+                                "bold",
+                                "true"
+                            ],
+                            "4": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "5": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"0c31a9ca-7fec-4700-a11d-adbb32ca4295\",\"data\":{\"token\":\"UwT2dQsiko6u0RxoiXRcBtwfnAf\",\"title\":\"GPU Arch:自顶向下分析\",\"file_type\":22,\"raw_url\":\"https://readpaper.feishu.cn/docx/UwT2dQsiko6u0RxoiXRcBtwfnAf\",\"tenant_id\":\"7221977973900443649\",\"icon_type\":22}}"
+                            ],
+                            "6": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1Az4y1B7Da%2F"
+                            ],
+                            "7": [
+                                "link-id",
+                                "22f32049-b4b8-440e-94cc-32e780003224"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0*1+3*2*1+2*1+f*1*3*4+c*1+4*1*3*4+i*1|1+1*1+6*1*5+1*1+e*1*6*7+8*1+4"
+                        },
+                        "text": {
+                            "0": "GPU架构演进：详解GPU内部架构，对比Volta到Hopper四代架构NVLink, TensorCore\n📖Doc：   📺BiliVideo：【浅谈底层·1】👍👍"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcng39UJ25JYeSM31IeNZOPrd": {
+            "id": "doxcng39UJ25JYeSM31IeNZOPrd",
+            "version": 70,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 6,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "bold",
+                                "true"
+                            ],
+                            "2": [
+                                "abbreviation-data",
+                                "{\"id\":\"131cf71a-95d1-44ff-ab9e-ba57d347266e\",\"abbr_ids\":\"enterprise_29300628,enterprise_7207797614339604481,enterprise_42937752\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "3": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "4": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"7bb8bdbf-8993-49e4-8915-3bb0b300a731\",\"data\":{\"token\":\"OPP2dTuXAoaO0oxWhQAcC05Wnpc\",\"title\":\"GPTQ\\u0026OBQ：量化你的GPT\",\"file_type\":22,\"raw_url\":\"https://readpaper.feishu.cn/docx/OPP2dTuXAoaO0oxWhQAcC05Wnpc\",\"tenant_id\":\"7221977973900443649\",\"icon_type\":22}}"
+                            ],
+                            "5": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1TX4y1U74K%2F"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0*1+8*0+2*2*0+3*0*1*3+4*0+a*0*1*3+6*0|1+8*0+6*0*4+1*0+d*0*5+8*0+4"
+                        },
+                        "text": {
+                            "0": "OBQ&GPTQ：把OBS裁剪补偿思想推广到量化领域，分组并行加速量化大模型速度\n📖Doc：  📺BiliVideo：【论文粗读·4】👍👍"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcng5qF2MfREn0FxfgIob7aUh": {
+            "id": "doxcng5qF2MfREn0FxfgIob7aUh",
+            "version": 19,
+            "data": {
+                "type": "heading1",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 1,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+e"
+                        },
+                        "text": {
+                            "0": "Recent updates"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcngVhgKeO1V4MZiNmTzGrzge": {
+            "id": "doxcngVhgKeO1V4MZiNmTzGrzge",
+            "version": 5,
+            "data": {
+                "type": "text",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 3,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "abbreviation-data",
+                                "{\"id\":\"82d63d91-4732-4616-8086-6b7ea4118311\",\"abbr_ids\":\"enterprise_7238815581335289859\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "2": [
+                                "abbreviation-data",
+                                "{\"id\":\"dea52bcf-8b4a-41e7-9dba-ab3097c4e6e6\",\"abbr_ids\":\"enterprise_7241023512809472004\",\"is_visible\":1,\"is_first\":1}"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+k*1*0+b*0+2l*2*0+a*0+1q"
+                        },
+                        "text": {
+                            "0": "Parameter-Efficient Fine-Tuning (PEFT) methods enable efficient adaptation of pre-trained language models (PLMs) to various downstream applications without fine-tuning all the model's parameters. "
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "text_indent": 1
+            }
+        },
+        "doxcnh3FuWjS2iLJGAU8cZrEP1g": {
+            "id": "doxcnh3FuWjS2iLJGAU8cZrEP1g",
+            "version": 1,
+            "data": {
+                "type": "bookmark",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "bookmark": {
+                    "title": "Hi I’m Xinyu 👋",
+                    "url": "https://yxinyu.com/",
+                    "summary": "Experiential learning outpaces pure theoretical learning in terms of speed and importance."
+                },
+                "align": ""
+            }
+        },
+        "doxcnhHrokAcQm3XpotqhCqzqxs": {
+            "id": "doxcnhHrokAcQm3XpotqhCqzqxs",
+            "version": 8,
+            "data": {
+                "type": "heading2",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 1,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+2"
+                        },
+                        "text": {
+                            "0": "拾贝"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcniPjUJiw6fexhOBgeqnmSE3": {
+            "id": "doxcniPjUJiw6fexhOBgeqnmSE3",
+            "version": 26,
+            "data": {
+                "type": "text",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 2,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "abbreviation-data",
+                                "{\"id\":\"1990e9d6-7f81-4fb2-99a8-2270759526ff\",\"abbr_ids\":\"enterprise_7098156034065268737\",\"is_visible\":1,\"is_first\":1}"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+r*1*0+7*0+1v"
+                        },
+                        "text": {
+                            "0": "Not a learning path, but a toolbox. Bring your questions here and find the tools to create solutions."
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnixx90dQKbY9sK80rwQBkZg": {
+            "id": "doxcnixx90dQKbY9sK80rwQBkZg",
+            "version": 13,
+            "data": {
+                "type": "ordered",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 3,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "inline-component",
+                                "{\"id\":\"aee90af7-ca43-49de-8899-a342db8a0df8\",\"type\":\"mention_doc\",\"data\":{\"file_type\":22,\"icon_type\":22,\"token\":\"BEsTdZkKGoXdMLxOzj2cfcFnnPe\",\"tenant_id\":\"1\",\"raw_url\":\"https://bytedance.larkoffice.com/docx/BEsTdZkKGoXdMLxOzj2cfcFnnPe\",\"title\":\"nanoGPT ClacN技术报告\"}}"
+                            ],
+                            "2": [
+                                "link-id",
+                                "176b253b-15c3-4fd6-b35b-b2dfcd9c2b69"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+f*0*1*2+1*0+1"
+                        },
+                        "text": {
+                            "0": "nanoGPT 获奖方案分享   "
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "seq": "auto"
+            }
+        },
+        "doxcnjTOpdg4LYtEiYKcFOGMArg": {
+            "id": "doxcnjTOpdg4LYtEiYKcFOGMArg",
+            "version": 1,
+            "data": {
+                "type": "grid_column",
+                "parent_id": "doxcnLjnXMbFWSuYdBoTQOl4jop",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "children": [
+                    "doxcnoH3h2HrMuyn1sYiRlH4Xy5"
+                ],
+                "width_ratio": 0.33928408712843067
+            }
+        },
+        "doxcnk8ghDNMKzUc45NExxvzdrd": {
+            "id": "doxcnk8ghDNMKzUc45NExxvzdrd",
+            "version": 13,
+            "data": {
+                "type": "heading1",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 2,
+                        "numToAttrib": {
+                            "0": [
+                                "abbreviation-data",
+                                "{\"id\":\"b25db1b4-28b5-4843-95ef-14087d465912\",\"abbr_ids\":\"enterprise_44543416\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "1": [
+                                "author",
+                                "7098877293704904705"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0*1+5"
+                        },
+                        "text": {
+                            "0": "MLSys"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnkHhnZfgLtz1vigaZFWl8sh": {
+            "id": "doxcnkHhnZfgLtz1vigaZFWl8sh",
+            "version": 37,
+            "data": {
+                "type": "ordered",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 6,
+                        "numToAttrib": {
+                            "0": [
+                                "abbreviation-data",
+                                "{\"id\":\"f0f5b9ff-c449-41e6-93d4-094bc720bafc\",\"abbr_ids\":\"enterprise_7201037518232666113\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "1": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "2": [
+                                "link",
+                                "https%3A%2F%2Fgithub.com%2Fcauyxy%2FYourGPT"
+                            ],
+                            "3": [
+                                "link-id",
+                                "9307cb1e-dc0f-40af-97ca-887ce8a034a9"
+                            ],
+                            "4": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV14a4y1K7WT"
+                            ],
+                            "5": [
+                                "link-id",
+                                "3fab7a17-6f26-40cc-9a96-d7ab32a34d36"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0*1+4*1+k*1*2*3+7*1+b*1*4*5+f"
+                        },
+                        "text": {
+                            "0": "LoRA/AdaLoRA训练： GitRepo：YourGPT BiliVideo：iKunGPT-构建你的GPT"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "seq": "1",
+                "text_indent": 0
+            }
+        },
+        "doxcnkkF6BFBdGTJkKzBKZIKU2u": {
+            "id": "doxcnkkF6BFBdGTJkKzBKZIKU2u",
+            "version": 13,
+            "data": {
+                "type": "callout",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [
+                    "doxcnbuEbyzDvXu8P062U49zYzc",
+                    "doxcncAVJmOYahJ8nJb1SSsSfxe",
+                    "doxcn8GxhKL58yVBAK17IM8AUeh",
+                    "doxcnq2O38pB1f2aIJvv8Ahfm6c",
+                    "doxcnVEHKOVGkvGzq710tHESj0b"
+                ],
+                "background_color": "rgb(255,245,235)",
+                "border_color": "rgb(254,212,164)",
+                "text_color": "",
+                "align": "left",
+                "emoji_id": "golf"
+            }
+        },
+        "doxcnl5FEyz7pAcU133SBZT3pfg": {
+            "id": "doxcnl5FEyz7pAcU133SBZT3pfg",
+            "version": 23,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 6,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "2": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"6a958904-6e22-4b5c-a2b7-640f23404ed9\",\"data\":{\"token\":\"EcZxdsf4uozCoixdU3NcW03snwV\",\"title\":\"PagedAttention(vLLM):更快地推理你的GPT\",\"file_type\":22,\"raw_url\":\"https://readpaper.feishu.cn/docx/EcZxdsf4uozCoixdU3NcW03snwV\",\"tenant_id\":\"7221977973900443649\",\"icon_type\":22}}"
+                            ],
+                            "3": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1zs4y1C7gy%2F"
+                            ],
+                            "4": [
+                                "author",
+                                "7221978030413987841"
+                            ],
+                            "5": [
+                                "link-id",
+                                "22f32049-b4b8-440e-94cc-32e780003224"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+l*0*1+4*0+7*0*1+8*0+1*0*1+8*0|1+1*0+6*0*2+1*0+c*4*3*5+8"
+                        },
+                        "text": {
+                            "0": "PagedAttention：借鉴操作系统内存分页思想，高效管理KV Cache，数倍提升推理速度\n📖Doc： 📺BiliVideo：【论文粗读·7】"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnlzlrJsm7ZbXdalDNs5I5Kb": {
+            "id": "doxcnlzlrJsm7ZbXdalDNs5I5Kb",
+            "version": 28,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 5,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7221978030413987841"
+                            ],
+                            "1": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "2": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"cb02ce9e-b1be-4556-879e-dc304de97f13\",\"data\":{\"token\":\"Mvj1dkd1XoV1DYxkkt6c4JLNnBG\",\"title\":\"LLM-Attack: 撬开GPT阁下的嘴\",\"file_type\":22,\"raw_url\":\"https://readpaper.feishu.cn/docx/Mvj1dkd1XoV1DYxkkt6c4JLNnBG\",\"tenant_id\":\"7221977973900443649\",\"icon_type\":22}}"
+                            ],
+                            "3": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1zk4y137cV%2F"
+                            ],
+                            "4": [
+                                "link-id",
+                                "22f32049-b4b8-440e-94cc-32e780003224"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+d*0*1+7*0+j*0*1+9*0|1+1*0+6*0*2+1*0+f*0*3*4+8"
+                        },
+                        "text": {
+                            "0": "LLM-Attack：结合贪心和梯度搜索优化攻击Prompt，或许可以检测模型含OpenAI率？\n📖Doc：    📺BiliVideo：【论文粗读·8】"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnml0hKpserrecUj2DHIr7Kb": {
+            "id": "doxcnml0hKpserrecUj2DHIr7Kb",
+            "version": 2,
+            "data": {
+                "type": "ordered",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 3,
+                        "numToAttrib": {
+                            "0": [
+                                "abbreviation-data",
+                                "{\"id\":\"c982ba76-0ce3-460f-bbf5-0d58c9a1db8e\",\"abbr_ids\":\"enterprise_7171353600491323395\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "1": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "2": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"cfacb48f-5a03-46a4-94c1-6608be9b7488\",\"data\":{\"token\":\"wikcnlJGHFQh8RSnQ8p2hbt0jlb\",\"title\":\"Get your hands dirty with LLM\",\"file_type\":16,\"raw_url\":\"https://bytedance.feishu.cn/wiki/wikcnlJGHFQh8RSnQ8p2hbt0jlb\",\"tenant_id\":\"1\",\"icon_type\":22}}"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0*1+a*1+a*1*2+1"
+                        },
+                        "text": {
+                            "0": "Finetuning Bloom3b:  "
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "seq": "auto"
+            }
+        },
+        "doxcnmypktcJFQio8ycSE3uIxIh": {
+            "id": "doxcnmypktcJFQio8ycSE3uIxIh",
+            "version": 86,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 6,
+                        "numToAttrib": {
+                            "0": [
+                                "abbreviation-data",
+                                "{\"id\":\"dcb372d9-8207-442f-9ac2-30e791f21bd8\",\"abbr_ids\":\"enterprise_7201037518232666113\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "1": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "2": [
+                                "bold",
+                                "true"
+                            ],
+                            "3": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "4": [
+                                "inlineblock",
+                                "doxcn0j97W6yMqROOg2NNNJhDFb"
+                            ],
+                            "5": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV17g4y1g7S6%2F"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0*1*2+4*1+6*1*2*3+8*1+8*1*2*3+8*1|1+6*1+6*1*4+1*1+d*1*5+8*1+7"
+                        },
+                        "text": {
+                            "0": "LoRA: 一种通过低秩近似增量矩阵的，经过广泛验证足够Robust的微调方法\n📖Doc：  📺BiliVideo：【论文粗读·1】 👍👍👍"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnnKEUfjDLMjRlejClKtkR9o": {
+            "id": "doxcnnKEUfjDLMjRlejClKtkR9o",
+            "version": 14,
+            "data": {
+                "type": "text",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 2,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1Zz4y1q7FX%2F"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+n*0*1+17"
+                        },
+                        "text": {
+                            "0": "FlashAttention演示Demo视频 ⏱️78s看懂FlashAttention【有点意思·1】_哔哩哔哩_bilibili"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnni1KsyvxXg1XygQ07a9ord": {
+            "id": "doxcnni1KsyvxXg1XygQ07a9ord",
+            "version": 8,
+            "data": {
+                "type": "heading1",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 1,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+4"
+                        },
+                        "text": {
+                            "0": "Algo"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnoH3h2HrMuyn1sYiRlH4Xy5": {
+            "id": "doxcnoH3h2HrMuyn1sYiRlH4Xy5",
+            "version": 2,
+            "data": {
+                "type": "image",
+                "parent_id": "doxcnjTOpdg4LYtEiYKcFOGMArg",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "align": "center",
+                "image": {
+                    "token": "ZAQAbnipcoyJGkxcAlycdWwKnLe",
+                    "mimeType": "image/jpeg",
+                    "size": 352032,
+                    "scale": 0.3790238836967809,
+                    "width": 1926,
+                    "height": 1578,
+                    "name": "8b4d39b5-46fe-4db6-ae7e-ae9bc6bfa30f.jpeg",
+                    "crop": [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": 0,
+                    "caption": {
+                        "text": {
+                            "apool": {
+                                "nextNum": 0,
+                                "numToAttrib": null
+                            },
+                            "initialAttributedTexts": {
+                                "attribs": null,
+                                "text": null
+                            }
+                        }
+                    }
+                },
+                "area_comments": null
+            }
+        },
+        "doxcnphymoh0YryvJCirnrzSPtb": {
+            "id": "doxcnphymoh0YryvJCirnrzSPtb",
+            "version": 1,
+            "data": {
+                "type": "grid_column",
+                "parent_id": "doxcna6CC7JW8bniMFWQgjqUjah",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [
+                    "doxcnDvesGTnpvbhrkYY6ZhqBre"
+                ],
+                "width_ratio": 0.5
+            }
+        },
+        "doxcnq2O38pB1f2aIJvv8Ahfm6c": {
+            "id": "doxcnq2O38pB1f2aIJvv8Ahfm6c",
+            "version": 22,
+            "data": {
+                "type": "bullet",
+                "parent_id": "doxcnkkF6BFBdGTJkKzBKZIKU2u",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 3,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "inline-component",
+                                "{\"id\":\"858cfc52-f088-4b84-aba2-4d48d7f38a02\",\"type\":\"mention_doc\",\"data\":{\"file_type\":22,\"icon_type\":22,\"token\":\"BEsTdZkKGoXdMLxOzj2cfcFnnPe\",\"tenant_id\":\"1\",\"raw_url\":\"https://bytedance.larkoffice.com/docx/BEsTdZkKGoXdMLxOzj2cfcFnnPe\",\"title\":\"nanoGPT ClacN技术报告\"}}"
+                            ],
+                            "2": [
+                                "link-id",
+                                "176b253b-15c3-4fd6-b35b-b2dfcd9c2b69"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+w*0*1*2+1*0+1"
+                        },
+                        "text": {
+                            "0": "nanoGPT RL 竞赛获奖方案 Online-RFT 分享  。"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        },
+        "doxcnuo8kLiDrto43YAFxgg6efc": {
+            "id": "doxcnuo8kLiDrto43YAFxgg6efc",
+            "version": 1,
+            "data": {
+                "type": "mindnote",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "token": "Wjr7bBilgm28fQn0OpEcGNVAnXb",
+                "height": 404
+            }
+        },
+        "doxcnvaXMAna4FRSfKmKzH31Dfe": {
+            "id": "doxcnvaXMAna4FRSfKmKzH31Dfe",
+            "version": 3,
+            "data": {
+                "type": "ordered",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 3,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "abbreviation-data",
+                                "{\"id\":\"118113d4-a97a-4b83-9214-665d1b73d777\",\"abbr_ids\":\"enterprise_7198043268914462724,enterprise_28055512\",\"is_visible\":1,\"is_first\":1}"
+                            ],
+                            "2": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"215dfbaf-844b-47e9-82b8-06f04556d195\",\"data\":{\"token\":\"wikcnje5gOiBYeiNfOxnFAQ9SEc\",\"title\":\"风控团队在GPT上的尝试\",\"file_type\":16,\"raw_url\":\"https://bytedance.feishu.cn/wiki/wikcnje5gOiBYeiNfOxnFAQ9SEc\",\"tenant_id\":\"1\",\"icon_type\":22}}"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0+3*1*0+3*0+4*0*2+1"
+                        },
+                        "text": {
+                            "0": "初期对GPT的理解： "
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false,
+                "seq": "auto"
+            }
+        },
+        "doxcnvcFJSsdvCuTXWuT2pN5rBc": {
+            "id": "doxcnvcFJSsdvCuTXWuT2pN5rBc",
+            "version": 2,
+            "data": {
+                "type": "image",
+                "parent_id": "doxcnVlhOhdNsgX56RKmPicJAig",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7221978030413987841",
+                "align": "center",
+                "image": {
+                    "token": "EctcbEgWsoChiUx6TMQcJcA5n6d",
+                    "mimeType": "image/png",
+                    "size": 208699,
+                    "scale": 0.19180241723594324,
+                    "width": 3806,
+                    "height": 1590,
+                    "name": "image.png",
+                    "crop": [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": 0,
+                    "caption": {
+                        "text": {
+                            "apool": {
+                                "nextNum": 0,
+                                "numToAttrib": null
+                            },
+                            "initialAttributedTexts": {
+                                "attribs": null,
+                                "text": null
+                            }
+                        }
+                    }
+                },
+                "area_comments": null
+            }
+        },
+        "doxcnwQTkjlauJP6dWGIhleXdUg": {
+            "id": "doxcnwQTkjlauJP6dWGIhleXdUg",
+            "version": 67,
+            "data": {
+                "type": "heading4",
+                "parent_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+                "comments": [],
+                "revisions": null,
+                "locked": false,
+                "hidden": false,
+                "author": "7098877293704904705",
+                "children": [],
+                "text": {
+                    "apool": {
+                        "nextNum": 5,
+                        "numToAttrib": {
+                            "0": [
+                                "author",
+                                "7098877293704904705"
+                            ],
+                            "1": [
+                                "bold",
+                                "true"
+                            ],
+                            "2": [
+                                "textHighlightBackground",
+                                "rgba(183,237,177,0.8)"
+                            ],
+                            "3": [
+                                "inline-component",
+                                "{\"type\":\"mention_doc\",\"id\":\"df3b4157-5855-4257-a79b-eb878bf84214\",\"data\":{\"token\":\"CrMGdSVPKow5d1x1XQMcJioRnQe\",\"title\":\"QLoRA: 训练更大的GPT\",\"file_type\":22,\"raw_url\":\"https://readpaper.feishu.cn/docx/CrMGdSVPKow5d1x1XQMcJioRnQe\",\"tenant_id\":\"7221977973900443649\",\"icon_type\":22}}"
+                            ],
+                            "4": [
+                                "link",
+                                "https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1AX4y1a7jY"
+                            ]
+                        }
+                    },
+                    "initialAttributedTexts": {
+                        "attribs": {
+                            "0": "*0*1+5*0+8*0*1*2+3*0+h*0*1*2+a*0|1+1*0+6*0*3+1*0+d*0*4+8*0+6"
+                        },
+                        "text": {
+                            "0": "QLoRA：提出新量化类型NF4，对BaseModel进行量化实现单卡训练65B大模型\n📖Doc：  📺BiliVideo：【论文粗读·5】👍👍👍"
+                        }
+                    }
+                },
+                "align": "",
+                "folded": false
+            }
+        }
+    },
+    "block_sequence": [
+        "doxcn3zm448MK9sK6pHuPsqtH8f",
+        "doxcnh3FuWjS2iLJGAU8cZrEP1g",
+        "doxcnaYu1WyeFrT1g2jJAxseBvc",
+        "doxcn4sM1xsULCFkZf6jZqpnYse",
+        "doxcnJsjJL4MrvG7EhhnPSEhgze",
+        "doxcnRMX3mAJbwR94EmbRUbKjsb",
+        "doxcnTcYoDG6wC23mrM8lm4XFK0",
+        "doxcnOHmymkNlqHeLB58ey2m6D3",
+        "doxcnLozlCmcYCaar2gDrbq4ooc",
+        "doxcnKL8Hs5yc7CjzZF7SYy9pLD",
+        "doxcnddo9O9IKpSKk6JKk7SBCUg",
+        "doxcnDS6OHagtnoKDDXo8yYMCvd",
+        "doxcng5qF2MfREn0FxfgIob7aUh",
+        "doxcnkkF6BFBdGTJkKzBKZIKU2u",
+        "doxcnbuEbyzDvXu8P062U49zYzc",
+        "doxcncAVJmOYahJ8nJb1SSsSfxe",
+        "doxcn8GxhKL58yVBAK17IM8AUeh",
+        "doxcnq2O38pB1f2aIJvv8Ahfm6c",
+        "doxcnVEHKOVGkvGzq710tHESj0b",
+        "doxcnd77cJP2AFAHiFFhKoM0iyd",
+        "doxcniPjUJiw6fexhOBgeqnmSE3",
+        "doxcnuo8kLiDrto43YAFxgg6efc",
+        "doxcn2DROsLkKXVax6HMVkzVXte",
+        "doxcn4J4ywevhlSIKzm0KchIWYf",
+        "doxcnml0hKpserrecUj2DHIr7Kb",
+        "doxcnvaXMAna4FRSfKmKzH31Dfe",
+        "doxcnLhzAcUksBijs7vJoxvz8pf",
+        "doxcnDSkreaz7hV4y4zqmQ47SAg",
+        "doxcnkHhnZfgLtz1vigaZFWl8sh",
+        "doxcn7Z1Dw0hytzgqkUkG4yl1Ub",
+        "doxcnixx90dQKbY9sK80rwQBkZg",
+        "doxcna6CC7JW8bniMFWQgjqUjah",
+        "doxcnphymoh0YryvJCirnrzSPtb",
+        "doxcnDvesGTnpvbhrkYY6ZhqBre",
+        "doxcn82W0MCYjRxHfFpqtQy1bLh",
+        "doxcndkmYBpotxJOQskx1noooxH",
+        "doxcnciS1LhxGC65K8Nx0Wc0vgR",
+        "doxcn4QWCPqyoWzqhEpF0xR5svb",
+        "doxcnUAB5rQnExhkY6V5125CofM",
+        "doxcnIaKhiRJV0SAwOvksqWo86f",
+        "doxcnLjnXMbFWSuYdBoTQOl4jop",
+        "doxcnjTOpdg4LYtEiYKcFOGMArg",
+        "doxcnoH3h2HrMuyn1sYiRlH4Xy5",
+        "doxcnVlhOhdNsgX56RKmPicJAig",
+        "doxcnvcFJSsdvCuTXWuT2pN5rBc",
+        "doxcnSKLKg3lY9VYsyljtxZ6Jmg",
+        "doxcngVhgKeO1V4MZiNmTzGrzge",
+        "doxcnmypktcJFQio8ycSE3uIxIh",
+        "doxcn0j97W6yMqROOg2NNNJhDFb",
+        "doxcn6ccXKeO0SmPKx0geEt1zMg",
+        "doxcnMzXIHTlcAlKxS7E0ZCAqMd",
+        "doxcng39UJ25JYeSM31IeNZOPrd",
+        "doxcnwQTkjlauJP6dWGIhleXdUg",
+        "doxcnk8ghDNMKzUc45NExxvzdrd",
+        "doxcnfWEMs19uxSQexNy63vdHid",
+        "doxcnHdaSzvVboUl2ndf844ewZC",
+        "doxcnnKEUfjDLMjRlejClKtkR9o",
+        "doxcnl5FEyz7pAcU133SBZT3pfg",
+        "doxcnni1KsyvxXg1XygQ07a9ord",
+        "doxcncOMsZqmk5lSleIM4tstWhh",
+        "doxcnlzlrJsm7ZbXdalDNs5I5Kb",
+        "doxcnRDcFL0t2DRSNxor6MX81jf",
+        "doxcnhHrokAcQm3XpotqhCqzqxs",
+        "doxcnN3Op97QOfF8sbPDk81EWUh",
+        "doxcnc6LClOHtwN6slQv7uWdiHe"
+    ],
+    "concurrent": true,
+    "cursor": "w6nCgcOLMCkvLcOCw5knw5HDq0doGMOuZMODTVzDmwkCw6FZwqTClg_DgjLDpMOtwp_CjWJzw6fDmcOeYmTDqRwHccOIQsKNP2tQTXwyccOGw6tvwo3DvsOvF8Kze8OGw4PCtcKiwopbw4pXw5IAwrZURVbCu8OuwqvDkQtSd8KYeDkww4FAw6omBnhPdnPCusOow7fCrmtyacK6w7BsKcOXwpV7",
+    "editor_map": {
+        "7098877293704904705": {
+            "uid": "7098877293704904705",
+            "name": "飞书用户1279",
+            "avatar_url": "https://s1-imfile.feishucdn.com/static-resource/v1/09c2f0c1-c364-4575-b826-3588a51b2e9e~?image_size=72x72&cut_type=default-face&quality=&format=jpeg&sticker_format=.webp",
+            "en_name": "Feishu user 1279",
+            "display_name": {
+                "value": "飞书用户1279",
+                "i18n_value": {
+                    "en_us": "Feishu user 1279",
+                    "ja_jp": "Feishu ユーザー 1279",
+                    "zh_cn": "飞书用户1279"
+                }
+            },
+            "department_name": {
+                "value": "",
+                "i18n_value": {}
+            },
+            "user_type": 1,
+            "i18n_value": {
+                "en_us": "Feishu user 1279",
+                "ja_jp": "Feishu ユーザー 1279",
+                "zh_cn": "飞书用户1279"
+            }
+        },
+        "7221978030413987841": {
+            "uid": "7221978030413987841",
+            "name": "飞书用户9415",
+            "avatar_url": "https://s1-imfile.feishucdn.com/static-resource/v1/09c2f0c1-c364-4575-b826-3588a51b2e9e~?image_size=72x72&cut_type=default-face&quality=&format=jpeg&sticker_format=.webp",
+            "en_name": "Feishu user 9415",
+            "display_name": {
+                "value": "飞书用户9415",
+                "i18n_value": {
+                    "en_us": "Feishu user 9415",
+                    "ja_jp": "Feishu ユーザー 9415",
+                    "zh_cn": "飞书用户9415"
+                }
+            },
+            "department_name": {
+                "value": "",
+                "i18n_value": {}
+            },
+            "user_type": 1,
+            "i18n_value": {
+                "en_us": "Feishu user 9415",
+                "ja_jp": "Feishu ユーザー 9415",
+                "zh_cn": "飞书用户9415"
+            }
+        }
+    },
+    "external_mention_url": null,
+    "has_more": false,
+    "id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+    "mention_page_title": {
+        "A7uKdZAmwoY5phxihltc1ajXnvg": "如何训练一个适合特定任务的LLM？",
+        "AC7JdtLrhoKpgxxSRM8cfUounsh": "FlashAttention: 更快训练更长上下文的GPT",
+        "BEsTdZkKGoXdMLxOzj2cfcFnnPe": "nanoGPT ClacN技术报告",
+        "BiHydIdjkogQ5XxU5OvcFCjQnHe": "Guanaco-33B Finetuning 效果",
+        "CrMGdSVPKow5d1x1XQMcJioRnQe": "QLoRA: 训练更大的GPT",
+        "EcZxdsf4uozCoixdU3NcW03snwV": "PagedAttention(vLLM):更快地推理你的GPT",
+        "Ee2hdHJkQomikDxufoqcwFX1nXg": "如何在字节内部部署一个LLM？以Baichuan为例",
+        "HaM7d7uGhoQ2VPxxZBacpduDny7": "OBD&OBS：给神经网络做个外科手术",
+        "KWTkdA6EmonokyxdCmocdbXmnwc": "AdaLoRA：更强大的LoRA",
+        "Mvj1dkd1XoV1DYxkkt6c4JLNnBG": "LLM-Attack: 撬开GPT阁下的嘴",
+        "OPP2dTuXAoaO0oxWhQAcC05Wnpc": "GPTQ&OBQ：量化你的GPT",
+        "UwT2dQsiko6u0RxoiXRcBtwfnAf": "GPU Arch:自顶向下分析"
+    },
+    "meta_map": {
+        "doxcn3zm448MK9sK6pHuPsqtH8f": {
+            "create_time": "2022-07-07T15:52:12.846+08:00",
+            "creator_id": "7098877293704904705",
+            "edit_time": "2024-02-15T16:48:15.285+08:00",
+            "editor_id": "7098877293704904705",
+            "owner_id": "7098877293704904705",
+            "page_id": "doxcn3zm448MK9sK6pHuPsqtH8f",
+            "source": 0,
+            "status": 0,
+            "sub_type": 0,
+            "tenant_id": "1",
+            "title": "Modest Understandings on LLM",
+            "update_time": "2025-11-16T19:29:23.459+08:00"
+        }
+    },
+    "next_cursors": [],
+    "preloadedImages": null,
+    "skip_blocks": [],
+    "structure_version": 4052,
+    "synced_block_url": {},
+    "type": "CLIENT_VARS",
+    "user_map": {
+        "7098877293704904705": {
+            "uid": "7098877293704904705",
+            "name": "飞书用户1279",
+            "avatar_url": "https://s1-imfile.feishucdn.com/static-resource/v1/09c2f0c1-c364-4575-b826-3588a51b2e9e~?image_size=72x72&cut_type=default-face&quality=&format=jpeg&sticker_format=.webp",
+            "en_name": "Feishu user 1279",
+            "display_name": {
+                "value": "飞书用户1279",
+                "i18n_value": {
+                    "en_us": "Feishu user 1279",
+                    "ja_jp": "Feishu ユーザー 1279",
+                    "zh_cn": "飞书用户1279"
+                }
+            },
+            "department_name": {
+                "value": "",
+                "i18n_value": {}
+            },
+            "user_type": 1,
+            "i18n_value": {
+                "en_us": "Feishu user 1279",
+                "ja_jp": "Feishu ユーザー 1279",
+                "zh_cn": "飞书用户1279"
+            }
+        }
+    }
+}

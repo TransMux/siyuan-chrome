@@ -12,7 +12,7 @@
             }
 
             const title = this.getDocumentTitle();
-            console.log(`开始转换文档: ${title}`);
+            console.error(`开始转换文档: ${title}`);
 
             let content = [];
             // content.push(`# ${title}\n\n`);
@@ -51,6 +51,7 @@
             if (!blockType) {
                 return '';
             }
+            console.error(`convertBlock: ${blockType}, ${block}`);
 
             switch (blockType) {
                 case 'text':
@@ -90,11 +91,15 @@
                     return await this.convertGridBlock(block);
                 case 'grid_column':
                     return await this.convertGridColumnBlock(block);
+                case 'bookmark':
+                    return this.convertBookmarkBlock(block);
+                case 'mindnote':
+                    return this.convertMindnoteBlock(block);
                 case 'wiki_catalog':
                 case 'fallback':
                     return ""
                 default:
-                    console.log(`⚠️ 未支持的块类型: ${blockType}`, block);
+                    console.error(`⚠️ 未支持的块类型: ${blockType}, ${block}`);
                     return ""
             }
         }
@@ -286,6 +291,36 @@
             return `[${name}](${url})\n\n`;
         }
 
+        convertBookmarkBlock(block) {
+            const bookmark = block.bookmark || block.snapshot?.bookmark;
+            if (!bookmark) return '';
+
+            const title = bookmark.title || '书签';
+            const url = bookmark.url || '';
+            const summary = bookmark.summary || '';
+            const coverUrl = bookmark.cover_url;
+
+            // 如果有封面图片，使用图片链接格式
+            if (coverUrl) {
+                let result = `[![${title}](${coverUrl})](${url})\n\n`;
+                if (summary) {
+                    result += `${summary}\n\n`;
+                }
+                return result;
+            }
+
+            // 否则使用普通链接格式
+            let result = `[${title}](${url})\n\n`;
+            if (summary) {
+                result += `${summary}\n\n`;
+            }
+            return result;
+        }
+
+        convertMindnoteBlock(block) {
+            return "mindnote is not supported\n\n";
+        }
+
         convertIframeBlock(block) {
             const iframe = block.snapshot?.iframe;
             if (!iframe) return '';
@@ -307,7 +342,7 @@
             try {
                 const imageUrl = await this.whiteboardToPNG(block);
                 if (imageUrl) {
-                    console.log('🎨 成功将白板转换为PNG图片');
+                    console.error('🎨 成功将白板转换为PNG图片');
                     return `![${altText}](${imageUrl})\n\n`;
                 }
             } catch (error) {
@@ -321,7 +356,7 @@
                 return `![${altText}](${url})\n\n`;
             }
 
-            console.log('⚠️ Whiteboard block missing token:', block);
+            console.error('⚠️ Whiteboard block missing token:', block);
             return '';
         }
 
@@ -786,6 +821,8 @@
                     return docTitle;
 
                 case 'mention_user':
+                case 'user':
+                    // user 类型可能没有 name，尝试从 data 中获取
                     return component.data?.name || originalText || '[用户]';
 
                 case 'link':
@@ -797,7 +834,7 @@
                     return linkText;
 
                 default:
-                    console.log(`⚠️ 发现未支持的inline-component类型: "${componentType}"`, component);
+                    console.error(`⚠️ 发现未支持的inline-component类型: "${componentType}"`, component);
                     return originalText || `[${componentType}]`;
             }
         }
@@ -860,7 +897,7 @@
 
     window.__siyuanGetPageContent = async function () {
         try {
-            console.log('🚀 飞书文档转Markdown工具启动...');
+            console.error('🚀 飞书文档转Markdown工具启动...');
 
             // 检查运行环境
             if (typeof window === 'undefined') {
@@ -876,7 +913,7 @@
             // 获取PageMain数据
             if (!window.PageMain?.blockManager?.rootBlockModel) {
                 console.error('❌ 未找到PageMain数据源，请确保在飞书文档页面运行此脚本');
-                console.log('💡 提示：请打开一个飞书文档页面，然后在浏览器控制台中运行此脚本');
+                console.error('💡 提示：请打开一个飞书文档页面，然后在浏览器控制台中运行此脚本');
                 return {
                     type: "markdown",
                     content: null,
@@ -885,31 +922,31 @@
                 };
             }
 
-            console.log('✅ 检测到飞书文档页面，正在从PageMain读取文档数据...');
+            console.error('✅ 检测到飞书文档页面，正在从PageMain读取文档数据...');
             const rootBlock = window.PageMain.blockManager.rootBlockModel;
 
-            console.log('✅ 成功获取文档数据');
+            console.error('✅ 成功获取文档数据');
 
             const converter = new PageMainConverter(rootBlock);
             const markdown = await converter.convertToMarkdown();
 
-            console.log('=== 转换完成 ===\n');
-            console.log(markdown);
-            console.log('\n=== Markdown内容已输出到控制台 ===');
+            console.error('=== 转换完成 ===\n');
+            console.error(markdown);
+            console.error('\n=== Markdown内容已输出到控制台 ===');
 
             // 尝试复制到剪贴板
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(markdown).then(() => {
-                    console.log('✅ Markdown内容已复制到剪贴板');
+                    console.error('✅ Markdown内容已复制到剪贴板');
                 }).catch(err => {
-                    console.log('❌ 复制到剪贴板失败:', err);
+                    console.error('❌ 复制到剪贴板失败:', err);
                 });
             }
 
-            console.log(`\n✅ 转换成功完成！`);
-            console.log(`📄 Markdown长度: ${markdown.length} 字符`);
-            console.log(`🎨 支持粗体、颜色高亮、callout等格式化`);
-            console.log(`📋 内容已输出到控制台，可直接复制使用`);
+            console.error(`\n✅ 转换成功完成！`);
+            console.error(`📄 Markdown长度: ${markdown.length} 字符`);
+            console.error(`🎨 支持粗体、颜色高亮、callout等格式化`);
+            console.error(`📋 内容已输出到控制台，可直接复制使用`);
 
             return {
                 type: "markdown",
