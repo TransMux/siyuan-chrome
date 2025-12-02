@@ -19,6 +19,10 @@
     {
       "url_pattern": "bytedance.larkoffice.com/docx/*",
       "inject": "inject/飞书wiki.js"
+    },
+    {
+      "url_pattern": "bytedance.larkoffice.com/wiki/*",
+      "inject": "inject/飞书wiki.js"
     }
   ]
 }
