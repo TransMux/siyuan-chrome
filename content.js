@@ -38,44 +38,6 @@ window.addEventListener('message', async (event) => {
                         data.content.textContent?.substring(0, 200) || '') : '')
             };
             
-            // 使用页面提供的 extraParams，如果没有则使用默认的数据库结构
-            let extraParams = data.extraParams;
-            if (!extraParams && data.url) {
-                // 默认数据库结构（与 folo 相同）
-                extraParams = {
-                    attributeViews: [
-                        {
-                            avID: '20250102171020-4cqqonx', // 输入数据库
-                            values: {
-                                '20250209201903-a01feo9': {
-                                    // 链接列
-                                    url: {
-                                        content: data.url,
-                                    },
-                                },
-                                '20250209201845-at8lrm2': {
-                                    // 来源列
-                                    mSelect: [{ color: '14', content: 'RSS' }],
-                                },
-                                '20250830154540-udvlq8y': {
-                                    // 关联列
-                                    relation: { blockIDs: [] },
-                                },
-                                "20250904212513-5wb92lu": {
-                                    // 作者列
-                                    text: {content: data.author || ""}
-                                }
-                            },
-                        },
-                    ],
-                };
-            }
-            
-            // 设置extraParams全局变量
-            if (extraParams) {
-                window.__siyuanPageClipExtraParams = extraParams;
-            }
-            
             console.log('🔄 [SiYuan-Content] Calling siyuanSendUpload with page data');
             
             // 调用剪藏函数，使用预配置的设置
