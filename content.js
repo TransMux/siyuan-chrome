@@ -1,3 +1,104 @@
+// 监听来自页面的消息，允许页面主动触发剪藏
+window.addEventListener('message', async (event) => {
+    // 只处理来自同源的消息，或者明确标记为允许的消息
+    // 处理页面主动触发的剪藏请求
+    if (event.data && event.data.type === 'SIYUAN_CLIP_ARTICLE') {
+        console.log('📨 [SiYuan-Content] Received clip article message from page:', event.data);
+        
+        try {
+            const data = event.data.data || {};
+            
+            // 验证必要字段
+            if (!data.title && !data.content) {
+                console.error('❌ [SiYuan-Content] Missing required fields: title or content');
+                return;
+            }
+            
+            // 创建临时元素来包装文章内容
+            const tempElement = document.createElement('div');
+            
+            // 添加文章内容
+            if (data.content) {
+                const contentElement = document.createElement('div');
+                if (typeof data.content === 'string') {
+                    contentElement.innerHTML = data.content;
+                } else {
+                    contentElement.appendChild(data.content);
+                }
+                tempElement.appendChild(contentElement);
+            }
+            
+            // 构造文章信息对象
+            const article = {
+                title: data.title || document.title || 'Untitled',
+                siteName: data.siteName || '',
+                excerpt: data.excerpt || (data.content ? 
+                    (typeof data.content === 'string' ? 
+                        data.content.substring(0, 200).replace(/<[^>]*>/g, '') : 
+                        data.content.textContent?.substring(0, 200) || '') : '')
+            };
+            
+            // 使用页面提供的 extraParams，如果没有则使用默认的数据库结构
+            let extraParams = data.extraParams;
+            if (!extraParams && data.url) {
+                // 默认数据库结构（与 folo 相同）
+                extraParams = {
+                    attributeViews: [
+                        {
+                            avID: '20250102171020-4cqqonx', // 输入数据库
+                            values: {
+                                '20250209201903-a01feo9': {
+                                    // 链接列
+                                    url: {
+                                        content: data.url,
+                                    },
+                                },
+                                '20250209201845-at8lrm2': {
+                                    // 来源列
+                                    mSelect: [{ color: '14', content: 'RSS' }],
+                                },
+                                '20250830154540-udvlq8y': {
+                                    // 关联列
+                                    relation: { blockIDs: [] },
+                                },
+                                "20250904212513-5wb92lu": {
+                                    // 作者列
+                                    text: {content: data.author || ""}
+                                }
+                            },
+                        },
+                    ],
+                };
+            }
+            
+            // 设置extraParams全局变量
+            if (extraParams) {
+                window.__siyuanPageClipExtraParams = extraParams;
+            }
+            
+            console.log('🔄 [SiYuan-Content] Calling siyuanSendUpload with page data');
+            
+            // 调用剪藏函数，使用预配置的设置
+            siyuanSendUpload(
+                tempElement, 
+                null, // tabId
+                undefined, 
+                "article", 
+                article, 
+                data.url || window.location.href, 
+                undefined, 
+                false, 
+                data.noReload !== false // 默认不刷新页面
+            );
+            
+            console.log('✅ [SiYuan-Content] Successfully initiated page clip');
+            
+        } catch (error) {
+            console.error('❌ [SiYuan-Content] Error in page clip:', error);
+        }
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     chrome.runtime.onMessage.addListener(
         async (request, sender, sendResponse) => {
