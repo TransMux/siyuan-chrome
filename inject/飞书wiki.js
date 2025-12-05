@@ -95,6 +95,8 @@
                     return this.convertBookmarkBlock(block);
                 case 'mindnote':
                     return this.convertMindnoteBlock(block);
+                case 'synced_source':
+                    return await this.convertSyncedSourceBlock(block);
                 case 'wiki_catalog':
                 case 'fallback':
                     return ""
@@ -319,6 +321,29 @@
 
         convertMindnoteBlock(block) {
             return "mindnote is not supported\n\n";
+        }
+
+        async convertSyncedSourceBlock(block) {
+            // 处理同步块，展开其中的内容
+            let content = [];
+
+            // 提取标题文本（如果有）
+            const title = this.extractFormattedText(block);
+            if (title) {
+                content.push(`**${title}**\n`);
+            }
+
+            // 处理子块内容
+            if (block.children && Array.isArray(block.children)) {
+                for (const child of block.children) {
+                    const childContent = await this.convertBlock(child);
+                    if (childContent) {
+                        content.push(childContent);
+                    }
+                }
+            }
+
+            return content.join('\n');
         }
 
         convertIframeBlock(block) {
