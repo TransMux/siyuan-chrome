@@ -889,7 +889,38 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         return
     }
 
-    const requestData = request.data
+    let requestData = request.data;
+
+    // 如果使用了大消息传输（通过 storage 中转）
+    if (request.useLargeMessageTransfer && request.storageKey) {
+        console.log(`Retrieving large message from storage with key: ${request.storageKey}`);
+        try {
+            const storageResult = await chrome.storage.local.get(request.storageKey);
+            requestData = storageResult[request.storageKey];
+
+            if (!requestData) {
+                console.error('Failed to retrieve large message from storage');
+                safeTabsSendMessage(request.tabId, {
+                    'func': 'tip',
+                    'msg': '获取剪藏数据失败，请重试',
+                    'tip': true,
+                });
+                return;
+            }
+
+            // 清理 storage
+            chrome.storage.local.remove(request.storageKey);
+            console.log(`Successfully retrieved and cleaned up large message (${request.storageKey})`);
+        } catch (error) {
+            console.error('Error retrieving large message:', error);
+            safeTabsSendMessage(request.tabId, {
+                'func': 'tip',
+                'msg': '处理大文档时出错，请重试',
+                'tip': true,
+            });
+            return;
+        }
+    }
     const fetchFileErr = requestData.fetchFileErr
     const dom = requestData.dom
     const files = requestData.files

@@ -6,7 +6,7 @@ window.addEventListener('message', async (event) => {
     ) {
         let params = {};
         let error = null;
-        
+
         try {
             // 通过函数调用获取参数
             params = window.__siyuanGetCaptureParam ? await window.__siyuanGetCaptureParam() : {};
@@ -34,7 +34,7 @@ window.addEventListener('message', async (event) => {
     ) {
         let contentResult = null;
         let error = null;
-        
+
         try {
             // 通过函数调用获取页面内容
             contentResult = window.__siyuanGetPageContent ? await window.__siyuanGetPageContent() : null;
@@ -42,7 +42,7 @@ window.addEventListener('message', async (event) => {
             error = e.message || '获取页面内容时发生错误';
         }
 
-        // 返回结果给content script
+        // 直接发送结果（postMessage 可以处理大数据）
         window.postMessage(
             {
                 type: 'PAGE_CONTENT_RESPONSE',

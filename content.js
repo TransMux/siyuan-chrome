@@ -1697,26 +1697,27 @@ window.muxDisableClipping = () => clipboardMonitor.disableClipping();
 
 // 获取页面预埋内容函数
 const siyuanGetPageContent = async () => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         // 设置超时，避免长时间等待
         const timeout = setTimeout(() => {
             window.removeEventListener('message', messageHandler);
-            throw new Error('等待页面返回消息超时');
+            reject(new Error('等待页面返回消息超时'));
         }, 30000); // 30秒超时
 
         // 监听页面返回的消息
         const messageHandler = (event) => {
-            if (event.data && event.data.type === 'PAGE_CONTENT_RESPONSE' && 
+            if (event.data && event.data.type === 'PAGE_CONTENT_RESPONSE' &&
                 event.data.source === 'siyuan-chrome-extension') {
-                    clearTimeout(timeout);
-                    window.removeEventListener('message', messageHandler);
-                    if (event.data.error) {
-                        throw new Error(event.data.error);
-                    }
-                    resolve(event.data);
+                clearTimeout(timeout);
+                window.removeEventListener('message', messageHandler);
+                if (event.data.error) {
+                    reject(new Error(event.data.error));
+                    return;
                 }
-            };
-            
+                resolve(event.data);
+            }
+        };
+
         window.addEventListener('message', messageHandler);
 
         // 向页面发送消息请求预埋内容
@@ -1821,6 +1822,16 @@ const downloadMarkdownImages = async (imageUrls) => {
     return { files, fetchFileErr };
 };
 
+// 计算对象的大小（字节）
+const calculateObjectSize = (obj) => {
+    const str = JSON.stringify(obj);
+    // 使用 Blob 来准确计算字符串的字节大小（考虑 UTF-8 编码）
+    return new Blob([str]).size;
+};
+
+// 最大消息大小限制（4MB，保守估计）
+const MAX_MESSAGE_SIZE = 4 * 1024 * 1024; // 4MB
+
 // 处理markdown内容直接发送给思源
 const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabAfter = false, noReload = false, title = "") => {
     try {
@@ -1885,7 +1896,34 @@ const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabA
         console.log('Extra params:', extraParams);
         msgJSON.extraParams = extraParams;
 
-        chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON });
+        // 检查消息大小
+        const messageSize = calculateObjectSize(msgJSON);
+        console.log(`Message size: ${(messageSize / 1024 / 1024).toFixed(2)} MB`);
+
+        if (messageSize >= MAX_MESSAGE_SIZE) {
+            // 消息过大，使用 chrome.storage.local 作为中转
+            const storageKey = `large-clip-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+            console.log(`Message too large (${(messageSize / 1024 / 1024).toFixed(2)} MB), using storage transfer with key: ${storageKey}`);
+
+            try {
+                // 存储大数据到 chrome.storage.local
+                await chrome.storage.local.set({ [storageKey]: msgJSON });
+
+                // 只发送引用
+                chrome.runtime.sendMessage({
+                    func: 'upload-copy',
+                    useLargeMessageTransfer: true,
+                    storageKey: storageKey,
+                    tabId: tabId
+                });
+            } catch (storageError) {
+                console.error('Failed to store large message:', storageError);
+                siyuanShowTip('文档过长，无法剪藏。请尝试减少内容或图片数量。', 7 * 1000);
+            }
+        } else {
+            // 正常大小，直接发送
+            chrome.runtime.sendMessage({ func: 'upload-copy', data: msgJSON });
+        }
     } catch (e) {
         console.error('Error sending markdown content:', e);
         siyuanShowTip(e.message, 7 * 1000);
