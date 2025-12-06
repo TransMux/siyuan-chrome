@@ -62,7 +62,7 @@
                 case 'heading4':
                 case 'heading5':
                 case 'heading6':
-                    return this.convertHeadingBlock(block);
+                    return await this.convertHeadingBlock(block);
                 case 'bullet':
                 case 'ordered':
                 case 'todo':
@@ -97,6 +97,8 @@
                     return this.convertMindnoteBlock(block);
                 case 'synced_source':
                     return await this.convertSyncedSourceBlock(block);
+                case 'synced_reference':
+                    return await this.convertSyncedReferenceBlock(block);
                 case 'wiki_catalog':
                 case 'fallback':
                     return ""
@@ -161,11 +163,23 @@
             return `$$\n${formula}\n$$\n\n`;
         }
 
-        convertHeadingBlock(block) {
+        async convertHeadingBlock(block) {
             const level = parseInt(block.type.replace('heading', ''));
             const text = this.extractFormattedText(block);
             const prefix = '#'.repeat(Math.min(level, 6));
-            return text ? `${prefix} ${text}\n\n` : '';
+            let result = text ? `${prefix} ${text}\n\n` : '';
+
+            // 处理子块（如果有）
+            if (block.children && Array.isArray(block.children) && block.children.length > 0) {
+                for (const child of block.children) {
+                    const childContent = await this.convertBlock(child);
+                    if (childContent) {
+                        result += childContent;
+                    }
+                }
+            }
+
+            return result;
         }
 
         async convertListBlock(block, indent = '') {
@@ -344,6 +358,45 @@
             }
 
             return content.join('\n');
+        }
+
+        async convertSyncedReferenceBlock(block) {
+            // 处理同步块引用，从 innerBlockManager.allBlockModels 获取数据
+
+            // 检查是否有 innerBlockManager 和 allBlockModels
+            if (!block.innerBlockManager || !block.innerBlockManager.allBlockModels) {
+                // console.warn('⚠️ 同步块引用缺少 innerBlockManager.allBlockModels');
+                return '> [同步块引用]\n\n';
+            }
+
+            const allBlockModels = block.innerBlockManager.allBlockModels;
+
+            // 检查是否是数组且有内容
+            if (!Array.isArray(allBlockModels) || allBlockModels.length === 0) {
+                // console.warn('⚠️ allBlockModels 不是数组或为空');
+                return '> [空同步块]\n\n';
+            }
+
+            // console.error(`✅ 正在展开同步块引用，包含 ${allBlockModels.length} 个块`);
+
+            // 按照 allBlockModels 数组的顺序处理每个块
+            let content = [];
+
+            for (const refBlock of allBlockModels) {
+                if (!refBlock) continue;
+
+                try {
+                    // 直接使用 refBlock，它已经是标准的块格式
+                    const blockContent = await this.convertBlock(refBlock);
+                    if (blockContent) {
+                        content.push(blockContent);
+                    }
+                } catch (e) {
+                    // console.warn(`⚠️ 处理同步块中的子块失败:`, e);
+                }
+            }
+
+            return content.join('\n\n');
         }
 
         convertIframeBlock(block) {
