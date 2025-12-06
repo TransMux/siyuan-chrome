@@ -773,17 +773,7 @@
                 let text = op.insert;
                 const attrs = op.attributes || {};
 
-                // 处理内联组件
-                if (attrs['inline-component']) {
-                    try {
-                        const component = JSON.parse(attrs['inline-component']);
-                        text = this.extractInlineComponentText(component, text);
-                    } catch (e) {
-                        // 解析失败，使用原始文本
-                    }
-                }
-
-                // 应用格式
+                // 应用格式（inline-component 在 applyTextFormatting 中处理）
                 text = this.applyTextFormatting(text, attrs);
                 result.push(text);
             }
@@ -900,8 +890,18 @@
 
                 case 'mention_user':
                 case 'user':
-                    // user 类型可能没有 name，尝试从 data 中获取
-                    return component.data?.name || originalText || '[用户]';
+                    // user 类型：优先使用 name，如果没有则使用 uid
+                    // 格式：@用户名 或 @uid
+                    const userName = component.data?.name;
+                    const userUid = component.data?.uid;
+
+                    if (userName) {
+                        return `@${userName}`;
+                    } else if (userUid) {
+                        return `@${userUid}`;
+                    } else {
+                        return originalText || '@未知用户';
+                    }
 
                 case 'link':
                     const linkText = component.data?.text || originalText || '[链接]';
@@ -918,6 +918,16 @@
         }
 
         applyTextFormatting(text, attrs) {
+            // 优先处理内联组件（inline-component）
+            if (attrs['inline-component']) {
+                try {
+                    const component = JSON.parse(attrs['inline-component']);
+                    text = this.extractInlineComponentText(component, text);
+                } catch (e) {
+                    // 解析失败，使用原始文本
+                }
+            }
+
             const styles = [];
             let dataType = 'text';
 
