@@ -23,6 +23,14 @@
     {
       "url_pattern": "bytedance.larkoffice.com/wiki/*",
       "inject": "inject/飞书wiki.js"
+    },
+    {
+      "url_pattern": "*://127.0.0.1:*/*",
+      "inject": "inject/思源.js"
+    },
+    {
+      "url_pattern": "*://localhost:*/*",
+      "inject": "inject/思源.js"
     }
   ]
 }
