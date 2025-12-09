@@ -299,9 +299,27 @@
         }
 
         convertCodeBlock(block) {
-            const language = block.language || block.snapshot?.language || '';
-            const code = block.zoneState?.allText || '';
-            return `\n\n\`\`\`${language}\n${code.replace(/\n$/, '')}\n\`\`\`\n\n`;
+            // 支持两种数据格式：
+            // 1. PageMain格式：block.snapshot.language 和 block.zoneState.allText
+            // 2. JSON格式：block.language 和 block.text.initialAttributedTexts.text
+            let language = '';
+            let code = '';
+
+            // 尝试从不同位置获取语言信息
+            if (block.language) {
+                language = block.language;
+            } else if (block.snapshot?.language) {
+                language = block.snapshot.language;
+            }
+
+            // 尝试从不同位置获取代码内容
+            if (block.zoneState?.allText) {
+                code = block.zoneState.allText;
+            } else if (block.text?.initialAttributedTexts?.text?.["0"]) {
+                code = block.text.initialAttributedTexts.text["0"];
+            }
+
+            return `\n\`\`\`${language}\n${code.replace(/\n$/, '')}\n\`\`\`\n\n`;
         }
 
         async convertImageBlock(block) {
