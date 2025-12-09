@@ -891,14 +891,49 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 
     let requestData = request.data;
 
-    // 如果使用了大消息传输（通过 storage 中转）
-    if (request.useLargeMessageTransfer && request.storageKey) {
+    // 如果使用了 IndexedDB 传输（通用大数据传输方案，无大小限制）
+    if (request.useIndexedDBTransfer && request.storageKey) {
+        console.log(`Retrieving large message from IndexedDB with key: ${request.storageKey}`);
+        try {
+            // 在 background script 中访问 IndexedDB 需要通过 offscreen document 或者直接访问
+            // 这里我们通过向 content script 请求数据
+            requestData = await new Promise((resolve, reject) => {
+                chrome.tabs.sendMessage(request.tabId, {
+                    func: 'retrieveFromIndexedDB',
+                    storageKey: request.storageKey
+                }, (response) => {
+                    if (chrome.runtime.lastError) {
+                        reject(new Error(chrome.runtime.lastError.message));
+                        return;
+                    }
+                    if (response && response.success) {
+                        resolve(response.data);
+                    } else {
+                        reject(new Error(response?.error || 'Failed to retrieve data'));
+                    }
+                });
+            });
+
+            console.log(`Successfully retrieved data from IndexedDB`);
+        } catch (error) {
+            console.error('Error retrieving large message from IndexedDB:', error);
+            safeTabsSendMessage(request.tabId, {
+                'func': 'tip',
+                'msg': '处理大文档时出错: ' + error.message,
+                'tip': true,
+            });
+            return;
+        }
+    }
+    // 兼容旧的 chrome.storage.local 方式（已废弃，但保留兼容）
+    else if (request.useLargeMessageTransfer && request.storageKey) {
         console.log(`Retrieving large message from storage with key: ${request.storageKey}`);
         try {
-            const storageResult = await chrome.storage.local.get(request.storageKey);
-            requestData = storageResult[request.storageKey];
+            // 读取元数据
+            const metadataResult = await chrome.storage.local.get(request.storageKey);
+            const metadata = metadataResult[request.storageKey];
 
-            if (!requestData) {
+            if (!metadata) {
                 console.error('Failed to retrieve large message from storage');
                 safeTabsSendMessage(request.tabId, {
                     'func': 'tip',
@@ -908,9 +943,44 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                 return;
             }
 
-            // 清理 storage
-            chrome.storage.local.remove(request.storageKey);
-            console.log(`Successfully retrieved and cleaned up large message (${request.storageKey})`);
+            // 如果是分块数据，需要重组
+            if (metadata.chunked) {
+                console.log(`Retrieving ${metadata.chunkCount} chunks from storage`);
+
+                // 读取所有分块
+                const chunks = [];
+                for (let i = 0; i < metadata.chunkCount; i++) {
+                    const chunkKey = `${request.storageKey}_chunk_${i}`;
+                    const chunkResult = await chrome.storage.local.get(chunkKey);
+                    const chunkData = chunkResult[chunkKey];
+
+                    if (!chunkData) {
+                        throw new Error(`Chunk ${i} not found in storage`);
+                    }
+
+                    chunks.push(chunkData);
+                    console.log(`Retrieved chunk ${i + 1}/${metadata.chunkCount}`);
+                }
+
+                // 合并所有分块
+                const dataStr = chunks.join('');
+                requestData = JSON.parse(dataStr);
+
+                console.log(`Successfully reconstructed data from ${chunks.length} chunks`);
+
+                // 清理所有分块
+                const chunkKeys = [request.storageKey];
+                for (let i = 0; i < metadata.chunkCount; i++) {
+                    chunkKeys.push(`${request.storageKey}_chunk_${i}`);
+                }
+                await chrome.storage.local.remove(chunkKeys);
+                console.log(`Cleaned up ${metadata.chunkCount} chunks`);
+            } else {
+                // 不是分块数据，直接使用
+                requestData = metadata;
+                await chrome.storage.local.remove(request.storageKey);
+                console.log(`Successfully retrieved and cleaned up large message (${request.storageKey})`);
+            }
         } catch (error) {
             console.error('Error retrieving large message:', error);
             safeTabsSendMessage(request.tabId, {

@@ -63,7 +63,7 @@ window.addEventListener('message', async (event) => {
 
 document.addEventListener('DOMContentLoaded', function () {
     chrome.runtime.onMessage.addListener(
-        async (request, sender, sendResponse) => {
+        (request, sender, sendResponse) => {
             if ('tip' === request.func && request.tip) {
                 siyuanShowTip(request.msg, request.timeout)
                 return
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if ('copy2Clipboard' === request.func) {
-                await copyToClipboard(request.data)
+                copyToClipboard(request.data).catch(err => console.error('Copy to clipboard failed:', err));
                 return
             }
 
@@ -151,6 +151,22 @@ document.addEventListener('DOMContentLoaded', function () {
             if ('siyuanGetReadability' === request.func) {
                 siyuanGetReadability(request.tabId)
                 return
+            }
+
+            // 处理 IndexedDB 数据读取请求
+            if ('retrieveFromIndexedDB' === request.func) {
+                (async () => {
+                    try {
+                        const data = await retrieveFromIndexedDB(request.storageKey);
+                        // 读取后立即删除
+                        await deleteFromIndexedDB(request.storageKey);
+                        sendResponse({ success: true, data: data });
+                    } catch (error) {
+                        console.error('Failed to retrieve from IndexedDB:', error);
+                        sendResponse({ success: false, error: error.message });
+                    }
+                })();
+                return true; // 保持消息通道打开以支持异步响应
             }
 
             if ('copy' !== request.func) {
@@ -1832,6 +1848,95 @@ const calculateObjectSize = (obj) => {
 // 最大消息大小限制（4MB，保守估计）
 const MAX_MESSAGE_SIZE = 4 * 1024 * 1024; // 4MB
 
+// ===== IndexedDB 存储方案（通用解决方案，无大小限制） =====
+
+// 初始化 IndexedDB
+const initIndexedDB = () => {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('SiyuanClipDB', 1);
+
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains('clips')) {
+                db.createObjectStore('clips', { keyPath: 'key' });
+            }
+        };
+    });
+};
+
+// 存储数据到 IndexedDB
+const storeToIndexedDB = async (key, data) => {
+    const db = await initIndexedDB();
+    const dataSize = calculateObjectSize(data);
+
+    console.log(`Storing to IndexedDB: ${(dataSize / 1024 / 1024).toFixed(2)} MB`);
+
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(['clips'], 'readwrite');
+        const store = transaction.objectStore('clips');
+        const request = store.put({
+            key: key,
+            data: data,
+            timestamp: Date.now(),
+            size: dataSize
+        });
+
+        request.onsuccess = () => {
+            console.log(`Successfully stored to IndexedDB (${(dataSize / 1024 / 1024).toFixed(2)} MB)`);
+            resolve();
+        };
+        request.onerror = () => reject(request.error);
+
+        transaction.oncomplete = () => db.close();
+    });
+};
+
+// 从 IndexedDB 读取数据
+const retrieveFromIndexedDB = async (key) => {
+    const db = await initIndexedDB();
+
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(['clips'], 'readonly');
+        const store = transaction.objectStore('clips');
+        const request = store.get(key);
+
+        request.onsuccess = () => {
+            const result = request.result;
+            if (result) {
+                console.log(`Retrieved from IndexedDB: ${(result.size / 1024 / 1024).toFixed(2)} MB`);
+                resolve(result.data);
+            } else {
+                reject(new Error('Data not found in IndexedDB'));
+            }
+        };
+        request.onerror = () => reject(request.error);
+
+        transaction.oncomplete = () => db.close();
+    });
+};
+
+// 从 IndexedDB 删除数据
+const deleteFromIndexedDB = async (key) => {
+    const db = await initIndexedDB();
+
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(['clips'], 'readwrite');
+        const store = transaction.objectStore('clips');
+        const request = store.delete(key);
+
+        request.onsuccess = () => {
+            console.log(`Deleted from IndexedDB: ${key}`);
+            resolve();
+        };
+        request.onerror = () => reject(request.error);
+
+        transaction.oncomplete = () => db.close();
+    });
+};
+
 // 处理markdown内容直接发送给思源
 const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabAfter = false, noReload = false, title = "") => {
     try {
@@ -1901,24 +2006,26 @@ const siyuanSendMarkdownContent = async (markdownContent, tabId, href, closeTabA
         console.log(`Message size: ${(messageSize / 1024 / 1024).toFixed(2)} MB`);
 
         if (messageSize >= MAX_MESSAGE_SIZE) {
-            // 消息过大，使用 chrome.storage.local 作为中转
+            // 消息过大，使用 IndexedDB 存储（无大小限制）
             const storageKey = `large-clip-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
-            console.log(`Message too large (${(messageSize / 1024 / 1024).toFixed(2)} MB), using storage transfer with key: ${storageKey}`);
+            console.log(`Message too large (${(messageSize / 1024 / 1024).toFixed(2)} MB), using IndexedDB transfer with key: ${storageKey}`);
 
             try {
-                // 存储大数据到 chrome.storage.local
-                await chrome.storage.local.set({ [storageKey]: msgJSON });
+                // 存储到 IndexedDB
+                await storeToIndexedDB(storageKey, msgJSON);
 
-                // 只发送引用
+                // 发送引用
                 chrome.runtime.sendMessage({
                     func: 'upload-copy',
-                    useLargeMessageTransfer: true,
+                    useIndexedDBTransfer: true,
                     storageKey: storageKey,
                     tabId: tabId
                 });
+
+                siyuanShowTip(`正在处理大文档 (${(messageSize / 1024 / 1024).toFixed(2)} MB)...`, 5000);
             } catch (storageError) {
                 console.error('Failed to store large message:', storageError);
-                siyuanShowTip('文档过长，无法剪藏。请尝试减少内容或图片数量。', 7 * 1000);
+                siyuanShowTip('文档存储失败: ' + storageError.message, 7 * 1000);
             }
         } else {
             // 正常大小，直接发送
