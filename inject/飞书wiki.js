@@ -27,7 +27,10 @@
                 }
             }
 
-            return content.join('\n\n');
+            // 后处理：修复公式格式
+            let markdown = content.join('\n\n');
+            markdown = this.postProcessMarkdown(markdown);
+            return markdown;
         }
 
         getDocumentTitle() {
@@ -38,6 +41,26 @@
                 return title;
             }
             return '未命名文档';
+        }
+
+        postProcessMarkdown(markdown) {
+            // 修复公式格式问题：
+            // 1. 确保 $$ 前面是换行符（移除 $$ 前的空格，但保留换行）
+            // 2. 移除公式内容行前的缩进空格
+
+            // 移除 $$ 前的空格，确保 $$ 前只有换行
+            markdown = markdown.replace(/\n[ \t]+\$\$/g, '\n$$');
+
+            // 处理块级公式内容的缩进
+            markdown = markdown.replace(/\$\$([\s\S]*?)\$\$/g, (_, formula) => {
+                // 移除公式内每行的前导空格，但保持换行结构
+                const cleanFormula = formula.split('\n')
+                    .map(line => line.trimStart())
+                    .join('\n');
+                return `$$${cleanFormula}$$`;
+            });
+
+            return markdown;
         }
 
         async convertBlock(block) {
@@ -160,7 +183,7 @@
 
             // 块级公式使用$$包围
             const formula = equations.join('');
-            return `$$\n${formula}\n$$\n\n`;
+            return `\n$$\n${formula}\n$$\n\n`;
         }
 
         async convertHeadingBlock(block) {
@@ -278,7 +301,7 @@
         convertCodeBlock(block) {
             const language = block.language || block.snapshot?.language || '';
             const code = block.zoneState?.allText || '';
-            return `\`\`\`${language}\n${code.replace(/\n$/, '')}\n\`\`\`\n\n`;
+            return `\n\n\`\`\`${language}\n${code.replace(/\n$/, '')}\n\`\`\`\n\n`;
         }
 
         async convertImageBlock(block) {
