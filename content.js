@@ -1838,11 +1838,38 @@ const downloadMarkdownImages = async (imageUrls) => {
     return { files, fetchFileErr };
 };
 
-// 计算对象的大小（字节）
+// 计算对象的大小（字节）- 优化版本，避免大对象序列化失败
 const calculateObjectSize = (obj) => {
-    const str = JSON.stringify(obj);
-    // 使用 Blob 来准确计算字符串的字节大小（考虑 UTF-8 编码）
-    return new Blob([str]).size;
+    try {
+        const str = JSON.stringify(obj);
+        // 使用 Blob 来准确计算字符串的字节大小（考虑 UTF-8 编码）
+        return new Blob([str]).size;
+    } catch (e) {
+        // 如果 JSON.stringify 失败（对象太大），粗略估算
+        console.warn('Object too large to stringify, using rough estimation');
+        let size = 0;
+
+        // 估算 files 对象的大小
+        if (obj.files && typeof obj.files === 'object') {
+            for (const key in obj.files) {
+                const file = obj.files[key];
+                if (file.data && typeof file.data === 'string') {
+                    // Base64 字符串大小
+                    size += file.data.length;
+                }
+            }
+        }
+
+        // 估算其他字段（dom, title 等）
+        if (obj.dom && typeof obj.dom === 'string') {
+            size += obj.dom.length * 2; // UTF-16 字符
+        }
+
+        // 其他字段粗略估算为 10KB
+        size += 10 * 1024;
+
+        return size;
+    }
 };
 
 // 最大消息大小限制（4MB，保守估计）
@@ -1870,27 +1897,35 @@ const initIndexedDB = () => {
 // 存储数据到 IndexedDB
 const storeToIndexedDB = async (key, data) => {
     const db = await initIndexedDB();
-    const dataSize = calculateObjectSize(data);
 
-    console.log(`Storing to IndexedDB: ${(dataSize / 1024 / 1024).toFixed(2)} MB`);
+    // 不再计算精确大小，直接存储
+    console.log(`Storing large data to IndexedDB...`);
 
     return new Promise((resolve, reject) => {
         const transaction = db.transaction(['clips'], 'readwrite');
         const store = transaction.objectStore('clips');
+
+        // 直接存储对象，IndexedDB 会自动处理序列化
         const request = store.put({
             key: key,
             data: data,
-            timestamp: Date.now(),
-            size: dataSize
+            timestamp: Date.now()
         });
 
         request.onsuccess = () => {
-            console.log(`Successfully stored to IndexedDB (${(dataSize / 1024 / 1024).toFixed(2)} MB)`);
+            console.log(`Successfully stored to IndexedDB`);
             resolve();
         };
-        request.onerror = () => reject(request.error);
+        request.onerror = () => {
+            console.error('IndexedDB store error:', request.error);
+            reject(request.error);
+        };
 
         transaction.oncomplete = () => db.close();
+        transaction.onerror = () => {
+            console.error('IndexedDB transaction error:', transaction.error);
+            reject(transaction.error);
+        };
     });
 };
 
@@ -1906,15 +1941,22 @@ const retrieveFromIndexedDB = async (key) => {
         request.onsuccess = () => {
             const result = request.result;
             if (result) {
-                console.log(`Retrieved from IndexedDB: ${(result.size / 1024 / 1024).toFixed(2)} MB`);
+                console.log(`Retrieved from IndexedDB`);
                 resolve(result.data);
             } else {
                 reject(new Error('Data not found in IndexedDB'));
             }
         };
-        request.onerror = () => reject(request.error);
+        request.onerror = () => {
+            console.error('IndexedDB retrieve error:', request.error);
+            reject(request.error);
+        };
 
         transaction.oncomplete = () => db.close();
+        transaction.onerror = () => {
+            console.error('IndexedDB transaction error:', transaction.error);
+            reject(transaction.error);
+        };
     });
 };
 
