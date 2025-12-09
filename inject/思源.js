@@ -132,42 +132,6 @@
     }
 
     /**
-     * 通过 API 获取块的完整 DOM
-     * @param {string} blockId - 块 ID
-     * @returns {Promise<string>} 块的 HTML
-     */
-    async function fetchBlockDOM(blockId) {
-        try {
-            const apiUrl = '/api/block/getBlockDOM';
-
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: blockId
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`API 请求失败: ${response.status} ${response.statusText}`);
-            }
-
-            const data = await response.json();
-
-            if (data.code !== 0) {
-                throw new Error(`API 返回错误: ${data.msg}`);
-            }
-
-            return data.data.dom;
-        } catch (error) {
-            console.error('[思源剪藏] 获取块 DOM 失败:', error);
-            throw error;
-        }
-    }
-
-    /**
      * 获取思源页面内容
      * 覆盖全局的 __siyuanGetPageContent 函数
      */
