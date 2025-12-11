@@ -1932,43 +1932,6 @@ const convertBase64ToBlob = async (obj) => {
     return result;
 };
 
-// 将 Blob 转换回 Base64（从 IndexedDB 读取后）
-const blobToBase64 = (blob) => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-    });
-};
-
-// 将对象中的 Blob 转换回 Base64（递归处理）
-const convertBlobToBase64 = async (obj) => {
-    if (!obj || typeof obj !== 'object') {
-        return obj;
-    }
-
-    if (Array.isArray(obj)) {
-        return await Promise.all(obj.map(item => convertBlobToBase64(item)));
-    }
-
-    const result = {};
-    for (const key in obj) {
-        const value = obj[key];
-
-        // 检测 Blob 对象
-        if (value instanceof Blob) {
-            result[key] = await blobToBase64(value);
-        } else if (typeof value === 'object' && value !== null) {
-            result[key] = await convertBlobToBase64(value);
-        } else {
-            result[key] = value;
-        }
-    }
-
-    return result;
-};
-
 // 存储数据到 IndexedDB
 const storeToIndexedDB = async (key, data) => {
     const db = await initIndexedDB();
@@ -2018,12 +1981,11 @@ const retrieveFromIndexedDB = async (key) => {
         request.onsuccess = async () => {
             const result = request.result;
             if (result) {
-                console.log(`Retrieved from IndexedDB, converting Blob back to Base64...`);
+                console.log(`Retrieved from IndexedDB, returning data directly (no conversion)...`);
 
-                // 将 Blob 转换回 Base64
-                const base64Data = await convertBlobToBase64(result.data);
-
-                resolve(base64Data);
+                // 直接返回数据，不转换为 Base64
+                // 数据已经包含 Blob 对象，Chrome 消息传递 API 支持 Blob
+                resolve(result.data);
             } else {
                 reject(new Error('Data not found in IndexedDB'));
             }

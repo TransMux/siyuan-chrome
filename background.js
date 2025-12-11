@@ -1,3 +1,77 @@
+// 将 Blob 转换为 Base64
+const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+        if (!blob) {
+            reject(new Error('Invalid input: blob is null or undefined'));
+            return;
+        }
+
+        if (!(blob instanceof Blob)) {
+            reject(new Error(`Invalid input: expected Blob, got ${typeof blob}`));
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => {
+            const errorMsg = reader.error?.message || 'Unknown error';
+            reject(new Error(`Failed to read blob: ${errorMsg}`));
+        };
+        reader.readAsDataURL(blob);
+    });
+};
+
+// 统计对象中的 Blob 数量和总大小
+const analyzeBlobData = (obj, stats = { count: 0, totalSize: 0 }) => {
+    if (!obj || typeof obj !== 'object') {
+        return stats;
+    }
+
+    if (Array.isArray(obj)) {
+        obj.forEach(item => analyzeBlobData(item, stats));
+        return stats;
+    }
+
+    for (const key of Object.keys(obj)) {
+        const value = obj[key];
+        if (value instanceof Blob) {
+            stats.count++;
+            stats.totalSize += value.size;
+        } else if (typeof value === 'object' && value !== null) {
+            analyzeBlobData(value, stats);
+        }
+    }
+
+    return stats;
+};
+
+// 递归地将对象中的 Blob 转换为 Base64
+const convertBlobToBase64 = async (obj) => {
+    if (!obj || typeof obj !== 'object') {
+        return obj;
+    }
+
+    if (Array.isArray(obj)) {
+        return await Promise.all(obj.map(item => convertBlobToBase64(item)));
+    }
+
+    const result = {};
+    for (const key of Object.keys(obj)) {
+        const value = obj[key];
+
+        // 检测 Blob 对象
+        if (value instanceof Blob) {
+            result[key] = await blobToBase64(value);
+        } else if (typeof value === 'object' && value !== null) {
+            result[key] = await convertBlobToBase64(value);
+        } else {
+            result[key] = value;
+        }
+    }
+
+    return result;
+};
+
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.removeAll(function () {
         chrome.contextMenus.create({
@@ -897,7 +971,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         try {
             // 在 background script 中访问 IndexedDB 需要通过 offscreen document 或者直接访问
             // 这里我们通过向 content script 请求数据
-            requestData = await new Promise((resolve, reject) => {
+            const dataWithBlobs = await new Promise((resolve, reject) => {
                 chrome.tabs.sendMessage(request.tabId, {
                     func: 'retrieveFromIndexedDB',
                     storageKey: request.storageKey
@@ -914,7 +988,20 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                 });
             });
 
-            console.log(`Successfully retrieved data from IndexedDB`);
+            console.log(`Successfully retrieved data from IndexedDB, converting Blobs to Base64...`);
+
+            // 统计 Blob 数据
+            const stats = analyzeBlobData(dataWithBlobs);
+            if (stats.count > 0) {
+                console.log(`Found ${stats.count} Blob(s), total size: ${(stats.totalSize / 1024 / 1024).toFixed(2)} MB`);
+            }
+
+            // 将 Blob 对象转换为 Base64 字符串
+            const startTime = performance.now();
+            requestData = await convertBlobToBase64(dataWithBlobs);
+            const duration = performance.now() - startTime;
+
+            console.log(`Successfully converted Blobs to Base64 in ${duration.toFixed(2)}ms`);
         } catch (error) {
             console.error('Error retrieving large message from IndexedDB:', error);
             safeTabsSendMessage(request.tabId, {
