@@ -1091,9 +1091,26 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     formData.append('dom', dom)
     for (const key of Object.keys(files)) {
         const data = files[key].data
-        const base64Response = await fetch(data)
-        const blob = base64Response.blob()
-        formData.append(key, await blob)
+
+        // 调试：检查数据类型
+        console.log(`Processing file ${key}, data type:`, typeof data, data instanceof Blob ? '(Blob)' : '');
+
+        // 判断数据类型：Blob 或 Base64 字符串
+        let blob;
+        if (data instanceof Blob) {
+            // 如果已经是 Blob，直接使用
+            console.warn(`File ${key} data is still a Blob after conversion - using directly`);
+            blob = data;
+        } else if (typeof data === 'string') {
+            // 如果是 Base64 Data URL 字符串，通过 fetch 转换为 Blob
+            const base64Response = await fetch(data);
+            blob = await base64Response.blob();
+        } else {
+            console.error(`Unexpected data type for file ${key}:`, typeof data, data);
+            continue;
+        }
+
+        formData.append(key, blob);
     }
     formData.append("notebook", requestData.notebook)
     formData.append("parentID", requestData.parentDoc)
