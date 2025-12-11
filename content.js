@@ -1894,21 +1894,98 @@ const initIndexedDB = () => {
     });
 };
 
+// 将 Base64 转换为 Blob（用于 IndexedDB 存储）
+const base64ToBlob = async (base64Data) => {
+    try {
+        const response = await fetch(base64Data);
+        return await response.blob();
+    } catch (e) {
+        console.warn('Failed to convert base64 to blob:', e);
+        return null;
+    }
+};
+
+// 将对象中的 Base64 字符串转换为 Blob（递归处理）
+const convertBase64ToBlob = async (obj) => {
+    if (!obj || typeof obj !== 'object') {
+        return obj;
+    }
+
+    if (Array.isArray(obj)) {
+        return await Promise.all(obj.map(item => convertBase64ToBlob(item)));
+    }
+
+    const result = {};
+    for (const key in obj) {
+        const value = obj[key];
+
+        // 检测 Base64 Data URL (data:image/...)
+        if (typeof value === 'string' && value.startsWith('data:')) {
+            result[key] = await base64ToBlob(value);
+        } else if (typeof value === 'object' && value !== null) {
+            result[key] = await convertBase64ToBlob(value);
+        } else {
+            result[key] = value;
+        }
+    }
+
+    return result;
+};
+
+// 将 Blob 转换回 Base64（从 IndexedDB 读取后）
+const blobToBase64 = (blob) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+};
+
+// 将对象中的 Blob 转换回 Base64（递归处理）
+const convertBlobToBase64 = async (obj) => {
+    if (!obj || typeof obj !== 'object') {
+        return obj;
+    }
+
+    if (Array.isArray(obj)) {
+        return await Promise.all(obj.map(item => convertBlobToBase64(item)));
+    }
+
+    const result = {};
+    for (const key in obj) {
+        const value = obj[key];
+
+        // 检测 Blob 对象
+        if (value instanceof Blob) {
+            result[key] = await blobToBase64(value);
+        } else if (typeof value === 'object' && value !== null) {
+            result[key] = await convertBlobToBase64(value);
+        } else {
+            result[key] = value;
+        }
+    }
+
+    return result;
+};
+
 // 存储数据到 IndexedDB
 const storeToIndexedDB = async (key, data) => {
     const db = await initIndexedDB();
 
-    // 不再计算精确大小，直接存储
-    console.log(`Storing large data to IndexedDB...`);
+    console.log(`Converting Base64 to Blob for IndexedDB storage...`);
+
+    // 将所有 Base64 字符串转换为 Blob
+    const blobData = await convertBase64ToBlob(data);
 
     return new Promise((resolve, reject) => {
         const transaction = db.transaction(['clips'], 'readwrite');
         const store = transaction.objectStore('clips');
 
-        // 直接存储对象，IndexedDB 会自动处理序列化
+        // 存储转换后的数据（包含 Blob）
         const request = store.put({
             key: key,
-            data: data,
+            data: blobData,
             timestamp: Date.now()
         });
 
@@ -1938,11 +2015,15 @@ const retrieveFromIndexedDB = async (key) => {
         const store = transaction.objectStore('clips');
         const request = store.get(key);
 
-        request.onsuccess = () => {
+        request.onsuccess = async () => {
             const result = request.result;
             if (result) {
-                console.log(`Retrieved from IndexedDB`);
-                resolve(result.data);
+                console.log(`Retrieved from IndexedDB, converting Blob back to Base64...`);
+
+                // 将 Blob 转换回 Base64
+                const base64Data = await convertBlobToBase64(result.data);
+
+                resolve(base64Data);
             } else {
                 reject(new Error('Data not found in IndexedDB'));
             }
