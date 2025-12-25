@@ -31,6 +31,10 @@
     {
       "url_pattern": "*://localhost:*/*",
       "inject": "inject/思源.js"
+    },
+    {
+      "url_pattern": "*.xiaohongshu.com/*",
+      "inject": "inject/小红书.js"
     }
   ]
 }
