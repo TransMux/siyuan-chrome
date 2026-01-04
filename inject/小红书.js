@@ -219,10 +219,14 @@
                 }
             }
 
-            // 8. 提取评论
-            const commentItems = document.querySelectorAll('.parent-comment, .comment-item:not(.comment-item-sub)');
-            if (commentItems && commentItems.length > 0) {
-                commentItems.forEach(commentEl => {
+            // 8. 提取评论 - 只从 parent-comment 提取，避免重复
+            const parentComments = document.querySelectorAll('.parent-comment');
+            if (parentComments && parentComments.length > 0) {
+                parentComments.forEach(parentCommentEl => {
+                    // 查找主评论（.comment-item 但不包含 .comment-item-sub）
+                    const mainCommentEl = parentCommentEl.querySelector('.comment-item:not(.comment-item-sub)');
+                    if (!mainCommentEl) return;
+
                     const comment = {
                         author: '',
                         authorUrl: '',
@@ -235,25 +239,25 @@
                     };
 
                     // 评论作者
-                    const commentAuthorLink = commentEl.querySelector('.author a.name, .comment-inner-container .name');
+                    const commentAuthorLink = mainCommentEl.querySelector('.author a.name, .comment-inner-container .author a.name');
                     if (commentAuthorLink) {
                         comment.author = safeGetText(commentAuthorLink);
                         comment.authorUrl = commentAuthorLink.href || '';
                     }
 
                     // 评论头像
-                    const commentAvatar = commentEl.querySelector('.avatar img.avatar-item');
+                    const commentAvatar = mainCommentEl.querySelector('.avatar img.avatar-item');
                     if (commentAvatar) {
                         comment.avatarUrl = commentAvatar.src || '';
                     }
 
                     // 评论内容 - 尝试多种选择器
-                    let commentContent = commentEl.querySelector('.comment-inner-container > .right > .content .note-text');
+                    let commentContent = mainCommentEl.querySelector('.comment-inner-container > .right > .content .note-text');
                     if (!commentContent) {
-                        commentContent = commentEl.querySelector('.right .content .note-text');
+                        commentContent = mainCommentEl.querySelector('.right .content .note-text');
                     }
                     if (!commentContent) {
-                        commentContent = commentEl.querySelector('.content .note-text');
+                        commentContent = mainCommentEl.querySelector('.content .note-text');
                     }
 
                     if (commentContent) {
@@ -261,7 +265,7 @@
                     }
 
                     // 评论日期和地点
-                    const commentDate = commentEl.querySelector('.comment-inner-container > .right > .info .date, .info .date');
+                    const commentDate = mainCommentEl.querySelector('.comment-inner-container > .right > .info .date, .info .date');
                     if (commentDate) {
                         const dateSpan = commentDate.querySelector('span:first-child');
                         const locationSpan = commentDate.querySelector('.location');
@@ -274,7 +278,7 @@
                     }
 
                     // 评论点赞数
-                    const commentLikes = commentEl.querySelector('.comment-inner-container > .right > .info .like .count, .info .like .count');
+                    const commentLikes = mainCommentEl.querySelector('.comment-inner-container > .right > .info .like .count, .info .like .count');
                     if (commentLikes) {
                         const likesText = safeGetText(commentLikes);
                         if (likesText && likesText !== '赞') {
@@ -282,54 +286,61 @@
                         }
                     }
 
-                    // 提取回复
-                    const replyItems = commentEl.querySelectorAll('.reply-container .comment-item-sub');
-                    if (replyItems && replyItems.length > 0) {
-                        replyItems.forEach(replyEl => {
-                            const reply = {
-                                author: '',
-                                content: '',
-                                date: '',
-                                location: '',
-                                isAuthor: false
-                            };
+                    // 提取回复 - 只在当前 parent-comment 的 reply-container 内查找
+                    const replyContainer = parentCommentEl.querySelector('.reply-container');
+                    if (replyContainer) {
+                        const replyItems = replyContainer.querySelectorAll('.comment-item-sub');
+                        if (replyItems && replyItems.length > 0) {
+                            replyItems.forEach(replyEl => {
+                                const reply = {
+                                    author: '',
+                                    content: '',
+                                    date: '',
+                                    location: '',
+                                    isAuthor: false
+                                };
 
-                            // 回复作者
-                            const replyAuthorLink = replyEl.querySelector('.author a.name');
-                            if (replyAuthorLink) {
-                                reply.author = safeGetText(replyAuthorLink);
-                            }
-
-                            // 是否是作者回复
-                            const authorTag = replyEl.querySelector('.author .tag');
-                            if (authorTag && safeGetText(authorTag) === '作者') {
-                                reply.isAuthor = true;
-                            }
-
-                            // 回复内容
-                            const replyContent = replyEl.querySelector('.content .note-text');
-                            if (replyContent) {
-                                reply.content = extractTextFromNode(replyContent, false);
-                            }
-
-                            // 回复日期和地点
-                            const replyDate = replyEl.querySelector('.info .date');
-                            if (replyDate) {
-                                const dateSpan = replyDate.querySelector('span:first-child');
-                                const locationSpan = replyDate.querySelector('.location');
-                                if (dateSpan) {
-                                    reply.date = safeGetText(dateSpan);
+                                // 回复作者
+                                const replyAuthorLink = replyEl.querySelector('.author a.name, .comment-inner-container .author a.name');
+                                if (replyAuthorLink) {
+                                    reply.author = safeGetText(replyAuthorLink);
                                 }
-                                if (locationSpan) {
-                                    reply.location = safeGetText(locationSpan);
-                                }
-                            }
 
-                            // 只添加有内容的回复
-                            if (reply.content || reply.author) {
-                                comment.replies.push(reply);
-                            }
-                        });
+                                // 是否是作者回复
+                                const authorTag = replyEl.querySelector('.author .tag');
+                                if (authorTag && safeGetText(authorTag) === '作者') {
+                                    reply.isAuthor = true;
+                                }
+
+                                // 回复内容 - 需要处理"回复 xxx:"的情况
+                                const replyContent = replyEl.querySelector('.content .note-text');
+                                if (replyContent) {
+                                    // 提取纯文本内容，忽略"回复 xxx:"前缀
+                                    let content = extractTextFromNode(replyContent, false);
+                                    // 清理可能的"回复 xxx:"前缀（虽然理论上不应该有，但为了保险）
+                                    content = content.replace(/^回复\s+[^:]+:\s*/, '').trim();
+                                    reply.content = content;
+                                }
+
+                                // 回复日期和地点
+                                const replyDate = replyEl.querySelector('.info .date');
+                                if (replyDate) {
+                                    const dateSpan = replyDate.querySelector('span:first-child');
+                                    const locationSpan = replyDate.querySelector('.location');
+                                    if (dateSpan) {
+                                        reply.date = safeGetText(dateSpan);
+                                    }
+                                    if (locationSpan) {
+                                        reply.location = safeGetText(locationSpan);
+                                    }
+                                }
+
+                                // 只添加有内容的回复
+                                if (reply.content || reply.author) {
+                                    comment.replies.push(reply);
+                                }
+                            });
+                        }
                     }
 
                     // 只添加有有效内容或作者信息的评论
@@ -427,44 +438,39 @@
     function formatComments(data) {
         if (data.comments.length === 0) return '';
 
-        let md = `\n\n`;
+        let md = '';
 
-        data.comments.forEach((comment, index) => {
-            md += `### ${index + 1}. ${comment.author}`;
-            if (comment.date) {
-                md += ` · ${comment.date}`;
-            }
-            if (comment.location) {
-                md += ` · ${comment.location}`;
-            }
-            md += '\n\n';
-
-            if (comment.content) {
-                md += `${comment.content}\n`;
+        data.comments.forEach((comment) => {
+            // 主评论格式: - 作者: 内容 (日期 · 地点)
+            let dateLocation = '';
+            if (comment.date || comment.location) {
+                const parts = [];
+                if (comment.date) parts.push(comment.date);
+                if (comment.location) parts.push(comment.location);
+                dateLocation = ` (${parts.join(' · ')})`;
             }
 
-            if (comment.likes > 0) {
-                md += `\n👍 ${comment.likes}\n`;
-            }
+            const commentContent = comment.content || '';
+            md += `- ${comment.author}: ${commentContent}${dateLocation}\n`;
 
-            // 回复
+            // 回复格式:   - 作者 (作者): 内容 (日期 · 地点)
             if (comment.replies.length > 0) {
-                md += '\n**回复**:\n\n';
                 comment.replies.forEach((reply) => {
-                    const authorLabel = reply.isAuthor ? `${reply.author} (作者)` : reply.author;
-                    md += `- **${authorLabel}**: ${reply.content}`;
-                    if (reply.date) {
-                        md += ` (${reply.date}`;
-                        if (reply.location) {
-                            md += ` · ${reply.location}`;
-                        }
-                        md += ')';
+                    let replyDateLocation = '';
+                    if (reply.date || reply.location) {
+                        const parts = [];
+                        if (reply.date) parts.push(reply.date);
+                        if (reply.location) parts.push(reply.location);
+                        replyDateLocation = ` (${parts.join(' · ')})`;
                     }
-                    md += '\n';
+
+                    const authorLabel = reply.isAuthor ? `${reply.author} (作者)` : reply.author;
+                    const replyContent = reply.content || '';
+                    md += `  - ${authorLabel}: ${replyContent}${replyDateLocation}\n`;
                 });
             }
 
-            md += '\n---\n\n';
+            md += '\n';
         });
 
         return md;
