@@ -71,9 +71,17 @@
         // 1. 对 list-container 元素执行向下滚动到底操作 5 次
         const listContainer = document.querySelector('.list-container');
         if (listContainer) {
-            for (let i = 0; i < 5; i++) {
-                listContainer.scrollTop = listContainer.scrollHeight;
-                await sleep(300); // 等待300ms让内容加载
+            for (let i = 0; i < 10; i++) {
+                // 获取最后一个子元素并滚动到它
+                const children = Array.from(listContainer.children);
+                if (children.length > 0) {
+                    const lastChild = children[children.length - 1];
+                    lastChild.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                } else {
+                    // 如果没有子元素，回退到直接设置 scrollTop
+                    listContainer.scrollTop = listContainer.scrollHeight;
+                }
+                await sleep(400); // 等待300ms让内容加载
             }
         }
 
