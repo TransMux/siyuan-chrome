@@ -54,8 +54,51 @@
         return isNaN(parsed) ? 0 : parsed;
     }
 
+    /**
+     * 等待指定时间（同步阻塞）
+     * @param {number} ms - 等待的毫秒数
+     */
+    function sleep(ms) {
+        const start = Date.now();
+        while (Date.now() - start < ms) {
+            // 同步等待
+        }
+    }
+
+    /**
+     * 执行剪藏前的准备工作：滚动和展开内容
+     */
+    function preparePageContent() {
+        // 1. 对 list-container 元素执行向下滚动到底操作 5 次
+        const listContainer = document.querySelector('.list-container');
+        if (listContainer) {
+            for (let i = 0; i < 5; i++) {
+                listContainer.scrollTop = listContainer.scrollHeight;
+                sleep(300); // 等待300ms让内容加载
+            }
+        }
+
+        // 2. 点击笔记范围内所有 show-more 元素，循环执行 3 次
+        const noteContainer = document.querySelector('.note-container, #noteContainer');
+        if (noteContainer) {
+            for (let round = 0; round < 3; round++) {
+                const showMoreElements = noteContainer.querySelectorAll('.show-more');
+                showMoreElements.forEach(element => {
+                    if (element && element.offsetParent !== null) { // 检查元素是否可见
+                        element.click();
+                        sleep(200); // 等待200ms让内容展开
+                    }
+                });
+                sleep(500); // 每轮之间等待500ms
+            }
+        }
+    }
+
     window.__siyuanGetPageContent = function () {
         try {
+            // 剪藏前准备工作：滚动和展开内容
+            preparePageContent();
+
             // 检查是否在小红书笔记详情页
             const noteContainer = document.querySelector('.note-container, #noteContainer');
             if (!noteContainer) {
@@ -103,7 +146,7 @@
             // 2. 提取标题
             const titleEl = document.querySelector('#detail-title, .title');
             if (titleEl) {
-                result.title = safeGetText(titleEl);
+                result.title = window.document.title;
             }
 
             // 3. 提取正文内容
