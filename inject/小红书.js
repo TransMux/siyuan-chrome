@@ -55,26 +55,25 @@
     }
 
     /**
-     * 等待指定时间（同步阻塞）
+     * 等待指定时间（异步非阻塞）
      * @param {number} ms - 等待的毫秒数
+     * @returns {Promise} Promise对象
      */
     function sleep(ms) {
-        const start = Date.now();
-        while (Date.now() - start < ms) {
-            // 同步等待
-        }
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     /**
-     * 执行剪藏前的准备工作：滚动和展开内容
+     * 执行剪藏前的准备工作：滚动和展开内容（异步）
+     * @returns {Promise} Promise对象
      */
-    function preparePageContent() {
+    async function preparePageContent() {
         // 1. 对 list-container 元素执行向下滚动到底操作 5 次
         const listContainer = document.querySelector('.list-container');
         if (listContainer) {
             for (let i = 0; i < 5; i++) {
                 listContainer.scrollTop = listContainer.scrollHeight;
-                sleep(300); // 等待300ms让内容加载
+                await sleep(300); // 等待300ms让内容加载
             }
         }
 
@@ -83,21 +82,24 @@
         if (noteContainer) {
             for (let round = 0; round < 3; round++) {
                 const showMoreElements = noteContainer.querySelectorAll('.show-more');
-                showMoreElements.forEach(element => {
+                for (const element of showMoreElements) {
                     if (element && element.offsetParent !== null) { // 检查元素是否可见
                         element.click();
-                        sleep(200); // 等待200ms让内容展开
+                        await sleep(200); // 等待200ms让内容展开
                     }
-                });
-                sleep(500); // 每轮之间等待500ms
+                }
+                await sleep(500); // 每轮之间等待500ms
             }
         }
+        
+        // 等待交互完成，确保DOM更新完成
+        await sleep(500);
     }
 
-    window.__siyuanGetPageContent = function () {
+    window.__siyuanGetPageContent = async function () {
         try {
-            // 剪藏前准备工作：滚动和展开内容
-            preparePageContent();
+            // 剪藏前准备工作：滚动和展开内容（异步等待）
+            await preparePageContent();
 
             // 检查是否在小红书笔记详情页
             const noteContainer = document.querySelector('.note-container, #noteContainer');
