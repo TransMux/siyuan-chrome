@@ -373,46 +373,30 @@
      * 格式化标题部分
      */
     function formatHeader(data) {
-        return data.title ? `# ${data.title}\n\n` : '';
+        // return data.title ? `# ${data.title}\n\n` : '';
+        return '';
     }
 
     /**
      * 格式化元数据部分（作者、日期、地点）
      */
     function formatMetadata(data) {
-        if (!data.author && !data.date && !data.location) return '';
-
-        let md = '';
-        if (data.author) {
-            md += `**作者**: ${data.author}\n`;
-            if (data.authorUrl) {
-                md += `**作者主页**: ${data.authorUrl}\n`;
-            }
-        }
-
-        if (data.date || data.location) {
-            md += `**发布时间**: ${data.date || ''}`;
-            if (data.location) {
-                md += ` · ${data.location}`;
-            }
-            md += '\n\n';
-        }
-
-        return md;
+        return `[${data.author}](${data.authorUrl}) · ${data.date} · ${data.location}\n\n`;
     }
 
     /**
      * 格式化正文内容
      */
     function formatContent(data) {
-        return data.content ? `## 正文\n\n${data.content}\n\n` : '';
+        return data.content ? `${data.content}\n\n` : '';
     }
 
     /**
      * 格式化标签
      */
     function formatTags(data) {
-        return data.tags.length > 0 ? `**标签**: ${data.tags.join(' ')}\n\n` : '';
+        // return data.tags.length > 0 ? `${data.tags.join(' ')}\n\n` : '';
+        return '';
     }
 
     /**
@@ -420,25 +404,21 @@
      */
     function formatImages(data) {
         if (data.images.length === 0) return '';
-
-        let md = `## 图片\n\n`;
+        
+        let md = '{{{row\n\n';
         data.images.forEach((img, index) => {
             md += `![图片${index + 1}](${img})\n\n`;
         });
+        md += '}}}\n\n';
         return md;
     }
-
     /**
      * 格式化互动数据
      */
     function formatStats(data) {
         if (!data.stats.likes && !data.stats.collects && !data.stats.comments) return '';
 
-        let md = `## 互动数据\n\n`;
-        md += `- 点赞: ${data.stats.likes}\n`;
-        md += `- 收藏: ${data.stats.collects}\n`;
-        md += `- 评论: ${data.stats.comments}\n\n`;
-        return md;
+        return `👍 ${data.stats.likes} · 💖 ${data.stats.collects} · 💬 ${data.stats.comments}\n\n`;
     }
 
     /**
@@ -447,7 +427,7 @@
     function formatComments(data) {
         if (data.comments.length === 0) return '';
 
-        let md = `## 评论 (${data.comments.length}条)\n\n`;
+        let md = `\n\n`;
 
         data.comments.forEach((comment, index) => {
             md += `### ${index + 1}. ${comment.author}`;
@@ -497,9 +477,9 @@
         const sections = [
             formatHeader(data),
             formatMetadata(data),
+            formatImages(data),
             formatContent(data),
             formatTags(data),
-            formatImages(data),
             formatStats(data),
             formatComments(data)
         ];
