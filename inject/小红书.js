@@ -296,6 +296,7 @@
                             replyItems.forEach(replyEl => {
                                 const reply = {
                                     author: '',
+                                    authorUrl: '',
                                     content: '',
                                     date: '',
                                     location: '',
@@ -306,6 +307,7 @@
                                 const replyAuthorLink = replyEl.querySelector('.author a.name, .comment-inner-container .author a.name');
                                 if (replyAuthorLink) {
                                     reply.author = safeGetText(replyAuthorLink);
+                                    reply.authorUrl = replyAuthorLink.href || '';
                                 }
 
                                 // 是否是作者回复
@@ -435,6 +437,34 @@
     }
 
     /**
+     * 格式化用户名链接
+     * @param {string} author - 用户名
+     * @param {string} authorUrl - 用户主页链接
+     * @param {boolean} isAuthor - 是否是作者
+     * @returns {string} 格式化后的用户名链接
+     */
+    function formatAuthorLink(author, authorUrl, isAuthor = false) {
+        if (!author) return '';
+        
+        let authorText = author;
+        if (isAuthor) {
+            authorText = `${author} (作者)`;
+        }
+        
+        // 如果有链接，格式化为 Markdown 链接
+        if (authorUrl) {
+            // 确保链接是完整的 URL
+            let fullUrl = authorUrl;
+            if (authorUrl.startsWith('/')) {
+                fullUrl = 'https://www.xiaohongshu.com' + authorUrl;
+            }
+            return `[${authorText}](${fullUrl})`;
+        }
+        
+        return authorText;
+    }
+
+    /**
      * 格式化评论
      */
     function formatComments(data) {
@@ -443,7 +473,7 @@
         let md = '';
 
         data.comments.forEach((comment) => {
-            // 主评论格式: - 作者: 内容 (日期 · 地点)
+            // 主评论格式: - [作者](链接): 内容 (日期 · 地点)
             let dateLocation = '';
             if (comment.date || comment.location) {
                 const parts = [];
@@ -453,9 +483,10 @@
             }
 
             const commentContent = comment.content || '';
-            md += `- ${comment.author}: ${commentContent}${dateLocation}\n`;
+            const authorLink = formatAuthorLink(comment.author, comment.authorUrl, false);
+            md += `- ${authorLink}: ${commentContent}${dateLocation}\n`;
 
-            // 回复格式:   - 作者 (作者): 内容 (日期 · 地点)
+            // 回复格式:   - [作者](链接) (作者): 内容 (日期 · 地点)
             if (comment.replies.length > 0) {
                 comment.replies.forEach((reply) => {
                     let replyDateLocation = '';
@@ -466,9 +497,9 @@
                         replyDateLocation = ` (${parts.join(' · ')})`;
                     }
 
-                    const authorLabel = reply.isAuthor ? `${reply.author} (作者)` : reply.author;
+                    const authorLink = formatAuthorLink(reply.author, reply.authorUrl, reply.isAuthor);
                     const replyContent = reply.content || '';
-                    md += `  - ${authorLabel}: ${replyContent}${replyDateLocation}\n`;
+                    md += `  - ${authorLink}: ${replyContent}${replyDateLocation}\n`;
                 });
             }
 
