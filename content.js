@@ -4,19 +4,19 @@ window.addEventListener('message', async (event) => {
     // 处理页面主动触发的剪藏请求
     if (event.data && event.data.type === 'SIYUAN_CLIP_ARTICLE') {
         console.log('📨 [SiYuan-Content] Received clip article message from page:', event.data);
-        
+
         try {
             const data = event.data.data || {};
-            
+
             // 验证必要字段
             if (!data.title && !data.content) {
                 console.error('❌ [SiYuan-Content] Missing required fields: title or content');
                 return;
             }
-            
+
             // 创建临时元素来包装文章内容
             const tempElement = document.createElement('div');
-            
+
             // 添加文章内容
             if (data.content) {
                 const contentElement = document.createElement('div');
@@ -27,36 +27,93 @@ window.addEventListener('message', async (event) => {
                 }
                 tempElement.appendChild(contentElement);
             }
-            
+
             // 构造文章信息对象
             const article = {
                 title: data.title || document.title || 'Untitled',
                 siteName: data.siteName || '',
-                excerpt: data.excerpt || (data.content ? 
-                    (typeof data.content === 'string' ? 
-                        data.content.substring(0, 200).replace(/<[^>]*>/g, '') : 
+                excerpt: data.excerpt || (data.content ?
+                    (typeof data.content === 'string' ?
+                        data.content.substring(0, 200).replace(/<[^>]*>/g, '') :
                         data.content.textContent?.substring(0, 200) || '') : '')
             };
-            
+
             console.log('🔄 [SiYuan-Content] Calling siyuanSendUpload with page data');
-            
+
             // 调用剪藏函数，使用预配置的设置
             siyuanSendUpload(
-                tempElement, 
+                tempElement,
                 null, // tabId
-                undefined, 
-                "article", 
-                article, 
-                data.url || window.location.href, 
-                undefined, 
-                false, 
+                undefined,
+                "article",
+                article,
+                data.url || window.location.href,
+                undefined,
+                false,
                 data.noReload !== false // 默认不刷新页面
             );
-            
+
             console.log('✅ [SiYuan-Content] Successfully initiated page clip');
-            
+
         } catch (error) {
             console.error('❌ [SiYuan-Content] Error in page clip:', error);
+        }
+    }
+
+    // 处理来自feed页面的批量剪藏请求
+    if (event.data && event.data.type === 'SIYUAN_CLIP_NOTE') {
+        console.log('📨 [SiYuan-Feed] Received clip note request:', event.data);
+
+        try {
+            const { url, sourceUrl } = event.data;
+
+            if (!url) {
+                console.error('❌ [SiYuan-Feed] Missing note URL');
+                return;
+            }
+
+            // 转发到background script处理（修复：添加 chrome.runtime.lastError 检查）
+            chrome.runtime.sendMessage({
+                func: 'clip-note-from-feed',
+                url: url,
+                sourceUrl: sourceUrl
+            }, (response) => {
+                // 检查运行时错误
+                if (chrome.runtime.lastError) {
+                    console.error('❌ [SiYuan-Feed] Runtime error:', chrome.runtime.lastError);
+                    window.postMessage({
+                        type: 'SIYUAN_CLIP_RESULT',
+                        success: false,
+                        documentId: null,
+                        error: `Extension error: ${chrome.runtime.lastError.message}`,
+                        url: url
+                    }, '*');
+                    return;
+                }
+
+                console.log('📨 [SiYuan-Feed] Background response:', response);
+
+                // 将结果发送回页面脚本
+                window.postMessage({
+                    type: 'SIYUAN_CLIP_RESULT',
+                    success: response?.success || false,
+                    documentId: response?.documentId || null,
+                    error: response?.error || null,
+                    url: url
+                }, '*');
+            });
+
+        } catch (error) {
+            console.error('❌ [SiYuan-Feed] Error handling clip note request:', error);
+
+            // 发送错误结果
+            window.postMessage({
+                type: 'SIYUAN_CLIP_RESULT',
+                success: false,
+                documentId: null,
+                error: error.message,
+                url: event.data.url
+            }, '*');
         }
     }
 });

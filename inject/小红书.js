@@ -4,6 +4,12 @@
      * 将小红书笔记页面解析为Markdown格式
      */
 
+    // 修复：检查页面类型，避免在用户首页重复注入
+    if (window.location.pathname.startsWith('/user/profile/')) {
+        console.log('[SiYuan小红书] 检测到用户首页，跳过详情页解析器注入');
+        return;
+    }
+
     /**
      * 从DOM节点中提取文本内容（递归处理）
      * @param {Node} node - 要提取文本的DOM节点

@@ -35,6 +35,10 @@
     {
       "url_pattern": "*.xiaohongshu.com/*",
       "inject": "inject/小红书.js"
+    },
+    {
+      "url_pattern": "*.xiaohongshu.com/user/profile/*",
+      "inject": "inject/小红书-feed.js"
     }
   ]
 }

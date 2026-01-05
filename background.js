@@ -1,3 +1,7 @@
+// 存储 feed 批量剪藏请求的 Map（用于解决竞态条件）
+// key: tabId, value: { resolve, reject, timestamp }
+const feedClipRequests = new Map();
+
 // 将 Blob 转换为 Base64
 const blobToBase64 = (blob) => {
     return new Promise((resolve, reject) => {
@@ -908,7 +912,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         sendResponse({ status: 'alive' });
         return;
     }
-    
+
     if (request.func === 'getTabId') {
         // 返回当前标签页ID
         if (sender.tab && sender.tab.id) {
@@ -918,10 +922,145 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         }
         return true;
     }
-    
+
+    if (request.func === 'clip-note-from-feed') {
+        console.log('📨 [SiYuan-Feed] Received clip-note-from-feed message:', request);
+
+        (async () => {
+            let newTabId = null;
+            try {
+                const { url, sourceUrl } = request;
+
+                if (!url) {
+                    sendResponse({ success: false, error: 'Missing note URL' });
+                    return;
+                }
+
+                console.log(`📝 [SiYuan-Feed] Opening note in new tab: ${url}`);
+
+                // 创建新标签页打开笔记详情页
+                const newTab = await chrome.tabs.create({
+                    url: url,
+                    active: false // 后台打开
+                });
+                newTabId = newTab.id;
+
+                console.log(`✅ [SiYuan-Feed] Created tab ${newTabId} for note`);
+
+                // 等待页面加载完成（修复：防止事件监听器泄漏）
+                await new Promise((resolve) => {
+                    let resolved = false;
+                    let timeoutId = null;
+
+                    const cleanup = () => {
+                        if (resolved) return;
+                        resolved = true;
+                        chrome.tabs.onUpdated.removeListener(listener);
+                        if (timeoutId) clearTimeout(timeoutId);
+                    };
+
+                    const listener = (tabId, changeInfo) => {
+                        if (tabId === newTabId && changeInfo.status === 'complete') {
+                            cleanup();
+                            resolve();
+                        }
+                    };
+                    chrome.tabs.onUpdated.addListener(listener);
+
+                    // 设置超时
+                    timeoutId = setTimeout(() => {
+                        cleanup();
+                        console.warn('[SiYuan-Feed] Page load timeout, continuing anyway');
+                        resolve();
+                    }, 30000); // 30秒超时
+                });
+
+                console.log(`⏳ [SiYuan-Feed] Page loaded, waiting before clipping...`);
+
+                // 等待页面稳定和内容加载
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                // 创建 Promise 用于接收剪藏结果（修复：使用 Map 避免竞态条件）
+                const clipPromise = new Promise((resolve, reject) => {
+                    feedClipRequests.set(newTabId, {
+                        resolve,
+                        reject,
+                        timestamp: Date.now()
+                    });
+
+                    // 60秒超时
+                    setTimeout(() => {
+                        const req = feedClipRequests.get(newTabId);
+                        if (req) {
+                            feedClipRequests.delete(newTabId);
+                            reject(new Error('Clip operation timeout after 60s'));
+                        }
+                    }, 60000);
+                });
+
+                // 触发剪藏（修复：使用 Promise 包装避免 async 回调问题）
+                console.log(`🎯 [SiYuan-Feed] Triggering clip for tab ${newTabId}`);
+
+                const clipResponse = await new Promise((resolve, reject) => {
+                    chrome.tabs.sendMessage(newTabId, {
+                        func: 'capture-full-page',
+                        tabId: newTabId
+                    }, (response) => {
+                        if (chrome.runtime.lastError) {
+                            reject(new Error(chrome.runtime.lastError.message));
+                        } else {
+                            resolve(response);
+                        }
+                    });
+                });
+
+                console.log('📨 [SiYuan-Feed] Clip initiated:', clipResponse);
+
+                // 等待剪藏完成并获取文档ID
+                const documentId = await clipPromise;
+
+                console.log(`✅ [SiYuan-Feed] Clip completed, document ID: ${documentId}`);
+
+                // 关闭标签页
+                try {
+                    await chrome.tabs.remove(newTabId);
+                    console.log(`🗑️ [SiYuan-Feed] Closed tab ${newTabId}`);
+                } catch (e) {
+                    console.error('Failed to close tab:', e);
+                }
+
+                sendResponse({
+                    success: true,
+                    documentId: documentId
+                });
+
+            } catch (error) {
+                console.error('❌ [SiYuan-Feed] Error handling clip-note-from-feed:', error);
+
+                // 清理 Map 中的请求
+                if (newTabId && feedClipRequests.has(newTabId)) {
+                    feedClipRequests.delete(newTabId);
+                }
+
+                // 尝试关闭标签页
+                if (newTabId) {
+                    try {
+                        await chrome.tabs.remove(newTabId);
+                    } catch (e) {
+                        console.error('Failed to close tab on error:', e);
+                    }
+                }
+
+                sendResponse({ success: false, error: error.message });
+            }
+        })();
+
+        return true; // 保持消息通道开放用于异步响应
+    }
+
     if (request.func === 'folo-clip') {
         console.log('📨 [Folo] Received folo-clip message:', request.data);
-        
+
         try {
             // 获取存储配置
             const items = await chrome.storage.sync.get({
@@ -929,13 +1068,13 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                 notebook: '',
                 ip: 'http://127.0.0.1:6806'
             });
-            
+
             if (!items.token || !items.notebook) {
                 console.error('❌ [Folo] Missing SiYuan configuration for folo-clip');
                 sendResponse({ success: false, error: 'Missing SiYuan configuration' });
                 return;
             }
-            
+
             // 向对应的tab发送消息，由content script处理
             chrome.tabs.sendMessage(request.data.tabId, {
                 func: 'folo-clip-content',
@@ -949,9 +1088,9 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                     sendResponse({ success: true });
                 }
             });
-            
+
             return true; // 保持消息通道开放
-            
+
         } catch (error) {
             console.error('❌ [Folo] Error handling folo-clip message:', error);
             sendResponse({ success: false, error: error.message });
@@ -1294,12 +1433,20 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                         if (response.data) {
                             const documentId = response.data;
                             const title = requestData.title || 'Untitled';
-                            
+
+                            // 检查是否是 feed 批量剪藏请求（修复：使用 Map 而不是全局变量）
+                            const clipRequest = feedClipRequests.get(requestData.tabId);
+                            if (clipRequest) {
+                                clipRequest.resolve(documentId);
+                                feedClipRequests.delete(requestData.tabId);
+                                console.log(`✅ [SiYuan-Feed] Resolved clip request for tab ${requestData.tabId} with documentId: ${documentId}`);
+                            }
+
                             // 检查是否是Folo剪藏
                             const isFoloClip = requestData.extraParams && requestData.extraParams.attributeViews;
                             const source = isFoloClip ? 'Folo自动剪藏' : 'SiYuan剪藏';
                             const logMessage = `剪藏成功：[${title}](#openSiYuan(${documentId}))`
-                            
+
                             sendLogToGlobalOverlay(logMessage, 'SUCCESS', source, {
                                 documentId: documentId,
                                 title: title,
