@@ -1461,11 +1461,26 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                             expOpenAfterClip: false,
                         }, (items) => {
                             if (items.expOpenAfterClip && response.data) {
-                                let documentUrl = requestData.api + "?id=" + response.data;
-                                if (requestData.api.startsWith("http://localhost:") || requestData.api.startsWith("http://127.0.0.1:")) {
-                                    documentUrl = `siyuan://blocks/${response.data}`;
-                                }
-                                chrome.tabs.create({url: documentUrl});
+                                // 使用新的 API 在思源内后台打开文档，不替换当前 tab
+                                fetch(requestData.api + '/api/block/open', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Authorization': 'Token ' + requestData.token,
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        'id': response.data,
+                                        'keepCursor': true,  // 后台打开，不替换当前 tab
+                                    }),
+                                }).catch(err => {
+                                    console.error('Failed to open block in background:', err);
+                                    // 降级处理：使用原有的打开方式
+                                    let documentUrl = requestData.api + "?id=" + response.data;
+                                    if (requestData.api.startsWith("http://localhost:") || requestData.api.startsWith("http://127.0.0.1:")) {
+                                        documentUrl = `siyuan://blocks/${response.data}`;
+                                    }
+                                    chrome.tabs.create({url: documentUrl});
+                                });
                             }
                         });
 
